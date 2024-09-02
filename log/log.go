@@ -3,10 +3,7 @@ package log
 import (
 	"fmt"
 	"io"
-<<<<<<< HEAD
-=======
 	"io/ioutil"
->>>>>>> deathstrox/main
 	"log"
 	"sync"
 	"time"
