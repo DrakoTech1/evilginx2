@@ -3,6 +3,10 @@
 // license that can be found in the LICENSE file.
 
 //go:build ios
+<<<<<<< HEAD
+=======
+// +build ios
+>>>>>>> deathstrox/main
 
 package unix
 

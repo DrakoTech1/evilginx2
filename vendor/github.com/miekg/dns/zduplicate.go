@@ -43,6 +43,7 @@ func (r1 *AFSDB) isDuplicate(_r2 RR) bool {
 	return true
 }
 
+<<<<<<< HEAD
 func (r1 *AMTRELAY) isDuplicate(_r2 RR) bool {
 	r2, ok := _r2.(*AMTRELAY)
 	if !ok {
@@ -69,6 +70,8 @@ func (r1 *AMTRELAY) isDuplicate(_r2 RR) bool {
 	return true
 }
 
+=======
+>>>>>>> deathstrox/main
 func (r1 *ANY) isDuplicate(_r2 RR) bool {
 	r2, ok := _r2.(*ANY)
 	if !ok {
@@ -449,6 +452,7 @@ func (r1 *HTTPS) isDuplicate(_r2 RR) bool {
 	return true
 }
 
+<<<<<<< HEAD
 func (r1 *IPSECKEY) isDuplicate(_r2 RR) bool {
 	r2, ok := _r2.(*IPSECKEY)
 	if !ok {
@@ -496,6 +500,8 @@ func (r1 *ISDN) isDuplicate(_r2 RR) bool {
 	return true
 }
 
+=======
+>>>>>>> deathstrox/main
 func (r1 *KEY) isDuplicate(_r2 RR) bool {
 	r2, ok := _r2.(*KEY)
 	if !ok {
@@ -886,6 +892,7 @@ func (r1 *NULL) isDuplicate(_r2 RR) bool {
 	return true
 }
 
+<<<<<<< HEAD
 func (r1 *NXT) isDuplicate(_r2 RR) bool {
 	r2, ok := _r2.(*NXT)
 	if !ok {
@@ -906,6 +913,8 @@ func (r1 *NXT) isDuplicate(_r2 RR) bool {
 	return true
 }
 
+=======
+>>>>>>> deathstrox/main
 func (r1 *OPENPGPKEY) isDuplicate(_r2 RR) bool {
 	r2, ok := _r2.(*OPENPGPKEY)
 	if !ok {

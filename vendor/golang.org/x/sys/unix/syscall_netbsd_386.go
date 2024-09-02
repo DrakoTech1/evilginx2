@@ -3,6 +3,10 @@
 // license that can be found in the LICENSE file.
 
 //go:build 386 && netbsd
+<<<<<<< HEAD
+=======
+// +build 386,netbsd
+>>>>>>> deathstrox/main
 
 package unix
 

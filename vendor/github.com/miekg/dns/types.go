@@ -65,7 +65,10 @@ const (
 	TypeAPL        uint16 = 42
 	TypeDS         uint16 = 43
 	TypeSSHFP      uint16 = 44
+<<<<<<< HEAD
 	TypeIPSECKEY   uint16 = 45
+=======
+>>>>>>> deathstrox/main
 	TypeRRSIG      uint16 = 46
 	TypeNSEC       uint16 = 47
 	TypeDNSKEY     uint16 = 48
@@ -99,7 +102,10 @@ const (
 	TypeURI        uint16 = 256
 	TypeCAA        uint16 = 257
 	TypeAVC        uint16 = 258
+<<<<<<< HEAD
 	TypeAMTRELAY   uint16 = 260
+=======
+>>>>>>> deathstrox/main
 
 	TypeTKEY uint16 = 249
 	TypeTSIG uint16 = 250
@@ -135,8 +141,13 @@ const (
 	RcodeNXRrset        = 8  // NXRRSet   - RR Set that should exist does not [DNS Update]
 	RcodeNotAuth        = 9  // NotAuth   - Server Not Authoritative for zone [DNS Update]
 	RcodeNotZone        = 10 // NotZone   - Name not contained in zone        [DNS Update/TSIG]
+<<<<<<< HEAD
 	RcodeBadSig         = 16 // BADSIG    - TSIG Signature Failure            [TSIG]  https://www.rfc-editor.org/rfc/rfc6895.html#section-2.3
 	RcodeBadVers        = 16 // BADVERS   - Bad OPT Version                   [EDNS0] https://www.rfc-editor.org/rfc/rfc6895.html#section-2.3
+=======
+	RcodeBadSig         = 16 // BADSIG    - TSIG Signature Failure            [TSIG]
+	RcodeBadVers        = 16 // BADVERS   - Bad OPT Version                   [EDNS0]
+>>>>>>> deathstrox/main
 	RcodeBadKey         = 17 // BADKEY    - Key not recognized                [TSIG]
 	RcodeBadTime        = 18 // BADTIME   - Signature out of time window      [TSIG]
 	RcodeBadMode        = 19 // BADMODE   - Bad TKEY Mode                     [TKEY]
@@ -161,6 +172,7 @@ const (
 	ZoneMDHashAlgSHA512 = 2
 )
 
+<<<<<<< HEAD
 // Used in IPSEC https://datatracker.ietf.org/doc/html/rfc4025#section-2.3
 const (
 	IPSECGatewayNone uint8 = iota
@@ -177,6 +189,8 @@ const (
 	AMTRELAYHost = IPSECGatewayHost
 )
 
+=======
+>>>>>>> deathstrox/main
 // Header is the wire format for the DNS packet header.
 type Header struct {
 	Id                                 uint16
@@ -198,7 +212,11 @@ const (
 	_CD = 1 << 4  // checking disabled
 )
 
+<<<<<<< HEAD
 // Various constants used in the LOC RR. See RFC 1876.
+=======
+// Various constants used in the LOC RR. See RFC 1887.
+>>>>>>> deathstrox/main
 const (
 	LOC_EQUATOR       = 1 << 31 // RFC 1876, Section 2.
 	LOC_PRIMEMERIDIAN = 1 << 31 // RFC 1876, Section 2.
@@ -236,9 +254,12 @@ var CertTypeToString = map[uint16]string{
 	CertOID:     "OID",
 }
 
+<<<<<<< HEAD
 // Prefix for IPv4 encoded as IPv6 address
 const ipv4InIPv6Prefix = "::ffff:"
 
+=======
+>>>>>>> deathstrox/main
 //go:generate go run types_generate.go
 
 // Question holds a DNS question. Usually there is just one. While the
@@ -402,6 +423,7 @@ func (rr *X25) String() string {
 	return rr.Hdr.String() + rr.PSDNAddress
 }
 
+<<<<<<< HEAD
 // ISDN RR. See RFC 1183, Section 3.2.
 type ISDN struct {
 	Hdr        RR_Header
@@ -413,6 +435,8 @@ func (rr *ISDN) String() string {
 	return rr.Hdr.String() + sprintTxt([]string{rr.Address, rr.SubAddress})
 }
 
+=======
+>>>>>>> deathstrox/main
 // RT RR. See RFC 1183, Section 3.3.
 type RT struct {
 	Hdr        RR_Header
@@ -645,8 +669,13 @@ func nextByte(s string, offset int) (byte, int) {
 		return 0, 0
 	case 2, 3: // too short to be \ddd
 	default: // maybe \ddd
+<<<<<<< HEAD
 		if isDDD(s[offset+1:]) {
 			return dddToByte(s[offset+1:]), 4
+=======
+		if isDigit(s[offset+1]) && isDigit(s[offset+2]) && isDigit(s[offset+3]) {
+			return dddStringToByte(s[offset+1:]), 4
+>>>>>>> deathstrox/main
 		}
 	}
 	// not \ddd, just an RFC 1035 "quoted" character
@@ -765,11 +794,14 @@ func (rr *AAAA) String() string {
 	if rr.AAAA == nil {
 		return rr.Hdr.String()
 	}
+<<<<<<< HEAD
 
 	if rr.AAAA.To4() != nil {
 		return rr.Hdr.String() + ipv4InIPv6Prefix + rr.AAAA.String()
 	}
 
+=======
+>>>>>>> deathstrox/main
 	return rr.Hdr.String() + rr.AAAA.String()
 }
 
@@ -797,7 +829,11 @@ func (rr *GPOS) String() string {
 	return rr.Hdr.String() + rr.Longitude + " " + rr.Latitude + " " + rr.Altitude
 }
 
+<<<<<<< HEAD
 // LOC RR. See RFC 1876.
+=======
+// LOC RR. See RFC RFC 1876.
+>>>>>>> deathstrox/main
 type LOC struct {
 	Hdr       RR_Header
 	Version   uint8
@@ -811,10 +847,14 @@ type LOC struct {
 
 // cmToM takes a cm value expressed in RFC 1876 SIZE mantissa/exponent
 // format and returns a string in m (two decimals for the cm).
+<<<<<<< HEAD
 func cmToM(x uint8) string {
 	m := x & 0xf0 >> 4
 	e := x & 0x0f
 
+=======
+func cmToM(m, e uint8) string {
+>>>>>>> deathstrox/main
 	if e < 2 {
 		if e == 1 {
 			m *= 10
@@ -870,9 +910,16 @@ func (rr *LOC) String() string {
 		s += fmt.Sprintf("%.0fm ", alt)
 	}
 
+<<<<<<< HEAD
 	s += cmToM(rr.Size) + "m "
 	s += cmToM(rr.HorizPre) + "m "
 	s += cmToM(rr.VertPre) + "m"
+=======
+	s += cmToM(rr.Size&0xf0>>4, rr.Size&0x0f) + "m "
+	s += cmToM(rr.HorizPre&0xf0>>4, rr.HorizPre&0x0f) + "m "
+	s += cmToM(rr.VertPre&0xf0>>4, rr.VertPre&0x0f) + "m"
+
+>>>>>>> deathstrox/main
 	return s
 }
 
@@ -909,11 +956,14 @@ func (rr *RRSIG) String() string {
 	return s
 }
 
+<<<<<<< HEAD
 // NXT RR. See RFC 2535.
 type NXT struct {
 	NSEC
 }
 
+=======
+>>>>>>> deathstrox/main
 // NSEC RR. See RFC 4034 and RFC 3755.
 type NSEC struct {
 	Hdr        RR_Header
@@ -998,7 +1048,11 @@ func (rr *TALINK) String() string {
 		sprintName(rr.PreviousName) + " " + sprintName(rr.NextName)
 }
 
+<<<<<<< HEAD
 // SSHFP RR. See RFC 4255.
+=======
+// SSHFP RR. See RFC RFC 4255.
+>>>>>>> deathstrox/main
 type SSHFP struct {
 	Hdr         RR_Header
 	Algorithm   uint8
@@ -1012,7 +1066,11 @@ func (rr *SSHFP) String() string {
 		" " + strings.ToUpper(rr.FingerPrint)
 }
 
+<<<<<<< HEAD
 // KEY RR. See RFC 2535.
+=======
+// KEY RR. See RFC RFC 2535.
+>>>>>>> deathstrox/main
 type KEY struct {
 	DNSKEY
 }
@@ -1038,6 +1096,7 @@ func (rr *DNSKEY) String() string {
 		" " + rr.PublicKey
 }
 
+<<<<<<< HEAD
 // IPSECKEY RR. See RFC 4025.
 type IPSECKEY struct {
 	Hdr         RR_Header
@@ -1101,6 +1160,8 @@ func (rr *AMTRELAY) String() string {
 		" " + gateway
 }
 
+=======
+>>>>>>> deathstrox/main
 // RKEY RR. See https://www.iana.org/assignments/dns-parameters/RKEY/rkey-completed-template.
 type RKEY struct {
 	Hdr       RR_Header
@@ -1322,7 +1383,11 @@ type NINFO struct {
 
 func (rr *NINFO) String() string { return rr.Hdr.String() + sprintTxt(rr.ZSData) }
 
+<<<<<<< HEAD
 // NID RR. See RFC 6742.
+=======
+// NID RR. See RFC RFC 6742.
+>>>>>>> deathstrox/main
 type NID struct {
 	Hdr        RR_Header
 	Preference uint16
@@ -1541,7 +1606,11 @@ func (a *APLPrefix) str() string {
 	case net.IPv6len:
 		// add prefix for IPv4-mapped IPv6
 		if v4 := a.Network.IP.To4(); v4 != nil {
+<<<<<<< HEAD
 			sb.WriteString(ipv4InIPv6Prefix)
+=======
+			sb.WriteString("::ffff:")
+>>>>>>> deathstrox/main
 		}
 		sb.WriteString(a.Network.IP.String())
 	}
@@ -1557,7 +1626,11 @@ func (a *APLPrefix) str() string {
 // equals reports whether two APL prefixes are identical.
 func (a *APLPrefix) equals(b *APLPrefix) bool {
 	return a.Negation == b.Negation &&
+<<<<<<< HEAD
 		a.Network.IP.Equal(b.Network.IP) &&
+=======
+		bytes.Equal(a.Network.IP, b.Network.IP) &&
+>>>>>>> deathstrox/main
 		bytes.Equal(a.Network.Mask, b.Network.Mask)
 }
 
@@ -1625,19 +1698,36 @@ func euiToString(eui uint64, bits int) (hex string) {
 	return
 }
 
+<<<<<<< HEAD
 // cloneSlice returns a shallow copy of s.
 func cloneSlice[E any, S ~[]E](s S) S {
 	if s == nil {
 		return nil
 	}
 	return append(S(nil), s...)
+=======
+// copyIP returns a copy of ip.
+func copyIP(ip net.IP) net.IP {
+	p := make(net.IP, len(ip))
+	copy(p, ip)
+	return p
+>>>>>>> deathstrox/main
 }
 
 // copyNet returns a copy of a subnet.
 func copyNet(n net.IPNet) net.IPNet {
+<<<<<<< HEAD
 	return net.IPNet{
 		IP:   cloneSlice(n.IP),
 		Mask: cloneSlice(n.Mask),
+=======
+	m := make(net.IPMask, len(n.Mask))
+	copy(m, n.Mask)
+
+	return net.IPNet{
+		IP:   copyIP(n.IP),
+		Mask: m,
+>>>>>>> deathstrox/main
 	}
 }
 

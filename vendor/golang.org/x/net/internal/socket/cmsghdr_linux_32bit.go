@@ -3,6 +3,11 @@
 // license that can be found in the LICENSE file.
 
 //go:build (arm || mips || mipsle || 386 || ppc) && linux
+<<<<<<< HEAD
+=======
+// +build arm mips mipsle 386 ppc
+// +build linux
+>>>>>>> deathstrox/main
 
 package socket
 

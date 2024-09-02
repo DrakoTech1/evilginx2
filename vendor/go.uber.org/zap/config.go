@@ -21,7 +21,11 @@
 package zap
 
 import (
+<<<<<<< HEAD
 	"errors"
+=======
+	"fmt"
+>>>>>>> deathstrox/main
 	"sort"
 	"time"
 
@@ -95,6 +99,7 @@ type Config struct {
 
 // NewProductionEncoderConfig returns an opinionated EncoderConfig for
 // production environments.
+<<<<<<< HEAD
 //
 // Messages encoded with this configuration will be JSON-formatted
 // and will have the following keys by default:
@@ -121,6 +126,8 @@ type Config struct {
 //
 //	cfg := zap.NewProductionEncoderConfig()
 //	cfg.EncodeTime = zapcore.ISO8601TimeEncoder
+=======
+>>>>>>> deathstrox/main
 func NewProductionEncoderConfig() zapcore.EncoderConfig {
 	return zapcore.EncoderConfig{
 		TimeKey:        "ts",
@@ -138,6 +145,7 @@ func NewProductionEncoderConfig() zapcore.EncoderConfig {
 	}
 }
 
+<<<<<<< HEAD
 // NewProductionConfig builds a reasonable default production logging
 // configuration.
 // Logging is enabled at InfoLevel and above, and uses a JSON encoder.
@@ -154,6 +162,13 @@ func NewProductionEncoderConfig() zapcore.EncoderConfig {
 //
 // See [NewProductionEncoderConfig] for information
 // on the default encoder configuration.
+=======
+// NewProductionConfig is a reasonable production logging configuration.
+// Logging is enabled at InfoLevel and above.
+//
+// It uses a JSON encoder, writes to standard error, and enables sampling.
+// Stacktraces are automatically included on logs of ErrorLevel and above.
+>>>>>>> deathstrox/main
 func NewProductionConfig() Config {
 	return Config{
 		Level:       NewAtomicLevelAt(InfoLevel),
@@ -171,6 +186,7 @@ func NewProductionConfig() Config {
 
 // NewDevelopmentEncoderConfig returns an opinionated EncoderConfig for
 // development environments.
+<<<<<<< HEAD
 //
 // Messages encoded with this configuration will use Zap's console encoder
 // intended to print human-readable output.
@@ -197,6 +213,8 @@ func NewProductionConfig() Config {
 //
 //	cfg := zap.NewDevelopmentEncoderConfig()
 //	cfg.EncodeTime = zapcore.ISO8601TimeEncoder
+=======
+>>>>>>> deathstrox/main
 func NewDevelopmentEncoderConfig() zapcore.EncoderConfig {
 	return zapcore.EncoderConfig{
 		// Keys can be anything except the empty string.
@@ -215,6 +233,7 @@ func NewDevelopmentEncoderConfig() zapcore.EncoderConfig {
 	}
 }
 
+<<<<<<< HEAD
 // NewDevelopmentConfig builds a reasonable default development logging
 // configuration.
 // Logging is enabled at DebugLevel and above, and uses a console encoder.
@@ -224,6 +243,14 @@ func NewDevelopmentEncoderConfig() zapcore.EncoderConfig {
 //
 // See [NewDevelopmentEncoderConfig] for information
 // on the default encoder configuration.
+=======
+// NewDevelopmentConfig is a reasonable development logging configuration.
+// Logging is enabled at DebugLevel and above.
+//
+// It enables development mode (which makes DPanicLevel logs panic), uses a
+// console encoder, writes to standard error, and disables sampling.
+// Stacktraces are automatically included on logs of WarnLevel and above.
+>>>>>>> deathstrox/main
 func NewDevelopmentConfig() Config {
 	return Config{
 		Level:            NewAtomicLevelAt(DebugLevel),
@@ -248,7 +275,11 @@ func (cfg Config) Build(opts ...Option) (*Logger, error) {
 	}
 
 	if cfg.Level == (AtomicLevel{}) {
+<<<<<<< HEAD
 		return nil, errors.New("missing Level")
+=======
+		return nil, fmt.Errorf("missing Level")
+>>>>>>> deathstrox/main
 	}
 
 	log := New(

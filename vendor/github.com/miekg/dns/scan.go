@@ -4,21 +4,33 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+<<<<<<< HEAD
 	"io/fs"
 	"os"
 	"path"
+=======
+	"os"
+>>>>>>> deathstrox/main
 	"path/filepath"
 	"strconv"
 	"strings"
 )
 
+<<<<<<< HEAD
 const maxTok = 512 // Token buffer start size, and growth size amount.
+=======
+const maxTok = 2048 // Largest token we can return.
+>>>>>>> deathstrox/main
 
 // The maximum depth of $INCLUDE directives supported by the
 // ZoneParser API.
 const maxIncludeDepth = 7
 
+<<<<<<< HEAD
 // Tokenize a RFC 1035 zone file. The tokenizer will normalize it:
+=======
+// Tokinize a RFC 1035 zone file. The tokenizer will normalize it:
+>>>>>>> deathstrox/main
 // * Add ownernames if they are left blank;
 // * Suppress sequences of spaces;
 // * Make each RR fit on one line (_NEWLINE is send as last)
@@ -66,26 +78,38 @@ const (
 // ParseError is a parsing error. It contains the parse error and the location in the io.Reader
 // where the error occurred.
 type ParseError struct {
+<<<<<<< HEAD
 	file       string
 	err        string
 	wrappedErr error
 	lex        lex
+=======
+	file string
+	err  string
+	lex  lex
+>>>>>>> deathstrox/main
 }
 
 func (e *ParseError) Error() (s string) {
 	if e.file != "" {
 		s = e.file + ": "
 	}
+<<<<<<< HEAD
 	if e.err == "" && e.wrappedErr != nil {
 		e.err = e.wrappedErr.Error()
 	}
+=======
+>>>>>>> deathstrox/main
 	s += "dns: " + e.err + ": " + strconv.QuoteToASCII(e.lex.token) + " at line: " +
 		strconv.Itoa(e.lex.line) + ":" + strconv.Itoa(e.lex.column)
 	return
 }
 
+<<<<<<< HEAD
 func (e *ParseError) Unwrap() error { return e.wrappedErr }
 
+=======
+>>>>>>> deathstrox/main
 type lex struct {
 	token  string // text of the token
 	err    bool   // when true, token text has lexer error
@@ -176,9 +200,14 @@ type ZoneParser struct {
 	// sub is used to parse $INCLUDE files and $GENERATE directives.
 	// Next, by calling subNext, forwards the resulting RRs from this
 	// sub parser to the calling code.
+<<<<<<< HEAD
 	sub  *ZoneParser
 	r    io.Reader
 	fsys fs.FS
+=======
+	sub    *ZoneParser
+	osFile *os.File
+>>>>>>> deathstrox/main
 
 	includeDepth uint8
 
@@ -197,7 +226,11 @@ func NewZoneParser(r io.Reader, origin, file string) *ZoneParser {
 	if origin != "" {
 		origin = Fqdn(origin)
 		if _, ok := IsDomainName(origin); !ok {
+<<<<<<< HEAD
 			pe = &ParseError{file: file, err: "bad initial origin name"}
+=======
+			pe = &ParseError{file, "bad initial origin name", lex{}}
+>>>>>>> deathstrox/main
 		}
 	}
 
@@ -229,6 +262,7 @@ func (zp *ZoneParser) SetIncludeAllowed(v bool) {
 	zp.includeAllowed = v
 }
 
+<<<<<<< HEAD
 // SetIncludeFS provides an [fs.FS] to use when looking for the target of
 // $INCLUDE directives.  ($INCLUDE must still be enabled separately by calling
 // [ZoneParser.SetIncludeAllowed].)  If fsys is nil, [os.Open] will be used.
@@ -247,6 +281,8 @@ func (zp *ZoneParser) SetIncludeFS(fsys fs.FS) {
 	zp.fsys = fsys
 }
 
+=======
+>>>>>>> deathstrox/main
 // Err returns the first non-EOF error that was encountered by the
 // ZoneParser.
 func (zp *ZoneParser) Err() error {
@@ -264,7 +300,11 @@ func (zp *ZoneParser) Err() error {
 }
 
 func (zp *ZoneParser) setParseError(err string, l lex) (RR, bool) {
+<<<<<<< HEAD
 	zp.parseErr = &ParseError{file: zp.file, err: err, lex: l}
+=======
+	zp.parseErr = &ParseError{zp.file, err, l}
+>>>>>>> deathstrox/main
 	return nil, false
 }
 
@@ -287,11 +327,17 @@ func (zp *ZoneParser) subNext() (RR, bool) {
 		return rr, true
 	}
 
+<<<<<<< HEAD
 	if zp.sub.r != nil {
 		if c, ok := zp.sub.r.(io.Closer); ok {
 			c.Close()
 		}
 		zp.sub.r = nil
+=======
+	if zp.sub.osFile != nil {
+		zp.sub.osFile.Close()
+		zp.sub.osFile = nil
+>>>>>>> deathstrox/main
 	}
 
 	if zp.sub.Err() != nil {
@@ -431,6 +477,7 @@ func (zp *ZoneParser) Next() (RR, bool) {
 
 			// Start with the new file
 			includePath := l.token
+<<<<<<< HEAD
 			var r1 io.Reader
 			var e1 error
 			if zp.fsys != nil {
@@ -469,6 +516,26 @@ func (zp *ZoneParser) Next() (RR, bool) {
 			zp.sub.defttl, zp.sub.includeDepth, zp.sub.r = zp.defttl, zp.includeDepth+1, r1
 			zp.sub.SetIncludeAllowed(true)
 			zp.sub.SetIncludeFS(zp.fsys)
+=======
+			if !filepath.IsAbs(includePath) {
+				includePath = filepath.Join(filepath.Dir(zp.file), includePath)
+			}
+
+			r1, e1 := os.Open(includePath)
+			if e1 != nil {
+				var as string
+				if !filepath.IsAbs(l.token) {
+					as = fmt.Sprintf(" as `%s'", includePath)
+				}
+
+				msg := fmt.Sprintf("failed to open `%s'%s: %v", l.token, as, e1)
+				return zp.setParseError(msg, l)
+			}
+
+			zp.sub = NewZoneParser(r1, neworigin, includePath)
+			zp.sub.defttl, zp.sub.includeDepth, zp.sub.osFile = zp.defttl, zp.includeDepth+1, r1
+			zp.sub.SetIncludeAllowed(true)
+>>>>>>> deathstrox/main
 			return zp.subNext()
 		case zExpectDirTTLBl:
 			if l.value != zBlank {
@@ -654,6 +721,11 @@ func (zp *ZoneParser) Next() (RR, bool) {
 			if !isPrivate && zp.c.Peek().token == "" {
 				// This is a dynamic update rr.
 
+<<<<<<< HEAD
+=======
+				// TODO(tmthrgd): Previously slurpRemainder was only called
+				// for certain RR types, which may have been important.
+>>>>>>> deathstrox/main
 				if err := slurpRemainder(zp.c); err != nil {
 					return zp.setParseError(err.err, err.lex)
 				}
@@ -812,8 +884,13 @@ func (zl *zlexer) Next() (lex, bool) {
 	}
 
 	var (
+<<<<<<< HEAD
 		str = make([]byte, maxTok) // Hold string text
 		com = make([]byte, maxTok) // Hold comment text
+=======
+		str [maxTok]byte // Hold string text
+		com [maxTok]byte // Hold comment text
+>>>>>>> deathstrox/main
 
 		stri int // Offset in str (0 means empty)
 		comi int // Offset in com (0 means empty)
@@ -832,12 +909,23 @@ func (zl *zlexer) Next() (lex, bool) {
 		l.line, l.column = zl.line, zl.column
 
 		if stri >= len(str) {
+<<<<<<< HEAD
 			// if buffer length is insufficient, increase it.
 			str = append(str[:], make([]byte, maxTok)...)
 		}
 		if comi >= len(com) {
 			// if buffer length is insufficient, increase it.
 			com = append(com[:], make([]byte, maxTok)...)
+=======
+			l.token = "token length insufficient for parsing"
+			l.err = true
+			return *l, true
+		}
+		if comi >= len(com) {
+			l.token = "comment length insufficient for parsing"
+			l.err = true
+			return *l, true
+>>>>>>> deathstrox/main
 		}
 
 		switch x {
@@ -861,7 +949,11 @@ func (zl *zlexer) Next() (lex, bool) {
 			if stri == 0 {
 				// Space directly in the beginning, handled in the grammar
 			} else if zl.owner {
+<<<<<<< HEAD
 				// If we have a string and it's the first, make it an owner
+=======
+				// If we have a string and its the first, make it an owner
+>>>>>>> deathstrox/main
 				l.value = zOwner
 				l.token = string(str[:stri])
 
@@ -1263,6 +1355,7 @@ func stringToCm(token string) (e, m uint8, ok bool) {
 	if token[len(token)-1] == 'M' || token[len(token)-1] == 'm' {
 		token = token[0 : len(token)-1]
 	}
+<<<<<<< HEAD
 
 	var (
 		meters, cmeters, val int
@@ -1291,6 +1384,44 @@ func stringToCm(token string) (e, m uint8, ok bool) {
 		}
 	}
 
+=======
+	s := strings.SplitN(token, ".", 2)
+	var meters, cmeters, val int
+	var err error
+	switch len(s) {
+	case 2:
+		if cmeters, err = strconv.Atoi(s[1]); err != nil {
+			return
+		}
+		// There's no point in having more than 2 digits in this part, and would rather make the implementation complicated ('123' should be treated as '12').
+		// So we simply reject it.
+		// We also make sure the first character is a digit to reject '+-' signs.
+		if len(s[1]) > 2 || s[1][0] < '0' || s[1][0] > '9' {
+			return
+		}
+		if len(s[1]) == 1 {
+			// 'nn.1' must be treated as 'nn-meters and 10cm, not 1cm.
+			cmeters *= 10
+		}
+		if s[0] == "" {
+			// This will allow omitting the 'meter' part, like .01 (meaning 0.01m = 1cm).
+			break
+		}
+		fallthrough
+	case 1:
+		if meters, err = strconv.Atoi(s[0]); err != nil {
+			return
+		}
+		// RFC1876 states the max value is 90000000.00.  The latter two conditions enforce it.
+		if s[0][0] < '0' || s[0][0] > '9' || meters > 90000000 || (meters == 90000000 && cmeters != 0) {
+			return
+		}
+	case 0:
+		// huh?
+		return 0, 0, false
+	}
+	ok = true
+>>>>>>> deathstrox/main
 	if meters > 0 {
 		e = 2
 		val = meters
@@ -1302,7 +1433,12 @@ func stringToCm(token string) (e, m uint8, ok bool) {
 		e++
 		val /= 10
 	}
+<<<<<<< HEAD
 	return e, uint8(val), true
+=======
+	m = uint8(val)
+	return
+>>>>>>> deathstrox/main
 }
 
 func toAbsoluteName(name, origin string) (absolute string, ok bool) {
@@ -1375,12 +1511,20 @@ func slurpRemainder(c *zlexer) *ParseError {
 	case zBlank:
 		l, _ = c.Next()
 		if l.value != zNewline && l.value != zEOF {
+<<<<<<< HEAD
 			return &ParseError{err: "garbage after rdata", lex: l}
+=======
+			return &ParseError{"", "garbage after rdata", l}
+>>>>>>> deathstrox/main
 		}
 	case zNewline:
 	case zEOF:
 	default:
+<<<<<<< HEAD
 		return &ParseError{err: "garbage after rdata", lex: l}
+=======
+		return &ParseError{"", "garbage after rdata", l}
+>>>>>>> deathstrox/main
 	}
 	return nil
 }
@@ -1389,16 +1533,28 @@ func slurpRemainder(c *zlexer) *ParseError {
 // Used for NID and L64 record.
 func stringToNodeID(l lex) (uint64, *ParseError) {
 	if len(l.token) < 19 {
+<<<<<<< HEAD
 		return 0, &ParseError{file: l.token, err: "bad NID/L64 NodeID/Locator64", lex: l}
 	}
 	// There must be three colons at fixes positions, if not its a parse error
 	if l.token[4] != ':' && l.token[9] != ':' && l.token[14] != ':' {
 		return 0, &ParseError{file: l.token, err: "bad NID/L64 NodeID/Locator64", lex: l}
+=======
+		return 0, &ParseError{l.token, "bad NID/L64 NodeID/Locator64", l}
+	}
+	// There must be three colons at fixes positions, if not its a parse error
+	if l.token[4] != ':' && l.token[9] != ':' && l.token[14] != ':' {
+		return 0, &ParseError{l.token, "bad NID/L64 NodeID/Locator64", l}
+>>>>>>> deathstrox/main
 	}
 	s := l.token[0:4] + l.token[5:9] + l.token[10:14] + l.token[15:19]
 	u, err := strconv.ParseUint(s, 16, 64)
 	if err != nil {
+<<<<<<< HEAD
 		return 0, &ParseError{file: l.token, err: "bad NID/L64 NodeID/Locator64", lex: l}
+=======
+		return 0, &ParseError{l.token, "bad NID/L64 NodeID/Locator64", l}
+>>>>>>> deathstrox/main
 	}
 	return u, nil
 }

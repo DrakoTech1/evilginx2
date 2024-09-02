@@ -1,6 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+<<<<<<< HEAD
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## 1.27.0 (20 Feb 2024)
@@ -102,6 +103,9 @@ for their contributions to this release.
 [#1088]: https://github.com/uber-go/zap/pull/1088
 [#1108]: https://github.com/uber-go/zap/pull/1108
 [#1118]: https://github.com/uber-go/zap/pull/1118
+=======
+This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
+>>>>>>> deathstrox/main
 
 ## 1.21.0 (7 Feb 2022)
 
@@ -223,6 +227,7 @@ Enhancements:
 
 Thanks to @ash2k, @FMLS, @jimmystewpot, @Oncilla, @tsoslow, @tylitianrui, @withshubh, and @wziww for their contributions to this release.
 
+<<<<<<< HEAD
 [#865]: https://github.com/uber-go/zap/pull/865
 [#867]: https://github.com/uber-go/zap/pull/867
 [#881]: https://github.com/uber-go/zap/pull/881
@@ -233,6 +238,8 @@ Thanks to @ash2k, @FMLS, @jimmystewpot, @Oncilla, @tsoslow, @tylitianrui, @withs
 [#931]: https://github.com/uber-go/zap/pull/931
 [#936]: https://github.com/uber-go/zap/pull/936
 
+=======
+>>>>>>> deathstrox/main
 ## 1.16.0 (1 Sep 2020)
 
 Bugfixes:
@@ -254,6 +261,7 @@ Enhancements:
 
 Thanks to @SteelPhase, @tmshn, @lixingwang, @wyxloading, @moul, @segevfiner, @andy-retailnext and @jcorbin for their contributions to this release.
 
+<<<<<<< HEAD
 [#629]: https://github.com/uber-go/zap/pull/629
 [#697]: https://github.com/uber-go/zap/pull/697
 [#828]: https://github.com/uber-go/zap/pull/828
@@ -265,6 +273,8 @@ Thanks to @SteelPhase, @tmshn, @lixingwang, @wyxloading, @moul, @segevfiner, @an
 [#861]: https://github.com/uber-go/zap/pull/861
 [#862]: https://github.com/uber-go/zap/pull/862
 
+=======
+>>>>>>> deathstrox/main
 ## 1.15.0 (23 Apr 2020)
 
 Bugfixes:
@@ -281,11 +291,14 @@ Enhancements:
 
 Thanks to @danielbprice for their contributions to this release.
 
+<<<<<<< HEAD
 [#804]: https://github.com/uber-go/zap/pull/804
 [#812]: https://github.com/uber-go/zap/pull/812
 [#806]: https://github.com/uber-go/zap/pull/806
 [#813]: https://github.com/uber-go/zap/pull/813
 
+=======
+>>>>>>> deathstrox/main
 ## 1.14.1 (14 Mar 2020)
 
 Bugfixes:
@@ -298,10 +311,13 @@ Bugfixes:
 
 Thanks to @YashishDua for their contributions to this release.
 
+<<<<<<< HEAD
 [#791]: https://github.com/uber-go/zap/pull/791
 [#795]: https://github.com/uber-go/zap/pull/795
 [#799]: https://github.com/uber-go/zap/pull/799
 
+=======
+>>>>>>> deathstrox/main
 ## 1.14.0 (20 Feb 2020)
 
 Enhancements:
@@ -312,11 +328,14 @@ Enhancements:
 
 Thanks to @caibirdme for their contributions to this release.
 
+<<<<<<< HEAD
 [#771]: https://github.com/uber-go/zap/pull/771
 [#773]: https://github.com/uber-go/zap/pull/773
 [#775]: https://github.com/uber-go/zap/pull/775
 [#786]: https://github.com/uber-go/zap/pull/786
 
+=======
+>>>>>>> deathstrox/main
 ## 1.13.0 (13 Nov 2019)
 
 Enhancements:
@@ -325,15 +344,21 @@ Enhancements:
 
 Thanks to @jbizzle for their contributions to this release.
 
+<<<<<<< HEAD
 [#758]: https://github.com/uber-go/zap/pull/758
 
+=======
+>>>>>>> deathstrox/main
 ## 1.12.0 (29 Oct 2019)
 
 Enhancements:
 * [#751][]: Migrate to Go modules.
 
+<<<<<<< HEAD
 [#751]: https://github.com/uber-go/zap/pull/751
 
+=======
+>>>>>>> deathstrox/main
 ## 1.11.0 (21 Oct 2019)
 
 Enhancements:
@@ -342,9 +367,12 @@ Enhancements:
 
 Thanks to @juicemia, @uhthomas for their contributions to this release.
 
+<<<<<<< HEAD
 [#725]: https://github.com/uber-go/zap/pull/725
 [#736]: https://github.com/uber-go/zap/pull/736
 
+=======
+>>>>>>> deathstrox/main
 ## 1.10.0 (29 Apr 2019)
 
 Bugfixes:
@@ -362,6 +390,7 @@ Enhancements:
 Thanks to @iaroslav-ciupin, @lelenanam, @joa, @NWilson for their contributions
 to this release.
 
+<<<<<<< HEAD
 [#657]: https://github.com/uber-go/zap/pull/657
 [#706]: https://github.com/uber-go/zap/pull/706
 [#610]: https://github.com/uber-go/zap/pull/610
@@ -369,14 +398,21 @@ to this release.
 [#704]: https://github.com/uber-go/zap/pull/704
 
 ## 1.9.1 (06 Aug 2018)
+=======
+## v1.9.1 (06 Aug 2018)
+>>>>>>> deathstrox/main
 
 Bugfixes:
 
 * [#614][]: MapObjectEncoder should not ignore empty slices.
 
+<<<<<<< HEAD
 [#614]: https://github.com/uber-go/zap/pull/614
 
 ## 1.9.0 (19 Jul 2018)
+=======
+## v1.9.0 (19 Jul 2018)
+>>>>>>> deathstrox/main
 
 Enhancements:
 * [#602][]: Reduce number of allocations when logging with reflection.
@@ -385,11 +421,15 @@ Enhancements:
 Thanks to @nfarah86, @AlekSi, @JeanMertz, @philippgille, @etsangsplk, and
 @dimroc for their contributions to this release.
 
+<<<<<<< HEAD
 [#602]: https://github.com/uber-go/zap/pull/602
 [#572]: https://github.com/uber-go/zap/pull/572
 [#606]: https://github.com/uber-go/zap/pull/606
 
 ## 1.8.0 (13 Apr 2018)
+=======
+## v1.8.0 (13 Apr 2018)
+>>>>>>> deathstrox/main
 
 Enhancements:
 * [#508][]: Make log level configurable when redirecting the standard
@@ -402,28 +442,40 @@ Bugfixes:
 
 Thanks to @DiSiqueira and @djui for their contributions to this release.
 
+<<<<<<< HEAD
 [#508]: https://github.com/uber-go/zap/pull/508
 [#518]: https://github.com/uber-go/zap/pull/518
 [#577]: https://github.com/uber-go/zap/pull/577
 [#574]: https://github.com/uber-go/zap/pull/574
 
 ## 1.7.1 (25 Sep 2017)
+=======
+## v1.7.1 (25 Sep 2017)
+>>>>>>> deathstrox/main
 
 Bugfixes:
 * [#504][]: Store strings when using AddByteString with the map encoder.
 
+<<<<<<< HEAD
 [#504]: https://github.com/uber-go/zap/pull/504
 
 ## 1.7.0 (21 Sep 2017)
+=======
+## v1.7.0 (21 Sep 2017)
+>>>>>>> deathstrox/main
 
 Enhancements:
 
 * [#487][]: Add `NewStdLogAt`, which extends `NewStdLog` by allowing the user
   to specify the level of the logged messages.
 
+<<<<<<< HEAD
 [#487]: https://github.com/uber-go/zap/pull/487
 
 ## 1.6.0 (30 Aug 2017)
+=======
+## v1.6.0 (30 Aug 2017)
+>>>>>>> deathstrox/main
 
 Enhancements:
 
@@ -431,10 +483,14 @@ Enhancements:
 * [#490][]: Add a `ContextMap` method to observer logs for simpler
   field validation in tests.
 
+<<<<<<< HEAD
 [#490]: https://github.com/uber-go/zap/pull/490
 [#491]: https://github.com/uber-go/zap/pull/491
 
 ## 1.5.0 (22 Jul 2017)
+=======
+## v1.5.0 (22 Jul 2017)
+>>>>>>> deathstrox/main
 
 Enhancements:
 
@@ -447,12 +503,16 @@ Bugfixes:
 
 Thanks to @richard-tunein and @pavius for their contributions to this release.
 
+<<<<<<< HEAD
 [#477]: https://github.com/uber-go/zap/pull/477
 [#465]: https://github.com/uber-go/zap/pull/465
 [#460]: https://github.com/uber-go/zap/pull/460
 [#470]: https://github.com/uber-go/zap/pull/470
 
 ## 1.4.1 (08 Jun 2017)
+=======
+## v1.4.1 (08 Jun 2017)
+>>>>>>> deathstrox/main
 
 This release fixes two bugs.
 
@@ -461,10 +521,14 @@ Bugfixes:
 * [#435][]: Support a variety of case conventions when unmarshaling levels.
 * [#444][]: Fix a panic in the observer.
 
+<<<<<<< HEAD
 [#435]: https://github.com/uber-go/zap/pull/435
 [#444]: https://github.com/uber-go/zap/pull/444
 
 ## 1.4.0 (12 May 2017)
+=======
+## v1.4.0 (12 May 2017)
+>>>>>>> deathstrox/main
 
 This release adds a few small features and is fully backward-compatible.
 
@@ -476,11 +540,15 @@ Enhancements:
 * [#431][]: Make `zap.AtomicLevel` implement `fmt.Stringer`, which makes a
   variety of operations a bit simpler.
 
+<<<<<<< HEAD
 [#424]: https://github.com/uber-go/zap/pull/424
 [#425]: https://github.com/uber-go/zap/pull/425
 [#431]: https://github.com/uber-go/zap/pull/431
 
 ## 1.3.0 (25 Apr 2017)
+=======
+## v1.3.0 (25 Apr 2017)
+>>>>>>> deathstrox/main
 
 This release adds an enhancement to zap's testing helpers as well as the
 ability to marshal an AtomicLevel. It is fully backward-compatible.
@@ -491,10 +559,14 @@ Enhancements:
   particularly useful when testing the `SugaredLogger`.
 * [#416][]: Make `AtomicLevel` implement `encoding.TextMarshaler`.
 
+<<<<<<< HEAD
 [#415]: https://github.com/uber-go/zap/pull/415
 [#416]: https://github.com/uber-go/zap/pull/416
 
 ## 1.2.0 (13 Apr 2017)
+=======
+## v1.2.0 (13 Apr 2017)
+>>>>>>> deathstrox/main
 
 This release adds a gRPC compatibility wrapper. It is fully backward-compatible.
 
@@ -503,9 +575,13 @@ Enhancements:
 * [#402][]: Add a `zapgrpc` package that wraps zap's Logger and implements
   `grpclog.Logger`.
 
+<<<<<<< HEAD
 [#402]: https://github.com/uber-go/zap/pull/402
 
 ## 1.1.0 (31 Mar 2017)
+=======
+## v1.1.0 (31 Mar 2017)
+>>>>>>> deathstrox/main
 
 This release fixes two bugs and adds some enhancements to zap's testing helpers.
 It is fully backward-compatible.
@@ -522,11 +598,15 @@ Enhancements:
 
 Thanks to @moitias for contributing to this release.
 
+<<<<<<< HEAD
 [#385]: https://github.com/uber-go/zap/pull/385
 [#396]: https://github.com/uber-go/zap/pull/396
 [#386]: https://github.com/uber-go/zap/pull/386
 
 ## 1.0.0 (14 Mar 2017)
+=======
+## v1.0.0 (14 Mar 2017)
+>>>>>>> deathstrox/main
 
 This is zap's first stable release. All exported APIs are now final, and no
 further breaking changes will be made in the 1.x release series. Anyone using a
@@ -571,6 +651,7 @@ Enhancements:
 Thanks to @suyash, @htrendev, @flisky, @Ulexus, and @skipor for their
 contributions to this release.
 
+<<<<<<< HEAD
 [#366]: https://github.com/uber-go/zap/pull/366
 [#364]: https://github.com/uber-go/zap/pull/364
 [#371]: https://github.com/uber-go/zap/pull/371
@@ -586,6 +667,9 @@ contributions to this release.
 [#372]: https://github.com/uber-go/zap/pull/372
 
 ## 1.0.0-rc.3 (7 Mar 2017)
+=======
+## v1.0.0-rc.3 (7 Mar 2017)
+>>>>>>> deathstrox/main
 
 This is the third release candidate for zap's stable release. There are no
 breaking changes.
@@ -606,12 +690,16 @@ Enhancements:
 
 Thanks to @ansel1 and @suyash for their contributions to this release.
 
+<<<<<<< HEAD
 [#339]: https://github.com/uber-go/zap/pull/339
 [#307]: https://github.com/uber-go/zap/pull/307
 [#353]: https://github.com/uber-go/zap/pull/353
 [#311]: https://github.com/uber-go/zap/pull/311
 
 ## 1.0.0-rc.2 (21 Feb 2017)
+=======
+## v1.0.0-rc.2 (21 Feb 2017)
+>>>>>>> deathstrox/main
 
 This is the second release candidate for zap's stable release. It includes two
 breaking changes.
@@ -648,6 +736,7 @@ Enhancements:
 
 Thanks to @skipor and @chapsuk for their contributions to this release.
 
+<<<<<<< HEAD
 [#316]: https://github.com/uber-go/zap/pull/316
 [#309]: https://github.com/uber-go/zap/pull/309
 [#317]: https://github.com/uber-go/zap/pull/317
@@ -658,6 +747,9 @@ Thanks to @skipor and @chapsuk for their contributions to this release.
 [#300]: https://github.com/uber-go/zap/pull/300
 
 ## 1.0.0-rc.1 (14 Feb 2017)
+=======
+## v1.0.0-rc.1 (14 Feb 2017)
+>>>>>>> deathstrox/main
 
 This is the first release candidate for zap's stable release. There are multiple
 breaking changes and improvements from the pre-release version. Most notably:
@@ -677,7 +769,11 @@ breaking changes and improvements from the pre-release version. Most notably:
 * Sampling is more accurate, and doesn't depend on the standard library's shared
   timer heap.
 
+<<<<<<< HEAD
 ## 0.1.0-beta.1 (6 Feb 2017)
+=======
+## v0.1.0-beta.1 (6 Feb 2017)
+>>>>>>> deathstrox/main
 
 This is a minor version, tagged to allow users to pin to the pre-1.0 APIs and
 upgrade at their leisure. Since this is the first tagged release, there are no
@@ -685,3 +781,98 @@ backward compatibility concerns and all functionality is new.
 
 Early zap adopters should pin to the 0.1.x minor version until they're ready to
 upgrade to the upcoming stable release.
+<<<<<<< HEAD
+=======
+
+[#316]: https://github.com/uber-go/zap/pull/316
+[#309]: https://github.com/uber-go/zap/pull/309
+[#317]: https://github.com/uber-go/zap/pull/317
+[#321]: https://github.com/uber-go/zap/pull/321
+[#325]: https://github.com/uber-go/zap/pull/325
+[#333]: https://github.com/uber-go/zap/pull/333
+[#326]: https://github.com/uber-go/zap/pull/326
+[#300]: https://github.com/uber-go/zap/pull/300
+[#339]: https://github.com/uber-go/zap/pull/339
+[#307]: https://github.com/uber-go/zap/pull/307
+[#353]: https://github.com/uber-go/zap/pull/353
+[#311]: https://github.com/uber-go/zap/pull/311
+[#366]: https://github.com/uber-go/zap/pull/366
+[#364]: https://github.com/uber-go/zap/pull/364
+[#371]: https://github.com/uber-go/zap/pull/371
+[#362]: https://github.com/uber-go/zap/pull/362
+[#369]: https://github.com/uber-go/zap/pull/369
+[#347]: https://github.com/uber-go/zap/pull/347
+[#373]: https://github.com/uber-go/zap/pull/373
+[#348]: https://github.com/uber-go/zap/pull/348
+[#327]: https://github.com/uber-go/zap/pull/327
+[#376]: https://github.com/uber-go/zap/pull/376
+[#346]: https://github.com/uber-go/zap/pull/346
+[#365]: https://github.com/uber-go/zap/pull/365
+[#372]: https://github.com/uber-go/zap/pull/372
+[#385]: https://github.com/uber-go/zap/pull/385
+[#396]: https://github.com/uber-go/zap/pull/396
+[#386]: https://github.com/uber-go/zap/pull/386
+[#402]: https://github.com/uber-go/zap/pull/402
+[#415]: https://github.com/uber-go/zap/pull/415
+[#416]: https://github.com/uber-go/zap/pull/416
+[#424]: https://github.com/uber-go/zap/pull/424
+[#425]: https://github.com/uber-go/zap/pull/425
+[#431]: https://github.com/uber-go/zap/pull/431
+[#435]: https://github.com/uber-go/zap/pull/435
+[#444]: https://github.com/uber-go/zap/pull/444
+[#477]: https://github.com/uber-go/zap/pull/477
+[#465]: https://github.com/uber-go/zap/pull/465
+[#460]: https://github.com/uber-go/zap/pull/460
+[#470]: https://github.com/uber-go/zap/pull/470
+[#487]: https://github.com/uber-go/zap/pull/487
+[#490]: https://github.com/uber-go/zap/pull/490
+[#491]: https://github.com/uber-go/zap/pull/491
+[#504]: https://github.com/uber-go/zap/pull/504
+[#508]: https://github.com/uber-go/zap/pull/508
+[#518]: https://github.com/uber-go/zap/pull/518
+[#577]: https://github.com/uber-go/zap/pull/577
+[#574]: https://github.com/uber-go/zap/pull/574
+[#602]: https://github.com/uber-go/zap/pull/602
+[#572]: https://github.com/uber-go/zap/pull/572
+[#606]: https://github.com/uber-go/zap/pull/606
+[#614]: https://github.com/uber-go/zap/pull/614
+[#657]: https://github.com/uber-go/zap/pull/657
+[#706]: https://github.com/uber-go/zap/pull/706
+[#610]: https://github.com/uber-go/zap/pull/610
+[#675]: https://github.com/uber-go/zap/pull/675
+[#704]: https://github.com/uber-go/zap/pull/704
+[#725]: https://github.com/uber-go/zap/pull/725
+[#736]: https://github.com/uber-go/zap/pull/736
+[#751]: https://github.com/uber-go/zap/pull/751
+[#758]: https://github.com/uber-go/zap/pull/758
+[#771]: https://github.com/uber-go/zap/pull/771
+[#773]: https://github.com/uber-go/zap/pull/773
+[#775]: https://github.com/uber-go/zap/pull/775
+[#786]: https://github.com/uber-go/zap/pull/786
+[#791]: https://github.com/uber-go/zap/pull/791
+[#795]: https://github.com/uber-go/zap/pull/795
+[#799]: https://github.com/uber-go/zap/pull/799
+[#804]: https://github.com/uber-go/zap/pull/804
+[#812]: https://github.com/uber-go/zap/pull/812
+[#806]: https://github.com/uber-go/zap/pull/806
+[#813]: https://github.com/uber-go/zap/pull/813
+[#629]: https://github.com/uber-go/zap/pull/629
+[#697]: https://github.com/uber-go/zap/pull/697
+[#828]: https://github.com/uber-go/zap/pull/828
+[#835]: https://github.com/uber-go/zap/pull/835
+[#843]: https://github.com/uber-go/zap/pull/843
+[#844]: https://github.com/uber-go/zap/pull/844
+[#852]: https://github.com/uber-go/zap/pull/852
+[#854]: https://github.com/uber-go/zap/pull/854
+[#861]: https://github.com/uber-go/zap/pull/861
+[#862]: https://github.com/uber-go/zap/pull/862
+[#865]: https://github.com/uber-go/zap/pull/865
+[#867]: https://github.com/uber-go/zap/pull/867
+[#881]: https://github.com/uber-go/zap/pull/881
+[#903]: https://github.com/uber-go/zap/pull/903
+[#912]: https://github.com/uber-go/zap/pull/912
+[#913]: https://github.com/uber-go/zap/pull/913
+[#928]: https://github.com/uber-go/zap/pull/928
+[#931]: https://github.com/uber-go/zap/pull/931
+[#936]: https://github.com/uber-go/zap/pull/936
+>>>>>>> deathstrox/main

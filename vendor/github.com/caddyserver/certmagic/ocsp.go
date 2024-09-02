@@ -19,7 +19,10 @@ import (
 	"context"
 	"crypto/x509"
 	"encoding/pem"
+<<<<<<< HEAD
 	"errors"
+=======
+>>>>>>> deathstrox/main
 	"fmt"
 	"io"
 	"log"
@@ -29,10 +32,13 @@ import (
 	"golang.org/x/crypto/ocsp"
 )
 
+<<<<<<< HEAD
 // ErrNoOCSPServerSpecified indicates that OCSP information could not be
 // stapled because the certificate does not support OCSP.
 var ErrNoOCSPServerSpecified = errors.New("no OCSP server specified in certificate")
 
+=======
+>>>>>>> deathstrox/main
 // stapleOCSP staples OCSP information to cert for hostname name.
 // If you have it handy, you should pass in the PEM-encoded certificate
 // bundle; otherwise the DER-encoded cert will have to be PEM-encoded.
@@ -98,17 +104,29 @@ func stapleOCSP(ctx context.Context, ocspConfig OCSPConfig, storage Storage, cer
 			// not contain a link to an OCSP server. But we should log it anyway.
 			// There's nothing else we can do to get OCSP for this certificate,
 			// so we can return here with the error.
+<<<<<<< HEAD
 			return fmt.Errorf("no OCSP stapling for %v: %w", cert.Names, ocspErr)
+=======
+			return fmt.Errorf("no OCSP stapling for %v: %v", cert.Names, ocspErr)
+>>>>>>> deathstrox/main
 		}
 		gotNewOCSP = true
 	}
 
+<<<<<<< HEAD
 	if ocspResp.NextUpdate.After(expiresAt(cert.Leaf)) {
+=======
+	if ocspResp.NextUpdate.After(cert.Leaf.NotAfter) {
+>>>>>>> deathstrox/main
 		// uh oh, this OCSP response expires AFTER the certificate does, that's kinda bogus.
 		// it was the reason a lot of Symantec-validated sites (not Caddy) went down
 		// in October 2017. https://twitter.com/mattiasgeniar/status/919432824708648961
 		return fmt.Errorf("invalid: OCSP response for %v valid after certificate expiration (%s)",
+<<<<<<< HEAD
 			cert.Names, expiresAt(cert.Leaf).Sub(ocspResp.NextUpdate))
+=======
+			cert.Names, cert.Leaf.NotAfter.Sub(ocspResp.NextUpdate))
+>>>>>>> deathstrox/main
 	}
 
 	// Attach the latest OCSP response to the certificate; this is NOT the same
@@ -154,7 +172,11 @@ func getOCSPForCert(ocspConfig OCSPConfig, bundle []byte) ([]byte, *ocsp.Respons
 	// we have only one certificate so far, we need to get the issuer cert.
 	issuedCert := certificates[0]
 	if len(issuedCert.OCSPServer) == 0 {
+<<<<<<< HEAD
 		return nil, nil, ErrNoOCSPServerSpecified
+=======
+		return nil, nil, fmt.Errorf("no OCSP server specified in certificate")
+>>>>>>> deathstrox/main
 	}
 
 	// apply override for responder URL

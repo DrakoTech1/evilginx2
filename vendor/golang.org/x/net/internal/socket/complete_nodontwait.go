@@ -3,6 +3,10 @@
 // license that can be found in the LICENSE file.
 
 //go:build aix || windows || zos
+<<<<<<< HEAD
+=======
+// +build aix windows zos
+>>>>>>> deathstrox/main
 
 package socket
 

@@ -22,6 +22,7 @@ package zapcore
 
 import (
 	"fmt"
+<<<<<<< HEAD
 
 	"go.uber.org/zap/buffer"
 	"go.uber.org/zap/internal/bufferpool"
@@ -36,6 +37,22 @@ var _sliceEncoderPool = pool.New(func() *sliceArrayEncoder {
 
 func getSliceEncoder() *sliceArrayEncoder {
 	return _sliceEncoderPool.Get()
+=======
+	"sync"
+
+	"go.uber.org/zap/buffer"
+	"go.uber.org/zap/internal/bufferpool"
+)
+
+var _sliceEncoderPool = sync.Pool{
+	New: func() interface{} {
+		return &sliceArrayEncoder{elems: make([]interface{}, 0, 2)}
+	},
+}
+
+func getSliceEncoder() *sliceArrayEncoder {
+	return _sliceEncoderPool.Get().(*sliceArrayEncoder)
+>>>>>>> deathstrox/main
 }
 
 func putSliceEncoder(e *sliceArrayEncoder) {
@@ -77,7 +94,11 @@ func (c consoleEncoder) EncodeEntry(ent Entry, fields []Field) (*buffer.Buffer, 
 	// If this ever becomes a performance bottleneck, we can implement
 	// ArrayEncoder for our plain-text format.
 	arr := getSliceEncoder()
+<<<<<<< HEAD
 	if c.TimeKey != "" && c.EncodeTime != nil && !ent.Time.IsZero() {
+=======
+	if c.TimeKey != "" && c.EncodeTime != nil {
+>>>>>>> deathstrox/main
 		c.EncodeTime(ent.Time, arr)
 	}
 	if c.LevelKey != "" && c.EncodeLevel != nil {

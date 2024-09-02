@@ -75,11 +75,18 @@ CertMagic - Automatic HTTPS using Let's Encrypt
 ## Features
 
 - Fully automated certificate management including issuance and renewal
+<<<<<<< HEAD
 - One-line, fully managed HTTPS servers
 - Full control over almost every aspect of the system
 - HTTP->HTTPS redirects
 - Multiple issuers supported: get certificates from multiple sources/CAs for redundancy and resiliency
 - Solves all 3 common ACME challenges: HTTP, TLS-ALPN, and DNS (and capable of others)
+=======
+- One-liner, fully managed HTTPS servers
+- Full control over almost every aspect of the system
+- HTTP->HTTPS redirects
+- Solves all 3 ACME challenges: HTTP, TLS-ALPN, and DNS
+>>>>>>> deathstrox/main
 - Most robust error handling of _any_ ACME client
 	- Challenges are randomized to avoid accidental dependence
 	- Challenges are rotated to overcome certain network blockages
@@ -89,8 +96,12 @@ CertMagic - Automatic HTTPS using Let's Encrypt
 - Written in Go, a language with memory-safety guarantees
 - Powered by [ACMEz](https://github.com/mholt/acmez), _the_ premier ACME client library for Go
 - All [libdns](https://github.com/libdns) DNS providers work out-of-the-box
+<<<<<<< HEAD
 - Pluggable storage backends (default: file system)
 - Pluggable key sources
+=======
+- Pluggable storage implementations (default: file system)
+>>>>>>> deathstrox/main
 - Wildcard certificates
 - Automatic OCSP stapling ([done right](https://gist.github.com/sleevi/5efe9ef98961ecfb4da8#gistcomment-2336055)) [keeps your sites online!](https://twitter.com/caddyserver/status/1234874273724084226)
 	- Will [automatically attempt](https://twitter.com/mholt6/status/1235577699541762048) to replace [revoked certificates](https://community.letsencrypt.org/t/2020-02-29-caa-rechecking-bug/114591/3?u=mholt)!
@@ -103,8 +114,12 @@ CertMagic - Automatic HTTPS using Let's Encrypt
 	- Caddy / CertMagic pioneered this technology
 	- Custom decision functions to regulate and throttle on-demand behavior
 - Optional event hooks for observation
+<<<<<<< HEAD
 - One-time private keys by default (new key for each cert) to discourage pinning and reduce scope of key compromise
 - Works with any certificate authority (CA) compliant with the ACME specification RFC 8555
+=======
+- Works with any certificate authority (CA) compliant with the ACME specification
+>>>>>>> deathstrox/main
 - Certificate revocation (please, only if private key is compromised)
 - Must-Staple (optional; not default)
 - Cross-platform support! Mac, Windows, Linux, BSD, Android...
@@ -233,9 +248,12 @@ tlsConfig, err := certmagic.TLS([]string{"example.com"})
 if err != nil {
 	return err
 }
+<<<<<<< HEAD
 // be sure to customize NextProtos if serving a specific
 // application protocol after the TLS handshake, for example:
 tlsConfig.NextProtos = append([]string{"h2", "http/1.1"}, tlsConfig.NextProtos...)
+=======
+>>>>>>> deathstrox/main
 ```
 
 
@@ -244,6 +262,7 @@ tlsConfig.NextProtos = append([]string{"h2", "http/1.1"}, tlsConfig.NextProtos..
 For more control (particularly, if you need a different way of managing each certificate), you'll make and use a `Cache` and a `Config` like so:
 
 ```go
+<<<<<<< HEAD
 // First make a pointer to a Cache as we need to reference the same Cache in
 // GetConfigForCert below.
 var cache *certmagic.Cache
@@ -255,6 +274,18 @@ cache = certmagic.NewCache(certmagic.CacheOptions{
 		return certmagic.New(cache, certmagic.Config{
 			// ...
 		}), nil
+=======
+cache := certmagic.NewCache(certmagic.CacheOptions{
+	GetConfigForCert: func(cert certmagic.Certificate) (*certmagic.Config, error) {
+		// do whatever you need to do to get the right
+		// configuration for this certificate; keep in
+		// mind that this config value is used as a
+		// template, and will be completed with any
+		// defaults that are set in the Default config
+		return &certmagic.Config{
+			// ...
+		}, nil
+>>>>>>> deathstrox/main
 	},
 	...
 })
@@ -270,7 +301,11 @@ myACME := certmagic.NewACMEIssuer(magic, certmagic.ACMEIssuer{
 	// plus any other customizations you need
 })
 
+<<<<<<< HEAD
 magic.Issuers = []certmagic.Issuer{myACME}
+=======
+magic.Issuer = myACME
+>>>>>>> deathstrox/main
 
 // this obtains certificates or renews them if necessary
 err := magic.ManageSync(context.TODO(), []string{"example.com", "sub.example.com"})
@@ -452,7 +487,11 @@ By default, CertMagic stores assets on the local file system in `$HOME/.local/sh
 
 The notion of a "cluster" or "fleet" of instances that may be serving the same site and sharing certificates, etc, is tied to storage. Simply, any instances that use the same storage facilities are considered part of the cluster. So if you deploy 100 instances of CertMagic behind a load balancer, they are all part of the same cluster if they share the same storage configuration. Sharing storage could be mounting a shared folder, or implementing some other distributed storage system such as a database server or KV store.
 
+<<<<<<< HEAD
 The easiest way to change the storage being used is to set `certmagic.Default.Storage` to a value that satisfies the [Storage interface](https://pkg.go.dev/github.com/caddyserver/certmagic?tab=doc#Storage). Keep in mind that a valid `Storage` must be able to implement some operations atomically in order to provide locking and synchronization.
+=======
+The easiest way to change the storage being used is to set `certmagic.DefaultStorage` to a value that satisfies the [Storage interface](https://pkg.go.dev/github.com/caddyserver/certmagic?tab=doc#Storage). Keep in mind that a valid `Storage` must be able to implement some operations atomically in order to provide locking and synchronization.
+>>>>>>> deathstrox/main
 
 If you write a Storage implementation, please add it to the [project wiki](https://github.com/caddyserver/certmagic/wiki/Storage-Implementations) so people can find it!
 
@@ -461,6 +500,7 @@ If you write a Storage implementation, please add it to the [project wiki](https
 
 All of the certificates in use are de-duplicated and cached in memory for optimal performance at handshake-time. This cache must be backed by persistent storage as described above.
 
+<<<<<<< HEAD
 Most applications will not need to interact with certificate caches directly. Usually, the closest you will come is to set the package-wide `certmagic.Default.Storage` variable (before attempting to create any Configs) which defines how the cache is persisted. However, if your use case requires using different storage facilities for different Configs (that's highly unlikely and NOT recommended! Even Caddy doesn't get that crazy), you will need to call `certmagic.NewCache()` and pass in the storage you want to use, then get new `Config` structs with `certmagic.NewWithCache()` and pass in the cache.
 
 Again, if you're needing to do this, you've probably over-complicated your application design.
@@ -503,6 +543,12 @@ CertMagic emits events when possible things of interest happen. Set the [`OnEven
 	- `revoked_at`: When the certificate was revoked
 
 `OnEvent` can return an error. Some events may be aborted by returning an error. For example, returning an error from `cert_obtained` can cancel obtaining the certificate. Only return an error from `OnEvent` if you want to abort program flow.
+=======
+Most applications will not need to interact with certificate caches directly. Usually, the closest you will come is to set the package-wide `certmagic.DefaultStorage` variable (before attempting to create any Configs). However, if your use case requires using different storage facilities for different Configs (that's highly unlikely and NOT recommended! Even Caddy doesn't get that crazy), you will need to call `certmagic.NewCache()` and pass in the storage you want to use, then get new `Config` structs with `certmagic.NewWithCache()` and pass in the cache.
+
+Again, if you're needing to do this, you've probably over-complicated your application design.
+
+>>>>>>> deathstrox/main
 
 ## FAQ
 

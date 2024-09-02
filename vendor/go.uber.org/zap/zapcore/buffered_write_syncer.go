@@ -43,6 +43,7 @@ const (
 //
 // BufferedWriteSyncer is safe for concurrent use. You don't need to use
 // zapcore.Lock for WriteSyncers with BufferedWriteSyncer.
+<<<<<<< HEAD
 //
 // To set up a BufferedWriteSyncer, construct a WriteSyncer for your log
 // destination (*os.File is a valid WriteSyncer), wrap it with
@@ -74,6 +75,8 @@ const (
 //	  FlushInterval: time.Minute,
 //	}
 //	defer ws.Stop()
+=======
+>>>>>>> deathstrox/main
 type BufferedWriteSyncer struct {
 	// WS is the WriteSyncer around which BufferedWriteSyncer will buffer
 	// writes.

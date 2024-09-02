@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 //go:build !windows
+=======
+>>>>>>> deathstrox/main
 // +build !windows
 
 package dns

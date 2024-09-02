@@ -8,6 +8,7 @@ package gocommand
 import (
 	"bytes"
 	"context"
+<<<<<<< HEAD
 	"errors"
 	"fmt"
 	"io"
@@ -17,15 +18,27 @@ import (
 	"reflect"
 	"regexp"
 	"runtime"
+=======
+	"fmt"
+	"io"
+	"os"
+	"regexp"
+>>>>>>> deathstrox/main
 	"strconv"
 	"strings"
 	"sync"
 	"time"
 
+<<<<<<< HEAD
 	"golang.org/x/tools/internal/event"
 	"golang.org/x/tools/internal/event/keys"
 	"golang.org/x/tools/internal/event/label"
 	"golang.org/x/tools/internal/event/tag"
+=======
+	exec "golang.org/x/sys/execabs"
+
+	"golang.org/x/tools/internal/event"
+>>>>>>> deathstrox/main
 )
 
 // An Runner will run go command invocations and serialize
@@ -55,6 +68,7 @@ func (runner *Runner) initialize() {
 // 1.14: go: updating go.mod: existing contents have changed since last read
 var modConcurrencyError = regexp.MustCompile(`go:.*go.mod.*contents have changed`)
 
+<<<<<<< HEAD
 // verb is an event label for the go command verb.
 var verb = keys.NewString("verb", "go command verb")
 
@@ -68,6 +82,11 @@ func (runner *Runner) Run(ctx context.Context, inv Invocation) (*bytes.Buffer, e
 	ctx, done := event.Start(ctx, "gocommand.Runner.Run", invLabels(inv)...)
 	defer done()
 
+=======
+// Run is a convenience wrapper around RunRaw.
+// It returns only stdout and a "friendly" error.
+func (runner *Runner) Run(ctx context.Context, inv Invocation) (*bytes.Buffer, error) {
+>>>>>>> deathstrox/main
 	stdout, _, friendly, _ := runner.RunRaw(ctx, inv)
 	return stdout, friendly
 }
@@ -75,19 +94,26 @@ func (runner *Runner) Run(ctx context.Context, inv Invocation) (*bytes.Buffer, e
 // RunPiped runs the invocation serially, always waiting for any concurrent
 // invocations to complete first.
 func (runner *Runner) RunPiped(ctx context.Context, inv Invocation, stdout, stderr io.Writer) error {
+<<<<<<< HEAD
 	ctx, done := event.Start(ctx, "gocommand.Runner.RunPiped", invLabels(inv)...)
 	defer done()
 
+=======
+>>>>>>> deathstrox/main
 	_, err := runner.runPiped(ctx, inv, stdout, stderr)
 	return err
 }
 
 // RunRaw runs the invocation, serializing requests only if they fight over
 // go.mod changes.
+<<<<<<< HEAD
 // Postcondition: both error results have same nilness.
 func (runner *Runner) RunRaw(ctx context.Context, inv Invocation) (*bytes.Buffer, *bytes.Buffer, error, error) {
 	ctx, done := event.Start(ctx, "gocommand.Runner.RunRaw", invLabels(inv)...)
 	defer done()
+=======
+func (runner *Runner) RunRaw(ctx context.Context, inv Invocation) (*bytes.Buffer, *bytes.Buffer, error, error) {
+>>>>>>> deathstrox/main
 	// Make sure the runner is always initialized.
 	runner.initialize()
 
@@ -95,6 +121,7 @@ func (runner *Runner) RunRaw(ctx context.Context, inv Invocation) (*bytes.Buffer
 	stdout, stderr, friendlyErr, err := runner.runConcurrent(ctx, inv)
 
 	// If we encounter a load concurrency error, we need to retry serially.
+<<<<<<< HEAD
 	if friendlyErr != nil && modConcurrencyError.MatchString(friendlyErr.Error()) {
 		event.Error(ctx, "Load concurrency error, will retry serially", err)
 
@@ -108,11 +135,29 @@ func (runner *Runner) RunRaw(ctx context.Context, inv Invocation) (*bytes.Buffer
 }
 
 // Postcondition: both error results have same nilness.
+=======
+	if friendlyErr == nil || !modConcurrencyError.MatchString(friendlyErr.Error()) {
+		return stdout, stderr, friendlyErr, err
+	}
+	event.Error(ctx, "Load concurrency error, will retry serially", err)
+
+	// Run serially by calling runPiped.
+	stdout.Reset()
+	stderr.Reset()
+	friendlyErr, err = runner.runPiped(ctx, inv, stdout, stderr)
+	return stdout, stderr, friendlyErr, err
+}
+
+>>>>>>> deathstrox/main
 func (runner *Runner) runConcurrent(ctx context.Context, inv Invocation) (*bytes.Buffer, *bytes.Buffer, error, error) {
 	// Wait for 1 worker to become available.
 	select {
 	case <-ctx.Done():
+<<<<<<< HEAD
 		return nil, nil, ctx.Err(), ctx.Err()
+=======
+		return nil, nil, nil, ctx.Err()
+>>>>>>> deathstrox/main
 	case runner.inFlight <- struct{}{}:
 		defer func() { <-runner.inFlight }()
 	}
@@ -122,7 +167,10 @@ func (runner *Runner) runConcurrent(ctx context.Context, inv Invocation) (*bytes
 	return stdout, stderr, friendlyErr, err
 }
 
+<<<<<<< HEAD
 // Postcondition: both error results have same nilness.
+=======
+>>>>>>> deathstrox/main
 func (runner *Runner) runPiped(ctx context.Context, inv Invocation, stdout, stderr io.Writer) (error, error) {
 	// Make sure the runner is always initialized.
 	runner.initialize()
@@ -131,7 +179,11 @@ func (runner *Runner) runPiped(ctx context.Context, inv Invocation, stdout, stde
 	// runPiped commands.
 	select {
 	case <-ctx.Done():
+<<<<<<< HEAD
 		return ctx.Err(), ctx.Err()
+=======
+		return nil, ctx.Err()
+>>>>>>> deathstrox/main
 	case runner.serialized <- struct{}{}:
 		defer func() { <-runner.serialized }()
 	}
@@ -141,7 +193,11 @@ func (runner *Runner) runPiped(ctx context.Context, inv Invocation, stdout, stde
 	for i := 0; i < maxInFlight; i++ {
 		select {
 		case <-ctx.Done():
+<<<<<<< HEAD
 			return ctx.Err(), ctx.Err()
+=======
+			return nil, ctx.Err()
+>>>>>>> deathstrox/main
 		case runner.inFlight <- struct{}{}:
 			// Make sure we always "return" any workers we took.
 			defer func() { <-runner.inFlight }()
@@ -174,7 +230,10 @@ type Invocation struct {
 	Logf       func(format string, args ...interface{})
 }
 
+<<<<<<< HEAD
 // Postcondition: both error results have same nilness.
+=======
+>>>>>>> deathstrox/main
 func (i *Invocation) runWithFriendlyError(ctx context.Context, stdout, stderr io.Writer) (friendlyError error, rawError error) {
 	rawError = i.run(ctx, stdout, stderr)
 	if rawError != nil {
@@ -238,6 +297,7 @@ func (i *Invocation) run(ctx context.Context, stdout, stderr io.Writer) error {
 	cmd := exec.Command("go", goArgs...)
 	cmd.Stdout = stdout
 	cmd.Stderr = stderr
+<<<<<<< HEAD
 
 	// cmd.WaitDelay was added only in go1.20 (see #50436).
 	if waitDelay := reflect.ValueOf(cmd).Elem().FieldByName("WaitDelay"); waitDelay.IsValid() {
@@ -250,6 +310,8 @@ func (i *Invocation) run(ctx context.Context, stdout, stderr io.Writer) error {
 		waitDelay.Set(reflect.ValueOf(30 * time.Second))
 	}
 
+=======
+>>>>>>> deathstrox/main
 	// On darwin the cwd gets resolved to the real path, which breaks anything that
 	// expects the working directory to keep the original path, including the
 	// go command when dealing with modules.
@@ -264,12 +326,16 @@ func (i *Invocation) run(ctx context.Context, stdout, stderr io.Writer) error {
 		cmd.Env = append(cmd.Env, "PWD="+i.WorkingDir)
 		cmd.Dir = i.WorkingDir
 	}
+<<<<<<< HEAD
 
+=======
+>>>>>>> deathstrox/main
 	defer func(start time.Time) { log("%s for %v", time.Since(start), cmdDebugStr(cmd)) }(time.Now())
 
 	return runCmdContext(ctx, cmd)
 }
 
+<<<<<<< HEAD
 // DebugHangingGoCommands may be set by tests to enable additional
 // instrumentation (including panics) for debugging hanging Go commands.
 //
@@ -357,11 +423,20 @@ func runCmdContext(ctx context.Context, cmd *exec.Cmd) (err error) {
 		return err
 	}
 
+=======
+// runCmdContext is like exec.CommandContext except it sends os.Interrupt
+// before os.Kill.
+func runCmdContext(ctx context.Context, cmd *exec.Cmd) error {
+	if err := cmd.Start(); err != nil {
+		return err
+	}
+>>>>>>> deathstrox/main
 	resChan := make(chan error, 1)
 	go func() {
 		resChan <- cmd.Wait()
 	}()
 
+<<<<<<< HEAD
 	// If we're interested in debugging hanging Go commands, stop waiting after a
 	// minute and panic with interesting information.
 	debug := DebugHangingGoCommands
@@ -442,6 +517,25 @@ See golang/go#54461 for more details.`)
 	panic(fmt.Sprintf("detected hanging go command (pid %d): see golang/go#54461 for more details", proc.Pid))
 }
 
+=======
+	select {
+	case err := <-resChan:
+		return err
+	case <-ctx.Done():
+	}
+	// Cancelled. Interrupt and see if it ends voluntarily.
+	cmd.Process.Signal(os.Interrupt)
+	select {
+	case err := <-resChan:
+		return err
+	case <-time.After(time.Second):
+	}
+	// Didn't shut down in response to interrupt. Kill it hard.
+	cmd.Process.Kill()
+	return <-resChan
+}
+
+>>>>>>> deathstrox/main
 func cmdDebugStr(cmd *exec.Cmd) string {
 	env := make(map[string]string)
 	for _, kv := range cmd.Env {

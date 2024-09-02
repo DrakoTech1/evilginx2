@@ -3,6 +3,10 @@
 // license that can be found in the LICENSE file.
 
 //go:build aix && ppc
+<<<<<<< HEAD
+=======
+// +build aix,ppc
+>>>>>>> deathstrox/main
 
 // Functions to access/create device major and minor numbers matching the
 // encoding used by AIX.

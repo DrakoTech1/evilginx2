@@ -3,6 +3,10 @@
 // license that can be found in the LICENSE file.
 
 //go:build arm64 && darwin
+<<<<<<< HEAD
+=======
+// +build arm64,darwin
+>>>>>>> deathstrox/main
 
 package unix
 

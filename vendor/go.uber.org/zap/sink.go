@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // Copyright (c) 2016-2022 Uber Technologies, Inc.
+=======
+// Copyright (c) 2016 Uber Technologies, Inc.
+>>>>>>> deathstrox/main
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +30,10 @@ import (
 	"io"
 	"net/url"
 	"os"
+<<<<<<< HEAD
 	"path/filepath"
+=======
+>>>>>>> deathstrox/main
 	"strings"
 	"sync"
 
@@ -35,7 +42,27 @@ import (
 
 const schemeFile = "file"
 
+<<<<<<< HEAD
 var _sinkRegistry = newSinkRegistry()
+=======
+var (
+	_sinkMutex     sync.RWMutex
+	_sinkFactories map[string]func(*url.URL) (Sink, error) // keyed by scheme
+)
+
+func init() {
+	resetSinkRegistry()
+}
+
+func resetSinkRegistry() {
+	_sinkMutex.Lock()
+	defer _sinkMutex.Unlock()
+
+	_sinkFactories = map[string]func(*url.URL) (Sink, error){
+		schemeFile: newFileSink,
+	}
+}
+>>>>>>> deathstrox/main
 
 // Sink defines the interface to write to and close logger destinations.
 type Sink interface {
@@ -43,6 +70,13 @@ type Sink interface {
 	io.Closer
 }
 
+<<<<<<< HEAD
+=======
+type nopCloserSink struct{ zapcore.WriteSyncer }
+
+func (nopCloserSink) Close() error { return nil }
+
+>>>>>>> deathstrox/main
 type errSinkNotFound struct {
 	scheme string
 }
@@ -51,6 +85,7 @@ func (e *errSinkNotFound) Error() string {
 	return fmt.Sprintf("no sink found for scheme %q", e.scheme)
 }
 
+<<<<<<< HEAD
 type nopCloserSink struct{ zapcore.WriteSyncer }
 
 func (nopCloserSink) Close() error { return nil }
@@ -75,6 +110,18 @@ func newSinkRegistry() *sinkRegistry {
 func (sr *sinkRegistry) RegisterSink(scheme string, factory func(*url.URL) (Sink, error)) error {
 	sr.mu.Lock()
 	defer sr.mu.Unlock()
+=======
+// RegisterSink registers a user-supplied factory for all sinks with a
+// particular scheme.
+//
+// All schemes must be ASCII, valid under section 3.1 of RFC 3986
+// (https://tools.ietf.org/html/rfc3986#section-3.1), and must not already
+// have a factory registered. Zap automatically registers a factory for the
+// "file" scheme.
+func RegisterSink(scheme string, factory func(*url.URL) (Sink, error)) error {
+	_sinkMutex.Lock()
+	defer _sinkMutex.Unlock()
+>>>>>>> deathstrox/main
 
 	if scheme == "" {
 		return errors.New("can't register a sink factory for empty string")
@@ -83,6 +130,7 @@ func (sr *sinkRegistry) RegisterSink(scheme string, factory func(*url.URL) (Sink
 	if err != nil {
 		return fmt.Errorf("%q is not a valid scheme: %v", scheme, err)
 	}
+<<<<<<< HEAD
 	if _, ok := sr.factories[normalized]; ok {
 		return fmt.Errorf("sink factory already registered for scheme %q", normalized)
 	}
@@ -99,6 +147,16 @@ func (sr *sinkRegistry) newSink(rawURL string) (Sink, error) {
 		return sr.newFileSinkFromPath(rawURL)
 	}
 
+=======
+	if _, ok := _sinkFactories[normalized]; ok {
+		return fmt.Errorf("sink factory already registered for scheme %q", normalized)
+	}
+	_sinkFactories[normalized] = factory
+	return nil
+}
+
+func newSink(rawURL string) (Sink, error) {
+>>>>>>> deathstrox/main
 	u, err := url.Parse(rawURL)
 	if err != nil {
 		return nil, fmt.Errorf("can't parse %q as a URL: %v", rawURL, err)
@@ -107,15 +165,22 @@ func (sr *sinkRegistry) newSink(rawURL string) (Sink, error) {
 		u.Scheme = schemeFile
 	}
 
+<<<<<<< HEAD
 	sr.mu.Lock()
 	factory, ok := sr.factories[u.Scheme]
 	sr.mu.Unlock()
+=======
+	_sinkMutex.RLock()
+	factory, ok := _sinkFactories[u.Scheme]
+	_sinkMutex.RUnlock()
+>>>>>>> deathstrox/main
 	if !ok {
 		return nil, &errSinkNotFound{u.Scheme}
 	}
 	return factory(u)
 }
 
+<<<<<<< HEAD
 // RegisterSink registers a user-supplied factory for all sinks with a
 // particular scheme.
 //
@@ -128,6 +193,9 @@ func RegisterSink(scheme string, factory func(*url.URL) (Sink, error)) error {
 }
 
 func (sr *sinkRegistry) newFileSinkFromURL(u *url.URL) (Sink, error) {
+=======
+func newFileSink(u *url.URL) (Sink, error) {
+>>>>>>> deathstrox/main
 	if u.User != nil {
 		return nil, fmt.Errorf("user and password not allowed with file URLs: got %v", u)
 	}
@@ -144,18 +212,26 @@ func (sr *sinkRegistry) newFileSinkFromURL(u *url.URL) (Sink, error) {
 	if hn := u.Hostname(); hn != "" && hn != "localhost" {
 		return nil, fmt.Errorf("file URLs must leave host empty or use localhost: got %v", u)
 	}
+<<<<<<< HEAD
 
 	return sr.newFileSinkFromPath(u.Path)
 }
 
 func (sr *sinkRegistry) newFileSinkFromPath(path string) (Sink, error) {
 	switch path {
+=======
+	switch u.Path {
+>>>>>>> deathstrox/main
 	case "stdout":
 		return nopCloserSink{os.Stdout}, nil
 	case "stderr":
 		return nopCloserSink{os.Stderr}, nil
 	}
+<<<<<<< HEAD
 	return sr.openFile(path, os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0o666)
+=======
+	return os.OpenFile(u.Path, os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0666)
+>>>>>>> deathstrox/main
 }
 
 func normalizeScheme(s string) (string, error) {

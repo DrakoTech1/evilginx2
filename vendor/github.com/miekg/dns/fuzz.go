@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 //go:build fuzz
+=======
+>>>>>>> deathstrox/main
 // +build fuzz
 
 package dns

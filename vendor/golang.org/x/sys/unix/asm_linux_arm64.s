@@ -3,6 +3,12 @@
 // license that can be found in the LICENSE file.
 
 //go:build linux && arm64 && gc
+<<<<<<< HEAD
+=======
+// +build linux
+// +build arm64
+// +build gc
+>>>>>>> deathstrox/main
 
 #include "textflag.h"
 

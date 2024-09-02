@@ -77,12 +77,15 @@ A not-so-up-to-date-list-that-may-be-actually-current:
 * https://ping.sx/dig
 * https://fleetdeck.io/
 * https://github.com/markdingo/autoreverse
+<<<<<<< HEAD
 * https://github.com/slackhq/nebula
 * https://addr.tools/
 * https://dnscheck.tools/
 * https://github.com/egbakou/domainverifier
 * https://github.com/semihalev/sdns
 * https://github.com/wintbiit/NineDNS
+=======
+>>>>>>> deathstrox/main
 
 
 Send pull request if you want to be listed here.
@@ -126,7 +129,10 @@ Example programs can be found in the `github.com/miekg/exdns` repository.
 *all of them*
 
 * 103{4,5} - DNS standard
+<<<<<<< HEAD
 * 1183 - ISDN, X25 and other deprecated records
+=======
+>>>>>>> deathstrox/main
 * 1348 - NSAP record (removed the record)
 * 1982 - Serial Arithmetic
 * 1876 - LOC record
@@ -147,7 +153,10 @@ Example programs can be found in the `github.com/miekg/exdns` repository.
 * 340{1,2,3} - NAPTR record
 * 3445 - Limiting the scope of (DNS)KEY
 * 3597 - Unknown RRs
+<<<<<<< HEAD
 * 4025 - A Method for Storing IPsec Keying Material in DNS
+=======
+>>>>>>> deathstrox/main
 * 403{3,4,5} - DNSSEC + validation functions
 * 4255 - SSHFP record
 * 4343 - Case insensitivity
@@ -183,7 +192,10 @@ Example programs can be found in the `github.com/miekg/exdns` repository.
 * 8080 - EdDSA for DNSSEC
 * 8499 - DNS Terminology
 * 8659 - DNS Certification Authority Authorization (CAA) Resource Record
+<<<<<<< HEAD
 * 8777 - DNS Reverse IP Automatic Multicast Tunneling (AMT) Discovery
+=======
+>>>>>>> deathstrox/main
 * 8914 - Extended DNS Errors
 * 8976 - Message Digest for DNS Zones (ZONEMD RR)
 

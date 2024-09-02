@@ -27,9 +27,16 @@ import (
 	"go/token"
 	"go/types"
 	"io"
+<<<<<<< HEAD
 	"os/exec"
 
 	"golang.org/x/tools/internal/gcimporter"
+=======
+	"io/ioutil"
+	"os/exec"
+
+	"golang.org/x/tools/go/internal/gcimporter"
+>>>>>>> deathstrox/main
 )
 
 // Find returns the name of an object (.o) or archive (.a) file
@@ -84,6 +91,7 @@ func NewReader(r io.Reader) (io.Reader, error) {
 	}
 }
 
+<<<<<<< HEAD
 // readAll works the same way as io.ReadAll, but avoids allocations and copies
 // by preallocating a byte slice of the necessary size if the size is known up
 // front. This is always possible when the input is an archive. In that case,
@@ -104,6 +112,11 @@ func readAll(r io.Reader) ([]byte, error) {
 // specified by path, since unlike the package name, this information
 // may not be recorded in the export data.
 //
+=======
+// Read reads export data from in, decodes it, and returns type
+// information for the package.
+// The package name is specified by path.
+>>>>>>> deathstrox/main
 // File position information is added to fset.
 //
 // Read may inspect and add to the imports map to ensure that references
@@ -114,7 +127,11 @@ func readAll(r io.Reader) ([]byte, error) {
 //
 // On return, the state of the reader is undefined.
 func Read(in io.Reader, fset *token.FileSet, imports map[string]*types.Package, path string) (*types.Package, error) {
+<<<<<<< HEAD
 	data, err := readAll(in)
+=======
+	data, err := ioutil.ReadAll(in)
+>>>>>>> deathstrox/main
 	if err != nil {
 		return nil, fmt.Errorf("reading export data for %q: %v", path, err)
 	}
@@ -123,11 +140,21 @@ func Read(in io.Reader, fset *token.FileSet, imports map[string]*types.Package, 
 		return nil, fmt.Errorf("can't read export data for %q directly from an archive file (call gcexportdata.NewReader first to extract export data)", path)
 	}
 
+<<<<<<< HEAD
+=======
+	// The App Engine Go runtime v1.6 uses the old export data format.
+	// TODO(adonovan): delete once v1.7 has been around for a while.
+	if bytes.HasPrefix(data, []byte("package ")) {
+		return gcimporter.ImportData(imports, path, path, bytes.NewReader(data))
+	}
+
+>>>>>>> deathstrox/main
 	// The indexed export format starts with an 'i'; the older
 	// binary export format starts with a 'c', 'd', or 'v'
 	// (from "version"). Select appropriate importer.
 	if len(data) > 0 {
 		switch data[0] {
+<<<<<<< HEAD
 		case 'v', 'c', 'd': // binary, till go1.10
 			return nil, fmt.Errorf("binary (%c) import format is no longer supported", data[0])
 
@@ -136,6 +163,17 @@ func Read(in io.Reader, fset *token.FileSet, imports map[string]*types.Package, 
 			return pkg, err
 
 		case 'u': // unified, from go1.20
+=======
+		case 'i':
+			_, pkg, err := gcimporter.IImportData(fset, imports, data[1:], path)
+			return pkg, err
+
+		case 'v', 'c', 'd':
+			_, pkg, err := gcimporter.BImportData(fset, imports, data, path)
+			return pkg, err
+
+		case 'u':
+>>>>>>> deathstrox/main
 			_, pkg, err := gcimporter.UImportData(fset, imports, data[1:], path)
 			return pkg, err
 
@@ -170,7 +208,11 @@ func Write(out io.Writer, fset *token.FileSet, pkg *types.Package) error {
 //
 // Experimental: This API is experimental and may change in the future.
 func ReadBundle(in io.Reader, fset *token.FileSet, imports map[string]*types.Package) ([]*types.Package, error) {
+<<<<<<< HEAD
 	data, err := readAll(in)
+=======
+	data, err := ioutil.ReadAll(in)
+>>>>>>> deathstrox/main
 	if err != nil {
 		return nil, fmt.Errorf("reading export bundle: %v", err)
 	}

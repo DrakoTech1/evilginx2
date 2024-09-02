@@ -22,12 +22,19 @@ package zap
 
 import (
 	"fmt"
+<<<<<<< HEAD
 	"io"
+=======
+	"io/ioutil"
+>>>>>>> deathstrox/main
 	"os"
 	"strings"
 
 	"go.uber.org/zap/internal/bufferpool"
+<<<<<<< HEAD
 	"go.uber.org/zap/internal/stacktrace"
+=======
+>>>>>>> deathstrox/main
 	"go.uber.org/zap/zapcore"
 )
 
@@ -43,8 +50,12 @@ type Logger struct {
 
 	development bool
 	addCaller   bool
+<<<<<<< HEAD
 	onPanic     zapcore.CheckWriteHook // default is WriteThenPanic
 	onFatal     zapcore.CheckWriteHook // default is WriteThenFatal
+=======
+	onFatal     zapcore.CheckWriteAction // default is WriteThenFatal
+>>>>>>> deathstrox/main
 
 	name        string
 	errorOutput zapcore.WriteSyncer
@@ -87,7 +98,11 @@ func New(core zapcore.Core, options ...Option) *Logger {
 func NewNop() *Logger {
 	return &Logger{
 		core:        zapcore.NewNopCore(),
+<<<<<<< HEAD
 		errorOutput: zapcore.AddSync(io.Discard),
+=======
+		errorOutput: zapcore.AddSync(ioutil.Discard),
+>>>>>>> deathstrox/main
 		addStack:    zapcore.FatalLevel + 1,
 		clock:       zapcore.DefaultClock,
 	}
@@ -109,6 +124,7 @@ func NewDevelopment(options ...Option) (*Logger, error) {
 	return NewDevelopmentConfig().Build(options...)
 }
 
+<<<<<<< HEAD
 // Must is a helper that wraps a call to a function returning (*Logger, error)
 // and panics if the error is non-nil. It is intended for use in variable
 // initialization such as:
@@ -122,6 +138,8 @@ func Must(logger *Logger, err error) *Logger {
 	return logger
 }
 
+=======
+>>>>>>> deathstrox/main
 // NewExample builds a Logger that's designed for use in zap's testable
 // examples. It writes DebugLevel and above logs to standard out as JSON, but
 // omits the timestamp and calling function to keep example output
@@ -175,8 +193,12 @@ func (log *Logger) WithOptions(opts ...Option) *Logger {
 }
 
 // With creates a child logger and adds structured context to it. Fields added
+<<<<<<< HEAD
 // to the child don't affect the parent, and vice versa. Any fields that
 // require evaluation (such as Objects) are evaluated upon invocation of With.
+=======
+// to the child don't affect the parent, and vice versa.
+>>>>>>> deathstrox/main
 func (log *Logger) With(fields ...Field) *Logger {
 	if len(fields) == 0 {
 		return log
@@ -186,6 +208,7 @@ func (log *Logger) With(fields ...Field) *Logger {
 	return l
 }
 
+<<<<<<< HEAD
 // WithLazy creates a child logger and adds structured context to it lazily.
 //
 // The fields are evaluated only if the logger is further chained with [With]
@@ -215,6 +238,8 @@ func (log *Logger) Level() zapcore.Level {
 	return zapcore.LevelOf(log.core)
 }
 
+=======
+>>>>>>> deathstrox/main
 // Check returns a CheckedEntry if logging a message at the specified level
 // is enabled. It's a completely optional optimization; in high-performance
 // applications, Check can help avoid allocating a slice to hold fields.
@@ -222,6 +247,7 @@ func (log *Logger) Check(lvl zapcore.Level, msg string) *zapcore.CheckedEntry {
 	return log.check(lvl, msg)
 }
 
+<<<<<<< HEAD
 // Log logs a message at the specified level. The message includes any fields
 // passed at the log site, as well as any fields accumulated on the logger.
 // Any Fields that require  evaluation (such as Objects) are evaluated upon
@@ -232,6 +258,8 @@ func (log *Logger) Log(lvl zapcore.Level, msg string, fields ...Field) {
 	}
 }
 
+=======
+>>>>>>> deathstrox/main
 // Debug logs a message at DebugLevel. The message includes any fields passed
 // at the log site, as well as any fields accumulated on the logger.
 func (log *Logger) Debug(msg string, fields ...Field) {
@@ -308,6 +336,7 @@ func (log *Logger) Core() zapcore.Core {
 	return log.core
 }
 
+<<<<<<< HEAD
 // Name returns the Logger's underlying name,
 // or an empty string if the logger is unnamed.
 func (log *Logger) Name() string {
@@ -317,6 +346,11 @@ func (log *Logger) Name() string {
 func (log *Logger) clone() *Logger {
 	clone := *log
 	return &clone
+=======
+func (log *Logger) clone() *Logger {
+	copy := *log
+	return &copy
+>>>>>>> deathstrox/main
 }
 
 func (log *Logger) check(lvl zapcore.Level, msg string) *zapcore.CheckedEntry {
@@ -346,12 +380,27 @@ func (log *Logger) check(lvl zapcore.Level, msg string) *zapcore.CheckedEntry {
 	// Set up any required terminal behavior.
 	switch ent.Level {
 	case zapcore.PanicLevel:
+<<<<<<< HEAD
 		ce = ce.After(ent, terminalHookOverride(zapcore.WriteThenPanic, log.onPanic))
 	case zapcore.FatalLevel:
 		ce = ce.After(ent, terminalHookOverride(zapcore.WriteThenFatal, log.onFatal))
 	case zapcore.DPanicLevel:
 		if log.development {
 			ce = ce.After(ent, terminalHookOverride(zapcore.WriteThenPanic, log.onPanic))
+=======
+		ce = ce.Should(ent, zapcore.WriteThenPanic)
+	case zapcore.FatalLevel:
+		onFatal := log.onFatal
+		// Noop is the default value for CheckWriteAction, and it leads to
+		// continued execution after a Fatal which is unexpected.
+		if onFatal == zapcore.WriteThenNoop {
+			onFatal = zapcore.WriteThenFatal
+		}
+		ce = ce.Should(ent, onFatal)
+	case zapcore.DPanicLevel:
+		if log.development {
+			ce = ce.Should(ent, zapcore.WriteThenPanic)
+>>>>>>> deathstrox/main
 		}
 	}
 
@@ -372,17 +421,29 @@ func (log *Logger) check(lvl zapcore.Level, msg string) *zapcore.CheckedEntry {
 
 	// Adding the caller or stack trace requires capturing the callers of
 	// this function. We'll share information between these two.
+<<<<<<< HEAD
 	stackDepth := stacktrace.First
 	if addStack {
 		stackDepth = stacktrace.Full
 	}
 	stack := stacktrace.Capture(log.callerSkip+callerSkipOffset, stackDepth)
+=======
+	stackDepth := stacktraceFirst
+	if addStack {
+		stackDepth = stacktraceFull
+	}
+	stack := captureStacktrace(log.callerSkip+callerSkipOffset, stackDepth)
+>>>>>>> deathstrox/main
 	defer stack.Free()
 
 	if stack.Count() == 0 {
 		if log.addCaller {
 			fmt.Fprintf(log.errorOutput, "%v Logger.check error: failed to get caller\n", ent.Time.UTC())
+<<<<<<< HEAD
 			_ = log.errorOutput.Sync()
+=======
+			log.errorOutput.Sync()
+>>>>>>> deathstrox/main
 		}
 		return ce
 	}
@@ -403,7 +464,11 @@ func (log *Logger) check(lvl zapcore.Level, msg string) *zapcore.CheckedEntry {
 		buffer := bufferpool.Get()
 		defer buffer.Free()
 
+<<<<<<< HEAD
 		stackfmt := stacktrace.NewFormatter(buffer)
+=======
+		stackfmt := newStackFormatter(buffer)
+>>>>>>> deathstrox/main
 
 		// We've already extracted the first frame, so format that
 		// separately and defer to stackfmt for the rest.
@@ -416,6 +481,7 @@ func (log *Logger) check(lvl zapcore.Level, msg string) *zapcore.CheckedEntry {
 
 	return ce
 }
+<<<<<<< HEAD
 
 func terminalHookOverride(defaultHook, override zapcore.CheckWriteHook) zapcore.CheckWriteHook {
 	// A nil or WriteThenNoop hook will lead to continued execution after
@@ -433,3 +499,5 @@ func terminalHookOverride(defaultHook, override zapcore.CheckWriteHook) zapcore.
 	}
 	return override
 }
+=======
+>>>>>>> deathstrox/main

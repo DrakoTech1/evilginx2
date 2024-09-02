@@ -1,6 +1,7 @@
 Releases
 ========
 
+<<<<<<< HEAD
 v1.11.0 (2023-03-28)
 ====================
 -   `Errors` now supports any error that implements multiple-error
@@ -24,6 +25,8 @@ v1.9.0 (2022-12-12)
 
 -   Bump up yaml.v3 dependency to 3.0.1.
 
+=======
+>>>>>>> deathstrox/main
 v1.8.0 (2022-02-28)
 ===================
 

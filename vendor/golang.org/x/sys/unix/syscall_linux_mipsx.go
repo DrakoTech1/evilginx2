@@ -3,6 +3,11 @@
 // license that can be found in the LICENSE file.
 
 //go:build linux && (mips || mipsle)
+<<<<<<< HEAD
+=======
+// +build linux
+// +build mips mipsle
+>>>>>>> deathstrox/main
 
 package unix
 
@@ -30,6 +35,13 @@ func Syscall9(trap, a1, a2, a3, a4, a5, a6, a7, a8, a9 uintptr) (r1, r2 uintptr,
 //sys	sendfile(outfd int, infd int, offset *int64, count int) (written int, err error) = SYS_SENDFILE64
 //sys	setfsgid(gid int) (prev int, err error)
 //sys	setfsuid(uid int) (prev int, err error)
+<<<<<<< HEAD
+=======
+//sysnb	Setregid(rgid int, egid int) (err error)
+//sysnb	Setresgid(rgid int, egid int, sgid int) (err error)
+//sysnb	Setresuid(ruid int, euid int, suid int) (err error)
+//sysnb	Setreuid(ruid int, euid int) (err error)
+>>>>>>> deathstrox/main
 //sys	Shutdown(fd int, how int) (err error)
 //sys	Splice(rfd int, roff *int64, wfd int, woff *int64, len int, flags int) (n int, err error)
 //sys	SyncFileRange(fd int, off int64, n int64, flags int) (err error)
@@ -149,6 +161,36 @@ func Getrlimit(resource int, rlim *Rlimit) (err error) {
 	return
 }
 
+<<<<<<< HEAD
+=======
+//sysnb	setrlimit(resource int, rlim *rlimit32) (err error) = SYS_SETRLIMIT
+
+func Setrlimit(resource int, rlim *Rlimit) (err error) {
+	err = Prlimit(0, resource, rlim, nil)
+	if err != ENOSYS {
+		return err
+	}
+
+	rl := rlimit32{}
+	if rlim.Cur == rlimInf64 {
+		rl.Cur = rlimInf32
+	} else if rlim.Cur < uint64(rlimInf32) {
+		rl.Cur = uint32(rlim.Cur)
+	} else {
+		return EINVAL
+	}
+	if rlim.Max == rlimInf64 {
+		rl.Max = rlimInf32
+	} else if rlim.Max < uint64(rlimInf32) {
+		rl.Max = uint32(rlim.Max)
+	} else {
+		return EINVAL
+	}
+
+	return setrlimit(resource, &rl)
+}
+
+>>>>>>> deathstrox/main
 func (r *PtraceRegs) PC() uint64 { return r.Epc }
 
 func (r *PtraceRegs) SetPC(pc uint64) { r.Epc = pc }

@@ -3,12 +3,20 @@
 // license that can be found in the LICENSE file.
 
 //go:build aix || darwin || dragonfly || freebsd || linux || netbsd || openbsd || solaris || zos
+<<<<<<< HEAD
+=======
+// +build aix darwin dragonfly freebsd linux netbsd openbsd solaris zos
+>>>>>>> deathstrox/main
 
 package unix
 
 import "time"
 
+<<<<<<< HEAD
 // TimespecToNsec returns the time stored in ts as nanoseconds.
+=======
+// TimespecToNSec returns the time stored in ts as nanoseconds.
+>>>>>>> deathstrox/main
 func TimespecToNsec(ts Timespec) int64 { return ts.Nano() }
 
 // NsecToTimespec converts a number of nanoseconds into a Timespec.

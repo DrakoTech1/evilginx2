@@ -3,6 +3,11 @@
 // license that can be found in the LICENSE file.
 
 //go:build (freebsd || netbsd || openbsd) && gc
+<<<<<<< HEAD
+=======
+// +build freebsd netbsd openbsd
+// +build gc
+>>>>>>> deathstrox/main
 
 #include "textflag.h"
 

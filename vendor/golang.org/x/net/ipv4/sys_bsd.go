@@ -3,6 +3,10 @@
 // license that can be found in the LICENSE file.
 
 //go:build netbsd || openbsd
+<<<<<<< HEAD
+=======
+// +build netbsd openbsd
+>>>>>>> deathstrox/main
 
 package ipv4
 

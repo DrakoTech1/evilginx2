@@ -37,9 +37,12 @@ const DefaultLineEnding = "\n"
 const OmitKey = ""
 
 // A LevelEncoder serializes a Level to a primitive type.
+<<<<<<< HEAD
 //
 // This function must make exactly one call
 // to a PrimitiveArrayEncoder's Append* method.
+=======
+>>>>>>> deathstrox/main
 type LevelEncoder func(Level, PrimitiveArrayEncoder)
 
 // LowercaseLevelEncoder serializes a Level to a lowercase string. For example,
@@ -93,9 +96,12 @@ func (e *LevelEncoder) UnmarshalText(text []byte) error {
 }
 
 // A TimeEncoder serializes a time.Time to a primitive type.
+<<<<<<< HEAD
 //
 // This function must make exactly one call
 // to a PrimitiveArrayEncoder's Append* method.
+=======
+>>>>>>> deathstrox/main
 type TimeEncoder func(time.Time, PrimitiveArrayEncoder)
 
 // EpochTimeEncoder serializes a time.Time to a floating-point number of seconds
@@ -194,6 +200,7 @@ func (e *TimeEncoder) UnmarshalText(text []byte) error {
 
 // UnmarshalYAML unmarshals YAML to a TimeEncoder.
 // If value is an object with a "layout" field, it will be unmarshaled to  TimeEncoder with given layout.
+<<<<<<< HEAD
 //
 //	timeEncoder:
 //	  layout: 06/01/02 03:04pm
@@ -201,6 +208,12 @@ func (e *TimeEncoder) UnmarshalText(text []byte) error {
 // If value is string, it uses UnmarshalText.
 //
 //	timeEncoder: iso8601
+=======
+//     timeEncoder:
+//       layout: 06/01/02 03:04pm
+// If value is string, it uses UnmarshalText.
+//     timeEncoder: iso8601
+>>>>>>> deathstrox/main
 func (e *TimeEncoder) UnmarshalYAML(unmarshal func(interface{}) error) error {
 	var o struct {
 		Layout string `json:"layout" yaml:"layout"`
@@ -225,9 +238,12 @@ func (e *TimeEncoder) UnmarshalJSON(data []byte) error {
 }
 
 // A DurationEncoder serializes a time.Duration to a primitive type.
+<<<<<<< HEAD
 //
 // This function must make exactly one call
 // to a PrimitiveArrayEncoder's Append* method.
+=======
+>>>>>>> deathstrox/main
 type DurationEncoder func(time.Duration, PrimitiveArrayEncoder)
 
 // SecondsDurationEncoder serializes a time.Duration to a floating-point number of seconds elapsed.
@@ -271,9 +287,12 @@ func (e *DurationEncoder) UnmarshalText(text []byte) error {
 }
 
 // A CallerEncoder serializes an EntryCaller to a primitive type.
+<<<<<<< HEAD
 //
 // This function must make exactly one call
 // to a PrimitiveArrayEncoder's Append* method.
+=======
+>>>>>>> deathstrox/main
 type CallerEncoder func(EntryCaller, PrimitiveArrayEncoder)
 
 // FullCallerEncoder serializes a caller in /full/path/to/package/file:line
@@ -304,9 +323,12 @@ func (e *CallerEncoder) UnmarshalText(text []byte) error {
 
 // A NameEncoder serializes a period-separated logger name to a primitive
 // type.
+<<<<<<< HEAD
 //
 // This function must make exactly one call
 // to a PrimitiveArrayEncoder's Append* method.
+=======
+>>>>>>> deathstrox/main
 type NameEncoder func(string, PrimitiveArrayEncoder)
 
 // FullNameEncoder serializes the logger name as-is.

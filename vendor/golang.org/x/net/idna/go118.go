@@ -5,6 +5,10 @@
 // license that can be found in the LICENSE file.
 
 //go:build go1.18
+<<<<<<< HEAD
+=======
+// +build go1.18
+>>>>>>> deathstrox/main
 
 package idna
 

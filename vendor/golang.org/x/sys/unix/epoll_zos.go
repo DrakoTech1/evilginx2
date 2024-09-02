@@ -3,6 +3,10 @@
 // license that can be found in the LICENSE file.
 
 //go:build zos && s390x
+<<<<<<< HEAD
+=======
+// +build zos,s390x
+>>>>>>> deathstrox/main
 
 package unix
 

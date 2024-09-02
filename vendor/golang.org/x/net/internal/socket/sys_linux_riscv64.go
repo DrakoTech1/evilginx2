@@ -3,6 +3,10 @@
 // license that can be found in the LICENSE file.
 
 //go:build riscv64
+<<<<<<< HEAD
+=======
+// +build riscv64
+>>>>>>> deathstrox/main
 
 package socket
 

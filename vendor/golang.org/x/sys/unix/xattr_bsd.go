@@ -3,6 +3,10 @@
 // license that can be found in the LICENSE file.
 
 //go:build freebsd || netbsd
+<<<<<<< HEAD
+=======
+// +build freebsd netbsd
+>>>>>>> deathstrox/main
 
 package unix
 
@@ -35,6 +39,7 @@ func xattrnamespace(fullattr string) (ns int, attr string, err error) {
 func initxattrdest(dest []byte, idx int) (d unsafe.Pointer) {
 	if len(dest) > idx {
 		return unsafe.Pointer(&dest[idx])
+<<<<<<< HEAD
 	}
 	if dest != nil {
 		// extattr_get_file and extattr_list_file treat NULL differently from
@@ -43,6 +48,11 @@ func initxattrdest(dest []byte, idx int) (d unsafe.Pointer) {
 		return unsafe.Pointer(&_zero)
 	}
 	return nil
+=======
+	} else {
+		return unsafe.Pointer(_zero)
+	}
+>>>>>>> deathstrox/main
 }
 
 // FreeBSD and NetBSD implement their own syscalls to handle extended attributes
@@ -164,12 +174,22 @@ func Lremovexattr(link string, attr string) (err error) {
 }
 
 func Listxattr(file string, dest []byte) (sz int, err error) {
+<<<<<<< HEAD
 	destsiz := len(dest)
 
 	// FreeBSD won't allow you to list xattrs from multiple namespaces
 	s, pos := 0, 0
 	for _, nsid := range [...]int{EXTATTR_NAMESPACE_USER, EXTATTR_NAMESPACE_SYSTEM} {
 		stmp, e := ListxattrNS(file, nsid, dest[pos:])
+=======
+	d := initxattrdest(dest, 0)
+	destsiz := len(dest)
+
+	// FreeBSD won't allow you to list xattrs from multiple namespaces
+	s := 0
+	for _, nsid := range [...]int{EXTATTR_NAMESPACE_USER, EXTATTR_NAMESPACE_SYSTEM} {
+		stmp, e := ExtattrListFile(file, nsid, uintptr(d), destsiz)
+>>>>>>> deathstrox/main
 
 		/* Errors accessing system attrs are ignored so that
 		 * we can implement the Linux-like behavior of omitting errors that
@@ -178,14 +198,21 @@ func Listxattr(file string, dest []byte) (sz int, err error) {
 		 * Linux will still error if we ask for user attributes on a file that
 		 * we don't have read permissions on, so don't ignore those errors
 		 */
+<<<<<<< HEAD
 		if e != nil {
 			if e == EPERM && nsid != EXTATTR_NAMESPACE_USER {
 				continue
 			}
+=======
+		if e != nil && e == EPERM && nsid != EXTATTR_NAMESPACE_USER {
+			continue
+		} else if e != nil {
+>>>>>>> deathstrox/main
 			return s, e
 		}
 
 		s += stmp
+<<<<<<< HEAD
 		pos = s
 		if pos > destsiz {
 			pos = destsiz
@@ -202,12 +229,20 @@ func ListxattrNS(file string, nsid int, dest []byte) (sz int, err error) {
 	s, e := ExtattrListFile(file, nsid, uintptr(d), destsiz)
 	if e != nil {
 		return 0, err
+=======
+		destsiz -= s
+		if destsiz < 0 {
+			destsiz = 0
+		}
+		d = initxattrdest(dest, s)
+>>>>>>> deathstrox/main
 	}
 
 	return s, nil
 }
 
 func Flistxattr(fd int, dest []byte) (sz int, err error) {
+<<<<<<< HEAD
 	destsiz := len(dest)
 
 	s, pos := 0, 0
@@ -218,10 +253,22 @@ func Flistxattr(fd int, dest []byte) (sz int, err error) {
 			if e == EPERM && nsid != EXTATTR_NAMESPACE_USER {
 				continue
 			}
+=======
+	d := initxattrdest(dest, 0)
+	destsiz := len(dest)
+
+	s := 0
+	for _, nsid := range [...]int{EXTATTR_NAMESPACE_USER, EXTATTR_NAMESPACE_SYSTEM} {
+		stmp, e := ExtattrListFd(fd, nsid, uintptr(d), destsiz)
+		if e != nil && e == EPERM && nsid != EXTATTR_NAMESPACE_USER {
+			continue
+		} else if e != nil {
+>>>>>>> deathstrox/main
 			return s, e
 		}
 
 		s += stmp
+<<<<<<< HEAD
 		pos = s
 		if pos > destsiz {
 			pos = destsiz
@@ -238,12 +285,20 @@ func FlistxattrNS(fd int, nsid int, dest []byte) (sz int, err error) {
 	s, e := ExtattrListFd(fd, nsid, uintptr(d), destsiz)
 	if e != nil {
 		return 0, err
+=======
+		destsiz -= s
+		if destsiz < 0 {
+			destsiz = 0
+		}
+		d = initxattrdest(dest, s)
+>>>>>>> deathstrox/main
 	}
 
 	return s, nil
 }
 
 func Llistxattr(link string, dest []byte) (sz int, err error) {
+<<<<<<< HEAD
 	destsiz := len(dest)
 
 	s, pos := 0, 0
@@ -254,10 +309,22 @@ func Llistxattr(link string, dest []byte) (sz int, err error) {
 			if e == EPERM && nsid != EXTATTR_NAMESPACE_USER {
 				continue
 			}
+=======
+	d := initxattrdest(dest, 0)
+	destsiz := len(dest)
+
+	s := 0
+	for _, nsid := range [...]int{EXTATTR_NAMESPACE_USER, EXTATTR_NAMESPACE_SYSTEM} {
+		stmp, e := ExtattrListLink(link, nsid, uintptr(d), destsiz)
+		if e != nil && e == EPERM && nsid != EXTATTR_NAMESPACE_USER {
+			continue
+		} else if e != nil {
+>>>>>>> deathstrox/main
 			return s, e
 		}
 
 		s += stmp
+<<<<<<< HEAD
 		pos = s
 		if pos > destsiz {
 			pos = destsiz
@@ -274,6 +341,13 @@ func LlistxattrNS(link string, nsid int, dest []byte) (sz int, err error) {
 	s, e := ExtattrListLink(link, nsid, uintptr(d), destsiz)
 	if e != nil {
 		return 0, err
+=======
+		destsiz -= s
+		if destsiz < 0 {
+			destsiz = 0
+		}
+		d = initxattrdest(dest, s)
+>>>>>>> deathstrox/main
 	}
 
 	return s, nil

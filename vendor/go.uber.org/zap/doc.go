@@ -32,7 +32,11 @@
 // they need to count every allocation and when they'd prefer a more familiar,
 // loosely typed API.
 //
+<<<<<<< HEAD
 // # Choosing a Logger
+=======
+// Choosing a Logger
+>>>>>>> deathstrox/main
 //
 // In contexts where performance is nice, but not critical, use the
 // SugaredLogger. It's 4-10x faster than other structured logging packages and
@@ -41,6 +45,7 @@
 // variadic number of key-value pairs. (For more advanced use cases, they also
 // accept strongly typed fields - see the SugaredLogger.With documentation for
 // details.)
+<<<<<<< HEAD
 //
 //	sugar := zap.NewExample().Sugar()
 //	defer sugar.Sync()
@@ -50,6 +55,16 @@
 //	  "backoff", time.Second,
 //	)
 //	sugar.Infof("failed to fetch URL: %s", "http://example.com")
+=======
+//  sugar := zap.NewExample().Sugar()
+//  defer sugar.Sync()
+//  sugar.Infow("failed to fetch URL",
+//    "url", "http://example.com",
+//    "attempt", 3,
+//    "backoff", time.Second,
+//  )
+//  sugar.Infof("failed to fetch URL: %s", "http://example.com")
+>>>>>>> deathstrox/main
 //
 // By default, loggers are unbuffered. However, since zap's low-level APIs
 // allow buffering, calling Sync before letting your process exit is a good
@@ -58,6 +73,7 @@
 // In the rare contexts where every microsecond and every allocation matter,
 // use the Logger. It's even faster than the SugaredLogger and allocates far
 // less, but it only supports strongly-typed, structured logging.
+<<<<<<< HEAD
 //
 //	logger := zap.NewExample()
 //	defer logger.Sync()
@@ -66,10 +82,20 @@
 //	  zap.Int("attempt", 3),
 //	  zap.Duration("backoff", time.Second),
 //	)
+=======
+//  logger := zap.NewExample()
+//  defer logger.Sync()
+//  logger.Info("failed to fetch URL",
+//    zap.String("url", "http://example.com"),
+//    zap.Int("attempt", 3),
+//    zap.Duration("backoff", time.Second),
+//  )
+>>>>>>> deathstrox/main
 //
 // Choosing between the Logger and SugaredLogger doesn't need to be an
 // application-wide decision: converting between the two is simple and
 // inexpensive.
+<<<<<<< HEAD
 //
 //	logger := zap.NewExample()
 //	defer logger.Sync()
@@ -77,16 +103,32 @@
 //	plain := sugar.Desugar()
 //
 // # Configuring Zap
+=======
+//   logger := zap.NewExample()
+//   defer logger.Sync()
+//   sugar := logger.Sugar()
+//   plain := sugar.Desugar()
+//
+// Configuring Zap
+>>>>>>> deathstrox/main
 //
 // The simplest way to build a Logger is to use zap's opinionated presets:
 // NewExample, NewProduction, and NewDevelopment. These presets build a logger
 // with a single function call:
+<<<<<<< HEAD
 //
 //	logger, err := zap.NewProduction()
 //	if err != nil {
 //	  log.Fatalf("can't initialize zap logger: %v", err)
 //	}
 //	defer logger.Sync()
+=======
+//  logger, err := zap.NewProduction()
+//  if err != nil {
+//    log.Fatalf("can't initialize zap logger: %v", err)
+//  }
+//  defer logger.Sync()
+>>>>>>> deathstrox/main
 //
 // Presets are fine for small projects, but larger projects and organizations
 // naturally require a bit more customization. For most users, zap's Config
@@ -98,7 +140,11 @@
 // go.uber.org/zap/zapcore. See the package-level AdvancedConfiguration
 // example for sample code.
 //
+<<<<<<< HEAD
 // # Extending Zap
+=======
+// Extending Zap
+>>>>>>> deathstrox/main
 //
 // The zap package itself is a relatively thin wrapper around the interfaces
 // in go.uber.org/zap/zapcore. Extending zap to support a new encoding (e.g.,
@@ -110,7 +156,11 @@
 // Similarly, package authors can use the high-performance Encoder and Core
 // implementations in the zapcore package to build their own loggers.
 //
+<<<<<<< HEAD
 // # Frequently Asked Questions
+=======
+// Frequently Asked Questions
+>>>>>>> deathstrox/main
 //
 // An FAQ covering everything from installation errors to design decisions is
 // available at https://github.com/uber-go/zap/blob/master/FAQ.md.

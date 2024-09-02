@@ -22,7 +22,11 @@ import (
 //     but only if there is space or tab inside s.
 func EscapeArg(s string) string {
 	if len(s) == 0 {
+<<<<<<< HEAD
 		return `""`
+=======
+		return "\"\""
+>>>>>>> deathstrox/main
 	}
 	n := len(s)
 	hasSpace := false
@@ -35,7 +39,11 @@ func EscapeArg(s string) string {
 		}
 	}
 	if hasSpace {
+<<<<<<< HEAD
 		n += 2 // Reserve space for quotes.
+=======
+		n += 2
+>>>>>>> deathstrox/main
 	}
 	if n == len(s) {
 		return s
@@ -82,6 +90,7 @@ func EscapeArg(s string) string {
 // in CreateProcess's CommandLine argument, CreateService/ChangeServiceConfig's BinaryPathName argument,
 // or any program that uses CommandLineToArgv.
 func ComposeCommandLine(args []string) string {
+<<<<<<< HEAD
 	if len(args) == 0 {
 		return ""
 	}
@@ -138,34 +147,59 @@ func ComposeCommandLine(args []string) string {
 		commandLine = append(commandLine, EscapeArg(arg)...)
 	}
 	return string(commandLine)
+=======
+	var commandLine string
+	for i := range args {
+		if i > 0 {
+			commandLine += " "
+		}
+		commandLine += EscapeArg(args[i])
+	}
+	return commandLine
+>>>>>>> deathstrox/main
 }
 
 // DecomposeCommandLine breaks apart its argument command line into unescaped parts using CommandLineToArgv,
 // as gathered from GetCommandLine, QUERY_SERVICE_CONFIG's BinaryPathName argument, or elsewhere that
 // command lines are passed around.
+<<<<<<< HEAD
 // DecomposeCommandLine returns an error if commandLine contains NUL.
+=======
+>>>>>>> deathstrox/main
 func DecomposeCommandLine(commandLine string) ([]string, error) {
 	if len(commandLine) == 0 {
 		return []string{}, nil
 	}
+<<<<<<< HEAD
 	utf16CommandLine, err := UTF16FromString(commandLine)
 	if err != nil {
 		return nil, errorspkg.New("string with NUL passed to DecomposeCommandLine")
 	}
 	var argc int32
 	argv, err := commandLineToArgv(&utf16CommandLine[0], &argc)
+=======
+	var argc int32
+	argv, err := CommandLineToArgv(StringToUTF16Ptr(commandLine), &argc)
+>>>>>>> deathstrox/main
 	if err != nil {
 		return nil, err
 	}
 	defer LocalFree(Handle(unsafe.Pointer(argv)))
+<<<<<<< HEAD
 
 	var args []string
 	for _, p := range unsafe.Slice(argv, argc) {
 		args = append(args, UTF16PtrToString(p))
+=======
+	var args []string
+	for _, v := range (*argv)[:argc] {
+		args = append(args, UTF16ToString((*v)[:]))
+>>>>>>> deathstrox/main
 	}
 	return args, nil
 }
 
+<<<<<<< HEAD
 // CommandLineToArgv parses a Unicode command line string and sets
 // argc to the number of parsed arguments.
 //
@@ -182,6 +216,8 @@ func CommandLineToArgv(cmd *uint16, argc *int32) (argv *[8192]*[8192]uint16, err
 	return argv, err
 }
 
+=======
+>>>>>>> deathstrox/main
 func CloseOnExec(fd Handle) {
 	SetHandleInformation(Handle(fd), HANDLE_FLAG_INHERIT, 0)
 }

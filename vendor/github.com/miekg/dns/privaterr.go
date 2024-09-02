@@ -84,7 +84,11 @@ Fetch:
 
 	err := r.Data.Parse(text)
 	if err != nil {
+<<<<<<< HEAD
 		return &ParseError{wrappedErr: err, lex: l}
+=======
+		return &ParseError{"", err.Error(), l}
+>>>>>>> deathstrox/main
 	}
 
 	return nil

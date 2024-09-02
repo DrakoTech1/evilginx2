@@ -24,15 +24,24 @@ func addInfo(c *CPUInfo, safe bool) {
 	c.maxExFunc = maxExtendedFunction()
 	c.BrandName = brandName()
 	c.CacheLine = cacheLine()
+<<<<<<< HEAD
 	c.Family, c.Model, c.Stepping = familyModel()
 	c.featureSet = support()
 	c.SGX = hasSGX(c.featureSet.inSet(SGX), c.featureSet.inSet(SGXLC))
 	c.AMDMemEncryption = hasAMDMemEncryption(c.featureSet.inSet(SME) || c.featureSet.inSet(SEV))
+=======
+	c.Family, c.Model = familyModel()
+	c.featureSet = support()
+	c.SGX = hasSGX(c.featureSet.inSet(SGX), c.featureSet.inSet(SGXLC))
+>>>>>>> deathstrox/main
 	c.ThreadsPerCore = threadsPerCore()
 	c.LogicalCores = logicalCores()
 	c.PhysicalCores = physicalCores()
 	c.VendorID, c.VendorString = vendorID()
+<<<<<<< HEAD
 	c.AVX10Level = c.supportAVX10()
+=======
+>>>>>>> deathstrox/main
 	c.cacheSize()
 	c.frequencies()
 }

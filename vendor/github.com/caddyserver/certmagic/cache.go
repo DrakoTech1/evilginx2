@@ -48,8 +48,12 @@ import (
 // differently.
 type Cache struct {
 	// User configuration of the cache
+<<<<<<< HEAD
 	options   CacheOptions
 	optionsMu sync.RWMutex
+=======
+	options CacheOptions
+>>>>>>> deathstrox/main
 
 	// The cache is keyed by certificate hash
 	cache map[string]Certificate
@@ -57,7 +61,11 @@ type Cache struct {
 	// cacheIndex is a map of SAN to cache key (cert hash)
 	cacheIndex map[string][]string
 
+<<<<<<< HEAD
 	// Protects the cache and cacheIndex maps
+=======
+	// Protects the cache and index maps
+>>>>>>> deathstrox/main
 	mu sync.RWMutex
 
 	// Close this channel to cancel asset maintenance
@@ -119,22 +127,28 @@ func NewCache(opts CacheOptions) *Cache {
 		logger:     opts.Logger,
 	}
 
+<<<<<<< HEAD
 	// absolutely do not allow a nil logger; panics galore
 	if c.logger == nil {
 		c.logger = defaultLogger
 	}
 
+=======
+>>>>>>> deathstrox/main
 	go c.maintainAssets(0)
 
 	return c
 }
 
+<<<<<<< HEAD
 func (certCache *Cache) SetOptions(opts CacheOptions) {
 	certCache.optionsMu.Lock()
 	certCache.options = opts
 	certCache.optionsMu.Unlock()
 }
 
+=======
+>>>>>>> deathstrox/main
 // Stop stops the maintenance goroutine for
 // certificates in certCache. It blocks until
 // stopping is complete. Once a cache is
@@ -152,8 +166,12 @@ type CacheOptions struct {
 	// used for managing a certificate, or for accessing
 	// that certificate's asset storage (e.g. for
 	// OCSP staples, etc). The returned Config MUST
+<<<<<<< HEAD
 	// be associated with the same Cache as the caller,
 	// use New to obtain a valid Config.
+=======
+	// be associated with the same Cache as the caller.
+>>>>>>> deathstrox/main
 	//
 	// The reason this is a callback function, dynamically
 	// returning a Config (instead of attaching a static
@@ -205,6 +223,7 @@ func (certCache *Cache) cacheCertificate(cert Certificate) {
 // This function is NOT safe for concurrent use. Callers MUST acquire
 // a write lock on certCache.mu first.
 func (certCache *Cache) unsyncedCacheCertificate(cert Certificate) {
+<<<<<<< HEAD
 	// if this certificate already exists in the cache, this is basically
 	// a no-op so we reuse existing cert (prevent duplication), but we do
 	// modify the cert to add tags it may be missing (see issue #211)
@@ -228,16 +247,32 @@ func (certCache *Cache) unsyncedCacheCertificate(cert Certificate) {
 			zap.String("issuer_key", cert.issuerKey),
 			zap.String("hash", cert.hash),
 			zap.Strings("tags", cert.Tags))
+=======
+	// no-op if this certificate already exists in the cache
+	if _, ok := certCache.cache[cert.hash]; ok {
+		if certCache.logger != nil {
+			certCache.logger.Debug("certificate already cached",
+				zap.Strings("subjects", cert.Names),
+				zap.Time("expiration", cert.Leaf.NotAfter),
+				zap.Bool("managed", cert.managed),
+				zap.String("issuer_key", cert.issuerKey),
+				zap.String("hash", cert.hash))
+		}
+>>>>>>> deathstrox/main
 		return
 	}
 
 	// if the cache is at capacity, make room for new cert
 	cacheSize := len(certCache.cache)
+<<<<<<< HEAD
 	certCache.optionsMu.RLock()
 	atCapacity := certCache.options.Capacity > 0 && cacheSize >= certCache.options.Capacity
 	certCache.optionsMu.RUnlock()
 
 	if atCapacity {
+=======
+	if certCache.options.Capacity > 0 && cacheSize >= certCache.options.Capacity {
+>>>>>>> deathstrox/main
 		// Go maps are "nondeterministic" but not actually random,
 		// so although we could just chop off the "front" of the
 		// map with less code, that is a heavily skewed eviction
@@ -247,11 +282,21 @@ func (certCache *Cache) unsyncedCacheCertificate(cert Certificate) {
 		i := 0
 		for _, randomCert := range certCache.cache {
 			if i == rnd {
+<<<<<<< HEAD
 				certCache.logger.Debug("cache full; evicting random certificate",
 					zap.Strings("removing_subjects", randomCert.Names),
 					zap.String("removing_hash", randomCert.hash),
 					zap.Strings("inserting_subjects", cert.Names),
 					zap.String("inserting_hash", cert.hash))
+=======
+				if certCache.logger != nil {
+					certCache.logger.Debug("cache full; evicting random certificate",
+						zap.Strings("removing_subjects", randomCert.Names),
+						zap.String("removing_hash", randomCert.hash),
+						zap.Strings("inserting_subjects", cert.Names),
+						zap.String("inserting_hash", cert.hash))
+				}
+>>>>>>> deathstrox/main
 				certCache.removeCertificate(randomCert)
 				break
 			}
@@ -267,6 +312,7 @@ func (certCache *Cache) unsyncedCacheCertificate(cert Certificate) {
 		certCache.cacheIndex[name] = append(certCache.cacheIndex[name], cert.hash)
 	}
 
+<<<<<<< HEAD
 	certCache.optionsMu.RLock()
 	certCache.logger.Debug("added certificate to cache",
 		zap.Strings("subjects", cert.Names),
@@ -277,6 +323,18 @@ func (certCache *Cache) unsyncedCacheCertificate(cert Certificate) {
 		zap.Int("cache_size", len(certCache.cache)),
 		zap.Int("cache_capacity", certCache.options.Capacity))
 	certCache.optionsMu.RUnlock()
+=======
+	if certCache.logger != nil {
+		certCache.logger.Debug("added certificate to cache",
+			zap.Strings("subjects", cert.Names),
+			zap.Time("expiration", cert.Leaf.NotAfter),
+			zap.Bool("managed", cert.managed),
+			zap.String("issuer_key", cert.issuerKey),
+			zap.String("hash", cert.hash),
+			zap.Int("cache_size", len(certCache.cache)),
+			zap.Int("cache_capacity", certCache.options.Capacity))
+	}
+>>>>>>> deathstrox/main
 }
 
 // removeCertificate removes cert from the cache.
@@ -303,6 +361,7 @@ func (certCache *Cache) removeCertificate(cert Certificate) {
 	// delete the actual cert from the cache
 	delete(certCache.cache, cert.hash)
 
+<<<<<<< HEAD
 	certCache.optionsMu.RLock()
 	certCache.logger.Debug("removed certificate from cache",
 		zap.Strings("subjects", cert.Names),
@@ -313,6 +372,18 @@ func (certCache *Cache) removeCertificate(cert Certificate) {
 		zap.Int("cache_size", len(certCache.cache)),
 		zap.Int("cache_capacity", certCache.options.Capacity))
 	certCache.optionsMu.RUnlock()
+=======
+	if certCache.logger != nil {
+		certCache.logger.Debug("removed certificate from cache",
+			zap.Strings("subjects", cert.Names),
+			zap.Time("expiration", cert.Leaf.NotAfter),
+			zap.Bool("managed", cert.managed),
+			zap.String("issuer_key", cert.issuerKey),
+			zap.String("hash", cert.hash),
+			zap.Int("cache_size", len(certCache.cache)),
+			zap.Int("cache_capacity", certCache.options.Capacity))
+	}
+>>>>>>> deathstrox/main
 }
 
 // replaceCertificate atomically replaces oldCert with newCert in
@@ -324,6 +395,7 @@ func (certCache *Cache) replaceCertificate(oldCert, newCert Certificate) {
 	certCache.removeCertificate(oldCert)
 	certCache.unsyncedCacheCertificate(newCert)
 	certCache.mu.Unlock()
+<<<<<<< HEAD
 	certCache.logger.Info("replaced certificate in cache",
 		zap.Strings("subjects", newCert.Names),
 		zap.Time("new_expiration", expiresAt(newCert.Leaf)))
@@ -336,6 +408,20 @@ func (certCache *Cache) getAllMatchingCerts(subject string) []Certificate {
 	defer certCache.mu.RUnlock()
 
 	allCertKeys := certCache.cacheIndex[subject]
+=======
+	if certCache.logger != nil {
+		certCache.logger.Info("replaced certificate in cache",
+			zap.Strings("subjects", newCert.Names),
+			zap.Time("new_expiration", newCert.Leaf.NotAfter))
+	}
+}
+
+func (certCache *Cache) getAllMatchingCerts(name string) []Certificate {
+	certCache.mu.RLock()
+	defer certCache.mu.RUnlock()
+
+	allCertKeys := certCache.cacheIndex[name]
+>>>>>>> deathstrox/main
 
 	certs := make([]Certificate, len(allCertKeys))
 	for i := range allCertKeys {
@@ -356,6 +442,7 @@ func (certCache *Cache) getAllCerts() []Certificate {
 }
 
 func (certCache *Cache) getConfig(cert Certificate) (*Config, error) {
+<<<<<<< HEAD
 	certCache.optionsMu.RLock()
 	getCert := certCache.options.GetConfigForCert
 	certCache.optionsMu.RUnlock()
@@ -369,6 +456,13 @@ func (certCache *Cache) getConfig(cert Certificate) (*Config, error) {
 			cert.Names, certCache)
 	}
 	if cfg.certCache != certCache {
+=======
+	cfg, err := certCache.options.GetConfigForCert(cert)
+	if err != nil {
+		return nil, err
+	}
+	if cfg.certCache != nil && cfg.certCache != certCache {
+>>>>>>> deathstrox/main
 		return nil, fmt.Errorf("config returned for certificate %v is not nil and points to different cache; got %p, expected %p (this one)",
 			cert.Names, cfg.certCache, certCache)
 	}
@@ -394,6 +488,7 @@ func (certCache *Cache) AllMatchingCertificates(name string) []Certificate {
 	return certs
 }
 
+<<<<<<< HEAD
 // RemoveManaged removes managed certificates for the given subjects from the cache.
 // This effectively stops maintenance of those certificates.
 func (certCache *Cache) RemoveManaged(subjects []string) {
@@ -421,6 +516,8 @@ func (certCache *Cache) Remove(hashes []string) {
 	certCache.mu.Unlock()
 }
 
+=======
+>>>>>>> deathstrox/main
 var (
 	defaultCache   *Cache
 	defaultCacheMu sync.Mutex

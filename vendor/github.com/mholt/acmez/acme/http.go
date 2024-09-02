@@ -41,7 +41,11 @@ import (
 // body will have been drained and closed, so there is no need to close it again.
 // It automatically retries in the case of network, I/O, or badNonce errors.
 func (c *Client) httpPostJWS(ctx context.Context, privateKey crypto.Signer,
+<<<<<<< HEAD
 	kid, endpoint string, input, output any) (*http.Response, error) {
+=======
+	kid, endpoint string, input, output interface{}) (*http.Response, error) {
+>>>>>>> deathstrox/main
 
 	if err := c.provision(ctx); err != nil {
 		return nil, err
@@ -130,7 +134,11 @@ func (c *Client) httpPostJWS(ctx context.Context, privateKey crypto.Signer,
 //
 // If there are any network or I/O errors, the request will be retried as safely and resiliently as
 // possible.
+<<<<<<< HEAD
 func (c *Client) httpReq(ctx context.Context, method, endpoint string, joseJSONPayload []byte, output any) (*http.Response, error) {
+=======
+func (c *Client) httpReq(ctx context.Context, method, endpoint string, joseJSONPayload []byte, output interface{}) (*http.Response, error) {
+>>>>>>> deathstrox/main
 	// even if the caller doesn't specify an output, we still use a
 	// buffer to store possible error response (we reset it later)
 	buf := bufPool.Get().(*bytes.Buffer)
@@ -373,6 +381,7 @@ func retryAfter(resp *http.Response, fallback time.Duration) (time.Duration, err
 	if resp == nil {
 		return fallback, nil
 	}
+<<<<<<< HEAD
 	raTime, err := retryAfterTime(resp)
 	if err != nil {
 		return fallback, fmt.Errorf("response had invalid Retry-After header: %v", err)
@@ -402,6 +411,21 @@ func retryAfterTime(resp *http.Response) (time.Time, error) {
 
 var bufPool = sync.Pool{
 	New: func() any {
+=======
+	raSeconds := resp.Header.Get("Retry-After")
+	if raSeconds == "" {
+		return fallback, nil
+	}
+	ra, err := strconv.Atoi(raSeconds)
+	if err != nil || ra < 0 {
+		return 0, fmt.Errorf("response had invalid Retry-After header: %s", raSeconds)
+	}
+	return time.Duration(ra) * time.Second, nil
+}
+
+var bufPool = sync.Pool{
+	New: func() interface{} {
+>>>>>>> deathstrox/main
 		return new(bytes.Buffer)
 	},
 }

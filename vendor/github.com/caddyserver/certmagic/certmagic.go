@@ -43,14 +43,20 @@ import (
 	"log"
 	"net"
 	"net/http"
+<<<<<<< HEAD
 	"os"
+=======
+>>>>>>> deathstrox/main
 	"sort"
 	"strings"
 	"sync"
 	"time"
+<<<<<<< HEAD
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+=======
+>>>>>>> deathstrox/main
 )
 
 // HTTPS serves mux for all domainNames using the HTTP
@@ -268,6 +274,7 @@ type OnDemandConfig struct {
 	// whether a certificate can be obtained or renewed
 	// for the given name. If an error is returned, the
 	// request will be denied.
+<<<<<<< HEAD
 	DecisionFunc func(ctx context.Context, name string) error
 
 	// Sources for getting new, unmanaged certificates.
@@ -280,6 +287,11 @@ type OnDemandConfig struct {
 	Managers []Manager
 
 	// List of allowed hostnames (SNI values) for
+=======
+	DecisionFunc func(name string) error
+
+	// List of whitelisted hostnames (SNI values) for
+>>>>>>> deathstrox/main
 	// deferred (on-demand) obtaining of certificates.
 	// Used only by higher-level functions in this
 	// package to persist the list of hostnames that
@@ -291,6 +303,7 @@ type OnDemandConfig struct {
 	// for higher-level convenience functions to be
 	// able to retain their convenience (alternative
 	// is: the user manually creates a DecisionFunc
+<<<<<<< HEAD
 	// that allows the same names it already passed
 	// into Manage) and without letting clients have
 	// their run of any domain names they want.
@@ -300,6 +313,22 @@ type OnDemandConfig struct {
 	// 110K names where 29s was spent checking for
 	// duplicates. Order is not important here.)
 	hostAllowlist map[string]struct{}
+=======
+	// that whitelists the same names it already
+	// passed into Manage) and without letting clients
+	// have their run of any domain names they want.
+	// Only enforced if len > 0.
+	hostWhitelist []string
+}
+
+func (o *OnDemandConfig) whitelistContains(name string) bool {
+	for _, n := range o.hostWhitelist {
+		if strings.EqualFold(n, name) {
+			return true
+		}
+	}
+	return false
+>>>>>>> deathstrox/main
 }
 
 // isLoopback returns true if the hostname of addr looks
@@ -406,6 +435,7 @@ type KeyGenerator interface {
 	GenerateKey() (crypto.PrivateKey, error)
 }
 
+<<<<<<< HEAD
 // IssuerPolicy is a type that enumerates how to
 // choose which issuer to use. EXPERIMENTAL and
 // subject to change.
@@ -423,6 +453,8 @@ const (
 	UseFirstRandomIssuer = "first_random"
 )
 
+=======
+>>>>>>> deathstrox/main
 // IssuedCertificate represents a certificate that was just issued.
 type IssuedCertificate struct {
 	// The PEM-encoding of DER-encoded ASN.1 data.
@@ -430,7 +462,11 @@ type IssuedCertificate struct {
 
 	// Any extra information to serialize alongside the
 	// certificate in storage.
+<<<<<<< HEAD
 	Metadata any
+=======
+	Metadata interface{}
+>>>>>>> deathstrox/main
 }
 
 // CertificateResource associates a certificate with its private
@@ -450,11 +486,19 @@ type CertificateResource struct {
 
 	// Any extra information associated with the certificate,
 	// usually provided by the issuer implementation.
+<<<<<<< HEAD
 	IssuerData any `json:"issuer_data,omitempty"`
 
 	// The unique string identifying the issuer of the
 	// certificate; internally useful for storage access.
 	issuerKey string
+=======
+	IssuerData interface{} `json:"issuer_data,omitempty"`
+
+	// The unique string identifying the issuer of the
+	// certificate; internally useful for storage access.
+	issuerKey string `json:"-"`
+>>>>>>> deathstrox/main
 }
 
 // NamesKey returns the list of SANs as a single string,
@@ -493,6 +537,7 @@ var Default = Config{
 	RenewalWindowRatio: DefaultRenewalWindowRatio,
 	Storage:            defaultFileStorage,
 	KeySource:          DefaultKeyGenerator,
+<<<<<<< HEAD
 	Logger:             defaultLogger,
 }
 
@@ -503,6 +548,10 @@ var defaultLogger = zap.New(zapcore.NewCore(
 	zap.InfoLevel,
 ))
 
+=======
+}
+
+>>>>>>> deathstrox/main
 const (
 	// HTTPChallengePort is the officially-designated port for
 	// the HTTP challenge according to the ACME spec.

@@ -3,6 +3,12 @@
 // license that can be found in the LICENSE file.
 
 //go:build linux && (ppc64 || ppc64le) && gc
+<<<<<<< HEAD
+=======
+// +build linux
+// +build ppc64 ppc64le
+// +build gc
+>>>>>>> deathstrox/main
 
 #include "textflag.h"
 

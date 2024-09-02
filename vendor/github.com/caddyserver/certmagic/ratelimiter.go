@@ -33,7 +33,11 @@ func NewRateLimiter(maxEvents int, window time.Duration) *RingBufferRateLimiter 
 		panic("maxEvents cannot be less than zero")
 	}
 	if maxEvents == 0 && window != 0 {
+<<<<<<< HEAD
 		panic("NewRateLimiter: invalid configuration: maxEvents = 0 and window != 0 would not allow any events")
+=======
+		panic("invalid configuration: maxEvents = 0 and window != 0 would not allow any events")
+>>>>>>> deathstrox/main
 	}
 	rbrl := &RingBufferRateLimiter{
 		window:  window,
@@ -144,15 +148,23 @@ func (r *RingBufferRateLimiter) MaxEvents() int {
 // the oldest events will be forgotten. If the new limit is
 // higher, the window will suddenly have capacity for new
 // reservations. It panics if maxEvents is 0 and window size
+<<<<<<< HEAD
 // is not zero; if setting both the events limit and the
 // window size to 0, call SetWindow() first.
+=======
+// is not zero.
+>>>>>>> deathstrox/main
 func (r *RingBufferRateLimiter) SetMaxEvents(maxEvents int) {
 	newRing := make([]time.Time, maxEvents)
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
 	if r.window != 0 && maxEvents == 0 {
+<<<<<<< HEAD
 		panic("SetMaxEvents: invalid configuration: maxEvents = 0 and window != 0 would not allow any events")
+=======
+		panic("invalid configuration: maxEvents = 0 and window != 0 would not allow any events")
+>>>>>>> deathstrox/main
 	}
 
 	// only make the change if the new limit is different
@@ -204,7 +216,11 @@ func (r *RingBufferRateLimiter) SetWindow(window time.Duration) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	if window != 0 && len(r.ring) == 0 {
+<<<<<<< HEAD
 		panic("SetWindow: invalid configuration: maxEvents = 0 and window != 0 would not allow any events")
+=======
+		panic("invalid configuration: maxEvents = 0 and window != 0 would not allow any events")
+>>>>>>> deathstrox/main
 	}
 	r.window = window
 }

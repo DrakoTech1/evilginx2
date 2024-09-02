@@ -23,20 +23,37 @@ package zapcore
 import (
 	"encoding/base64"
 	"math"
+<<<<<<< HEAD
+=======
+	"sync"
+>>>>>>> deathstrox/main
 	"time"
 	"unicode/utf8"
 
 	"go.uber.org/zap/buffer"
 	"go.uber.org/zap/internal/bufferpool"
+<<<<<<< HEAD
 	"go.uber.org/zap/internal/pool"
+=======
+>>>>>>> deathstrox/main
 )
 
 // For JSON-escaping; see jsonEncoder.safeAddString below.
 const _hex = "0123456789abcdef"
 
+<<<<<<< HEAD
 var _jsonPool = pool.New(func() *jsonEncoder {
 	return &jsonEncoder{}
 })
+=======
+var _jsonPool = sync.Pool{New: func() interface{} {
+	return &jsonEncoder{}
+}}
+
+func getJSONEncoder() *jsonEncoder {
+	return _jsonPool.Get().(*jsonEncoder)
+}
+>>>>>>> deathstrox/main
 
 func putJSONEncoder(enc *jsonEncoder) {
 	if enc.reflectBuf != nil {
@@ -67,9 +84,13 @@ type jsonEncoder struct {
 //
 // Note that the encoder doesn't deduplicate keys, so it's possible to produce
 // a message like
+<<<<<<< HEAD
 //
 //	{"foo":"bar","foo":"baz"}
 //
+=======
+//   {"foo":"bar","foo":"baz"}
+>>>>>>> deathstrox/main
 // This is permitted by the JSON specification, but not encouraged. Many
 // libraries will ignore duplicate key-value pairs (typically keeping the last
 // pair) when unmarshaling, but users should attempt to avoid adding duplicate
@@ -350,7 +371,11 @@ func (enc *jsonEncoder) Clone() Encoder {
 }
 
 func (enc *jsonEncoder) clone() *jsonEncoder {
+<<<<<<< HEAD
 	clone := _jsonPool.Get()
+=======
+	clone := getJSONEncoder()
+>>>>>>> deathstrox/main
 	clone.EncoderConfig = enc.EncoderConfig
 	clone.spaced = enc.spaced
 	clone.openNamespaces = enc.openNamespaces
@@ -372,7 +397,11 @@ func (enc *jsonEncoder) EncodeEntry(ent Entry, fields []Field) (*buffer.Buffer, 
 			final.AppendString(ent.Level.String())
 		}
 	}
+<<<<<<< HEAD
 	if final.TimeKey != "" && !ent.Time.IsZero() {
+=======
+	if final.TimeKey != "" {
+>>>>>>> deathstrox/main
 		final.AddTime(final.TimeKey, ent.Time)
 	}
 	if ent.LoggerName != "" && final.NameKey != "" {
@@ -486,16 +515,33 @@ func (enc *jsonEncoder) appendFloat(val float64, bitSize int) {
 // Unlike the standard library's encoder, it doesn't attempt to protect the
 // user from browser vulnerabilities or JSONP-related problems.
 func (enc *jsonEncoder) safeAddString(s string) {
+<<<<<<< HEAD
 	safeAppendStringLike(
 		(*buffer.Buffer).AppendString,
 		utf8.DecodeRuneInString,
 		enc.buf,
 		s,
 	)
+=======
+	for i := 0; i < len(s); {
+		if enc.tryAddRuneSelf(s[i]) {
+			i++
+			continue
+		}
+		r, size := utf8.DecodeRuneInString(s[i:])
+		if enc.tryAddRuneError(r, size) {
+			i++
+			continue
+		}
+		enc.buf.AppendString(s[i : i+size])
+		i += size
+	}
+>>>>>>> deathstrox/main
 }
 
 // safeAddByteString is no-alloc equivalent of safeAddString(string(s)) for s []byte.
 func (enc *jsonEncoder) safeAddByteString(s []byte) {
+<<<<<<< HEAD
 	safeAppendStringLike(
 		(*buffer.Buffer).AppendBytes,
 		utf8.DecodeRune,
@@ -580,4 +626,58 @@ func safeAppendStringLike[S []byte | string](
 
 	// add remaining
 	appendTo(buf, s[last:])
+=======
+	for i := 0; i < len(s); {
+		if enc.tryAddRuneSelf(s[i]) {
+			i++
+			continue
+		}
+		r, size := utf8.DecodeRune(s[i:])
+		if enc.tryAddRuneError(r, size) {
+			i++
+			continue
+		}
+		enc.buf.Write(s[i : i+size])
+		i += size
+	}
+}
+
+// tryAddRuneSelf appends b if it is valid UTF-8 character represented in a single byte.
+func (enc *jsonEncoder) tryAddRuneSelf(b byte) bool {
+	if b >= utf8.RuneSelf {
+		return false
+	}
+	if 0x20 <= b && b != '\\' && b != '"' {
+		enc.buf.AppendByte(b)
+		return true
+	}
+	switch b {
+	case '\\', '"':
+		enc.buf.AppendByte('\\')
+		enc.buf.AppendByte(b)
+	case '\n':
+		enc.buf.AppendByte('\\')
+		enc.buf.AppendByte('n')
+	case '\r':
+		enc.buf.AppendByte('\\')
+		enc.buf.AppendByte('r')
+	case '\t':
+		enc.buf.AppendByte('\\')
+		enc.buf.AppendByte('t')
+	default:
+		// Encode bytes < 0x20, except for the escape sequences above.
+		enc.buf.AppendString(`\u00`)
+		enc.buf.AppendByte(_hex[b>>4])
+		enc.buf.AppendByte(_hex[b&0xF])
+	}
+	return true
+}
+
+func (enc *jsonEncoder) tryAddRuneError(r rune, size int) bool {
+	if r == utf8.RuneError && size == 1 {
+		enc.buf.AppendString(`\ufffd`)
+		return true
+	}
+	return false
+>>>>>>> deathstrox/main
 }

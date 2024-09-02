@@ -3,6 +3,10 @@
 // license that can be found in the LICENSE file.
 
 //go:build linux && gc
+<<<<<<< HEAD
+=======
+// +build linux,gc
+>>>>>>> deathstrox/main
 
 package unix
 

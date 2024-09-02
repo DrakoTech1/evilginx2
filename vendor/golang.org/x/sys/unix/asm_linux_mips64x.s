@@ -3,6 +3,12 @@
 // license that can be found in the LICENSE file.
 
 //go:build linux && (mips64 || mips64le) && gc
+<<<<<<< HEAD
+=======
+// +build linux
+// +build mips64 mips64le
+// +build gc
+>>>>>>> deathstrox/main
 
 #include "textflag.h"
 

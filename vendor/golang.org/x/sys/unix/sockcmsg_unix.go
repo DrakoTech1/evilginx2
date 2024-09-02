@@ -3,6 +3,10 @@
 // license that can be found in the LICENSE file.
 
 //go:build aix || darwin || dragonfly || freebsd || linux || netbsd || openbsd || solaris || zos
+<<<<<<< HEAD
+=======
+// +build aix darwin dragonfly freebsd linux netbsd openbsd solaris zos
+>>>>>>> deathstrox/main
 
 // Socket control messages
 
@@ -51,6 +55,7 @@ func ParseSocketControlMessage(b []byte) ([]SocketControlMessage, error) {
 	return msgs, nil
 }
 
+<<<<<<< HEAD
 // ParseOneSocketControlMessage parses a single socket control message from b, returning the message header,
 // message data (a slice of b), and the remainder of b after that single message.
 // When there are no remaining messages, len(remainder) == 0.
@@ -65,6 +70,8 @@ func ParseOneSocketControlMessage(b []byte) (hdr Cmsghdr, data []byte, remainder
 	return *h, dbuf, remainder, nil
 }
 
+=======
+>>>>>>> deathstrox/main
 func socketControlMessageHeaderAndData(b []byte) (*Cmsghdr, []byte, error) {
 	h := (*Cmsghdr)(unsafe.Pointer(&b[0]))
 	if h.Len < SizeofCmsghdr || uint64(h.Len) > uint64(len(b)) {

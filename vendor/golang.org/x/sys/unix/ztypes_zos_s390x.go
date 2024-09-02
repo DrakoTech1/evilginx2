@@ -3,6 +3,10 @@
 // license that can be found in the LICENSE file.
 
 //go:build zos && s390x
+<<<<<<< HEAD
+=======
+// +build zos,s390x
+>>>>>>> deathstrox/main
 
 // Hand edited based on ztypes_linux_s390x.go
 // TODO: auto-generate.
@@ -338,7 +342,11 @@ type Statfs_t struct {
 	Flags   uint64
 }
 
+<<<<<<< HEAD
 type direntLE struct {
+=======
+type Dirent struct {
+>>>>>>> deathstrox/main
 	Reclen uint16
 	Namlen uint16
 	Ino    uint32
@@ -346,6 +354,7 @@ type direntLE struct {
 	Name   [256]byte
 }
 
+<<<<<<< HEAD
 type Dirent struct {
 	Ino    uint64
 	Off    int64
@@ -355,6 +364,8 @@ type Dirent struct {
 	_      [5]byte
 }
 
+=======
+>>>>>>> deathstrox/main
 type FdSet struct {
 	Bits [64]int32
 }

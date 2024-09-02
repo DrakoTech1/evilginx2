@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // Copyright (c) 2016-2022 Uber Technologies, Inc.
+=======
+// Copyright (c) 2016 Uber Technologies, Inc.
+>>>>>>> deathstrox/main
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,11 +28,14 @@ import "go.uber.org/multierr"
 
 type multiCore []Core
 
+<<<<<<< HEAD
 var (
 	_ leveledEnabler = multiCore(nil)
 	_ Core           = multiCore(nil)
 )
 
+=======
+>>>>>>> deathstrox/main
 // NewTee creates a Core that duplicates log entries into two or more
 // underlying Cores.
 //
@@ -53,6 +60,7 @@ func (mc multiCore) With(fields []Field) Core {
 	return clone
 }
 
+<<<<<<< HEAD
 func (mc multiCore) Level() Level {
 	minLvl := _maxLevel // mc is never empty
 	for i := range mc {
@@ -63,6 +71,8 @@ func (mc multiCore) Level() Level {
 	return minLvl
 }
 
+=======
+>>>>>>> deathstrox/main
 func (mc multiCore) Enabled(lvl Level) bool {
 	for i := range mc {
 		if mc[i].Enabled(lvl) {

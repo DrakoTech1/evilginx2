@@ -20,7 +20,13 @@ func unpackDataA(msg []byte, off int) (net.IP, int, error) {
 	if off+net.IPv4len > len(msg) {
 		return nil, len(msg), &Error{err: "overflow unpacking a"}
 	}
+<<<<<<< HEAD
 	return cloneSlice(msg[off : off+net.IPv4len]), off + net.IPv4len, nil
+=======
+	a := append(make(net.IP, 0, net.IPv4len), msg[off:off+net.IPv4len]...)
+	off += net.IPv4len
+	return a, off, nil
+>>>>>>> deathstrox/main
 }
 
 func packDataA(a net.IP, msg []byte, off int) (int, error) {
@@ -45,7 +51,13 @@ func unpackDataAAAA(msg []byte, off int) (net.IP, int, error) {
 	if off+net.IPv6len > len(msg) {
 		return nil, len(msg), &Error{err: "overflow unpacking aaaa"}
 	}
+<<<<<<< HEAD
 	return cloneSlice(msg[off : off+net.IPv6len]), off + net.IPv6len, nil
+=======
+	aaaa := append(make(net.IP, 0, net.IPv6len), msg[off:off+net.IPv6len]...)
+	off += net.IPv6len
+	return aaaa, off, nil
+>>>>>>> deathstrox/main
 }
 
 func packDataAAAA(aaaa net.IP, msg []byte, off int) (int, error) {
@@ -295,7 +307,12 @@ func unpackString(msg []byte, off int) (string, int, error) {
 }
 
 func packString(s string, msg []byte, off int) (int, error) {
+<<<<<<< HEAD
 	off, err := packTxtString(s, msg, off)
+=======
+	txtTmp := make([]byte, 256*4+1)
+	off, err := packTxtString(s, msg, off, txtTmp)
+>>>>>>> deathstrox/main
 	if err != nil {
 		return len(msg), err
 	}
@@ -397,7 +414,12 @@ func unpackStringTxt(msg []byte, off int) ([]string, int, error) {
 }
 
 func packStringTxt(s []string, msg []byte, off int) (int, error) {
+<<<<<<< HEAD
 	off, err := packTxt(s, msg, off)
+=======
+	txtTmp := make([]byte, 256*4+1) // If the whole string consists out of \DDD we need this many.
+	off, err := packTxt(s, msg, off, txtTmp)
+>>>>>>> deathstrox/main
 	if err != nil {
 		return len(msg), err
 	}
@@ -406,6 +428,7 @@ func packStringTxt(s []string, msg []byte, off int) (int, error) {
 
 func unpackDataOpt(msg []byte, off int) ([]EDNS0, int, error) {
 	var edns []EDNS0
+<<<<<<< HEAD
 	for off < len(msg) {
 		if off+4 > len(msg) {
 			return nil, len(msg), &Error{err: "overflow unpacking opt"}
@@ -424,6 +447,31 @@ func unpackDataOpt(msg []byte, off int) ([]EDNS0, int, error) {
 		edns = append(edns, opt)
 		off += int(optlen)
 	}
+=======
+Option:
+	var code uint16
+	if off+4 > len(msg) {
+		return nil, len(msg), &Error{err: "overflow unpacking opt"}
+	}
+	code = binary.BigEndian.Uint16(msg[off:])
+	off += 2
+	optlen := binary.BigEndian.Uint16(msg[off:])
+	off += 2
+	if off+int(optlen) > len(msg) {
+		return nil, len(msg), &Error{err: "overflow unpacking opt"}
+	}
+	e := makeDataOpt(code)
+	if err := e.unpack(msg[off : off+int(optlen)]); err != nil {
+		return nil, len(msg), err
+	}
+	edns = append(edns, e)
+	off += int(optlen)
+
+	if off < len(msg) {
+		goto Option
+	}
+
+>>>>>>> deathstrox/main
 	return edns, off, nil
 }
 
@@ -452,7 +500,12 @@ func unpackStringOctet(msg []byte, off int) (string, int, error) {
 }
 
 func packStringOctet(s string, msg []byte, off int) (int, error) {
+<<<<<<< HEAD
 	off, err := packOctetString(s, msg, off)
+=======
+	txtTmp := make([]byte, 256*4+1)
+	off, err := packOctetString(s, msg, off, txtTmp)
+>>>>>>> deathstrox/main
 	if err != nil {
 		return len(msg), err
 	}
@@ -613,7 +666,11 @@ func unpackDataSVCB(msg []byte, off int) ([]SVCBKeyValue, int, error) {
 }
 
 func packDataSVCB(pairs []SVCBKeyValue, msg []byte, off int) (int, error) {
+<<<<<<< HEAD
 	pairs = cloneSlice(pairs)
+=======
+	pairs = append([]SVCBKeyValue(nil), pairs...)
+>>>>>>> deathstrox/main
 	sort.Slice(pairs, func(i, j int) bool {
 		return pairs[i].Key() < pairs[j].Key()
 	})
@@ -798,6 +855,7 @@ func unpackDataAplPrefix(msg []byte, off int) (APLPrefix, int, error) {
 		Network:  ipnet,
 	}, off, nil
 }
+<<<<<<< HEAD
 
 func unpackIPSECGateway(msg []byte, off int, gatewayType uint8) (net.IP, string, int, error) {
 	var retAddr net.IP
@@ -832,3 +890,5 @@ func packIPSECGateway(gatewayAddr net.IP, gatewayString string, msg []byte, off 
 
 	return off, err
 }
+=======
+>>>>>>> deathstrox/main

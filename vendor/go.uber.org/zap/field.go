@@ -25,7 +25,10 @@ import (
 	"math"
 	"time"
 
+<<<<<<< HEAD
 	"go.uber.org/zap/internal/stacktrace"
+=======
+>>>>>>> deathstrox/main
 	"go.uber.org/zap/zapcore"
 )
 
@@ -375,7 +378,11 @@ func StackSkip(key string, skip int) Field {
 	// from expanding the zapcore.Field union struct to include a byte slice. Since
 	// taking a stacktrace is already so expensive (~10us), the extra allocation
 	// is okay.
+<<<<<<< HEAD
 	return String(key, stacktrace.Take(skip+1)) // skip StackSkip
+=======
+	return String(key, takeStacktrace(skip+1)) // skip StackSkip
+>>>>>>> deathstrox/main
 }
 
 // Duration constructs a field with the given key and value. The encoder
@@ -411,6 +418,7 @@ func Inline(val zapcore.ObjectMarshaler) Field {
 	}
 }
 
+<<<<<<< HEAD
 // Dict constructs a field containing the provided key-value pairs.
 // It acts similar to [Object], but with the fields specified as arguments.
 func Dict(key string, val ...Field) Field {
@@ -470,6 +478,8 @@ func (f anyFieldC[T]) Any(key string, val any) Field {
 	return f(key, v)
 }
 
+=======
+>>>>>>> deathstrox/main
 // Any takes a key and an arbitrary value and chooses the best way to represent
 // them as a field, falling back to a reflection-based approach only if
 // necessary.
@@ -478,6 +488,7 @@ func (f anyFieldC[T]) Any(key string, val any) Field {
 // them. To minimize surprises, []byte values are treated as binary blobs, byte
 // values are treated as uint8, and runes are always treated as integers.
 func Any(key string, value interface{}) Field {
+<<<<<<< HEAD
 	var c interface{ Any(string, any) Field }
 
 	switch value.(type) {
@@ -612,4 +623,134 @@ func Any(key string, value interface{}) Field {
 	}
 
 	return c.Any(key, value)
+=======
+	switch val := value.(type) {
+	case zapcore.ObjectMarshaler:
+		return Object(key, val)
+	case zapcore.ArrayMarshaler:
+		return Array(key, val)
+	case bool:
+		return Bool(key, val)
+	case *bool:
+		return Boolp(key, val)
+	case []bool:
+		return Bools(key, val)
+	case complex128:
+		return Complex128(key, val)
+	case *complex128:
+		return Complex128p(key, val)
+	case []complex128:
+		return Complex128s(key, val)
+	case complex64:
+		return Complex64(key, val)
+	case *complex64:
+		return Complex64p(key, val)
+	case []complex64:
+		return Complex64s(key, val)
+	case float64:
+		return Float64(key, val)
+	case *float64:
+		return Float64p(key, val)
+	case []float64:
+		return Float64s(key, val)
+	case float32:
+		return Float32(key, val)
+	case *float32:
+		return Float32p(key, val)
+	case []float32:
+		return Float32s(key, val)
+	case int:
+		return Int(key, val)
+	case *int:
+		return Intp(key, val)
+	case []int:
+		return Ints(key, val)
+	case int64:
+		return Int64(key, val)
+	case *int64:
+		return Int64p(key, val)
+	case []int64:
+		return Int64s(key, val)
+	case int32:
+		return Int32(key, val)
+	case *int32:
+		return Int32p(key, val)
+	case []int32:
+		return Int32s(key, val)
+	case int16:
+		return Int16(key, val)
+	case *int16:
+		return Int16p(key, val)
+	case []int16:
+		return Int16s(key, val)
+	case int8:
+		return Int8(key, val)
+	case *int8:
+		return Int8p(key, val)
+	case []int8:
+		return Int8s(key, val)
+	case string:
+		return String(key, val)
+	case *string:
+		return Stringp(key, val)
+	case []string:
+		return Strings(key, val)
+	case uint:
+		return Uint(key, val)
+	case *uint:
+		return Uintp(key, val)
+	case []uint:
+		return Uints(key, val)
+	case uint64:
+		return Uint64(key, val)
+	case *uint64:
+		return Uint64p(key, val)
+	case []uint64:
+		return Uint64s(key, val)
+	case uint32:
+		return Uint32(key, val)
+	case *uint32:
+		return Uint32p(key, val)
+	case []uint32:
+		return Uint32s(key, val)
+	case uint16:
+		return Uint16(key, val)
+	case *uint16:
+		return Uint16p(key, val)
+	case []uint16:
+		return Uint16s(key, val)
+	case uint8:
+		return Uint8(key, val)
+	case *uint8:
+		return Uint8p(key, val)
+	case []byte:
+		return Binary(key, val)
+	case uintptr:
+		return Uintptr(key, val)
+	case *uintptr:
+		return Uintptrp(key, val)
+	case []uintptr:
+		return Uintptrs(key, val)
+	case time.Time:
+		return Time(key, val)
+	case *time.Time:
+		return Timep(key, val)
+	case []time.Time:
+		return Times(key, val)
+	case time.Duration:
+		return Duration(key, val)
+	case *time.Duration:
+		return Durationp(key, val)
+	case []time.Duration:
+		return Durations(key, val)
+	case error:
+		return NamedError(key, val)
+	case []error:
+		return Errors(key, val)
+	case fmt.Stringer:
+		return Stringer(key, val)
+	default:
+		return Reflect(key, val)
+	}
+>>>>>>> deathstrox/main
 }

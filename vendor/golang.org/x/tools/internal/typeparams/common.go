@@ -23,7 +23,10 @@
 package typeparams
 
 import (
+<<<<<<< HEAD
 	"fmt"
+=======
+>>>>>>> deathstrox/main
 	"go/ast"
 	"go/token"
 	"go/types"
@@ -42,7 +45,11 @@ func UnpackIndexExpr(n ast.Node) (x ast.Expr, lbrack token.Pos, indices []ast.Ex
 	switch e := n.(type) {
 	case *ast.IndexExpr:
 		return e.X, e.Lbrack, []ast.Expr{e.Index}, e.Rbrack
+<<<<<<< HEAD
 	case *ast.IndexListExpr:
+=======
+	case *IndexListExpr:
+>>>>>>> deathstrox/main
 		return e.X, e.Lbrack, e.Indices, e.Rbrack
 	}
 	return nil, token.NoPos, nil, token.NoPos
@@ -63,7 +70,11 @@ func PackIndexExpr(x ast.Expr, lbrack token.Pos, indices []ast.Expr, rbrack toke
 			Rbrack: rbrack,
 		}
 	default:
+<<<<<<< HEAD
 		return &ast.IndexListExpr{
+=======
+		return &IndexListExpr{
+>>>>>>> deathstrox/main
 			X:       x,
 			Lbrack:  lbrack,
 			Indices: indices,
@@ -74,7 +85,11 @@ func PackIndexExpr(x ast.Expr, lbrack token.Pos, indices []ast.Expr, rbrack toke
 
 // IsTypeParam reports whether t is a type parameter.
 func IsTypeParam(t types.Type) bool {
+<<<<<<< HEAD
 	_, ok := t.(*types.TypeParam)
+=======
+	_, ok := t.(*TypeParam)
+>>>>>>> deathstrox/main
 	return ok
 }
 
@@ -88,6 +103,10 @@ func IsTypeParam(t types.Type) bool {
 func OriginMethod(fn *types.Func) *types.Func {
 	recv := fn.Type().(*types.Signature).Recv()
 	if recv == nil {
+<<<<<<< HEAD
+=======
+
+>>>>>>> deathstrox/main
 		return fn
 	}
 	base := recv.Type()
@@ -100,6 +119,7 @@ func OriginMethod(fn *types.Func) *types.Func {
 		// Receiver is a *types.Interface.
 		return fn
 	}
+<<<<<<< HEAD
 	if named.TypeParams().Len() == 0 {
 		// Receiver base has no type parameters, so we can avoid the lookup below.
 		return fn
@@ -131,6 +151,14 @@ func OriginMethod(fn *types.Func) *types.Func {
 		panic(fmt.Sprintf("missing origin method for %s.%s; named == origin: %t, named.NumMethods(): %d, origin.NumMethods(): %d", named, fn, named == orig, named.NumMethods(), orig.NumMethods()))
 	}
 
+=======
+	if ForNamed(named).Len() == 0 {
+		// Receiver base has no type parameters, so we can avoid the lookup below.
+		return fn
+	}
+	orig := NamedTypeOrigin(named)
+	gfn, _, _ := types.LookupFieldOrMethod(orig, true, fn.Pkg(), fn.Name())
+>>>>>>> deathstrox/main
 	return gfn.(*types.Func)
 }
 
@@ -157,7 +185,11 @@ func OriginMethod(fn *types.Func) *types.Func {
 //
 // In this case, GenericAssignableTo reports that instantiations of Container
 // are assignable to the corresponding instantiation of Interface.
+<<<<<<< HEAD
 func GenericAssignableTo(ctxt *types.Context, V, T types.Type) bool {
+=======
+func GenericAssignableTo(ctxt *Context, V, T types.Type) bool {
+>>>>>>> deathstrox/main
 	// If V and T are not both named, or do not have matching non-empty type
 	// parameter lists, fall back on types.AssignableTo.
 
@@ -167,9 +199,15 @@ func GenericAssignableTo(ctxt *types.Context, V, T types.Type) bool {
 		return types.AssignableTo(V, T)
 	}
 
+<<<<<<< HEAD
 	vtparams := VN.TypeParams()
 	ttparams := TN.TypeParams()
 	if vtparams.Len() == 0 || vtparams.Len() != ttparams.Len() || VN.TypeArgs().Len() != 0 || TN.TypeArgs().Len() != 0 {
+=======
+	vtparams := ForNamed(VN)
+	ttparams := ForNamed(TN)
+	if vtparams.Len() == 0 || vtparams.Len() != ttparams.Len() || NamedTypeArgs(VN).Len() != 0 || NamedTypeArgs(TN).Len() != 0 {
+>>>>>>> deathstrox/main
 		return types.AssignableTo(V, T)
 	}
 
@@ -182,7 +220,11 @@ func GenericAssignableTo(ctxt *types.Context, V, T types.Type) bool {
 	// Minor optimization: ensure we share a context across the two
 	// instantiations below.
 	if ctxt == nil {
+<<<<<<< HEAD
 		ctxt = types.NewContext()
+=======
+		ctxt = NewContext()
+>>>>>>> deathstrox/main
 	}
 
 	var targs []types.Type
@@ -190,12 +232,20 @@ func GenericAssignableTo(ctxt *types.Context, V, T types.Type) bool {
 		targs = append(targs, vtparams.At(i))
 	}
 
+<<<<<<< HEAD
 	vinst, err := types.Instantiate(ctxt, V, targs, true)
+=======
+	vinst, err := Instantiate(ctxt, V, targs, true)
+>>>>>>> deathstrox/main
 	if err != nil {
 		panic("type parameters should satisfy their own constraints")
 	}
 
+<<<<<<< HEAD
 	tinst, err := types.Instantiate(ctxt, T, targs, true)
+=======
+	tinst, err := Instantiate(ctxt, T, targs, true)
+>>>>>>> deathstrox/main
 	if err != nil {
 		return false
 	}

@@ -73,11 +73,19 @@ func (am *ACMEIssuer) distributedHTTPChallengeSolver(w http.ResponseWriter, r *h
 	host := hostOnly(r.Host)
 	chalInfo, distributed, err := am.config.getChallengeInfo(r.Context(), host)
 	if err != nil {
+<<<<<<< HEAD
 		am.Logger.Error("looking up info for HTTP challenge",
 			zap.String("host", host),
 			zap.String("remote_addr", r.RemoteAddr),
 			zap.String("user_agent", r.Header.Get("User-Agent")),
 			zap.Error(err))
+=======
+		if am.Logger != nil {
+			am.Logger.Error("looking up info for HTTP challenge",
+				zap.String("host", host),
+				zap.Error(err))
+		}
+>>>>>>> deathstrox/main
 		return false
 	}
 	return solveHTTPChallenge(am.Logger, w, r, chalInfo.Challenge, distributed)
@@ -95,11 +103,21 @@ func solveHTTPChallenge(logger *zap.Logger, w http.ResponseWriter, r *http.Reque
 		w.Header().Add("Content-Type", "text/plain")
 		w.Write([]byte(challenge.KeyAuthorization))
 		r.Close = true
+<<<<<<< HEAD
 		logger.Info("served key authentication",
 			zap.String("identifier", challenge.Identifier.Value),
 			zap.String("challenge", "http-01"),
 			zap.String("remote", r.RemoteAddr),
 			zap.Bool("distributed", distributed))
+=======
+		if logger != nil {
+			logger.Info("served key authentication",
+				zap.String("identifier", challenge.Identifier.Value),
+				zap.String("challenge", "http-01"),
+				zap.String("remote", r.RemoteAddr),
+				zap.Bool("distributed", distributed))
+		}
+>>>>>>> deathstrox/main
 		return true
 	}
 	return false

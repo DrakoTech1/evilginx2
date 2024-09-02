@@ -21,6 +21,7 @@
 // implementing solvers and using the certificates. It DOES NOT manage
 // certificates, it only gets them from the ACME server.
 //
+<<<<<<< HEAD
 // NOTE: This package's primary purpose is to get a certificate, not manage it.
 // Most users actually want to *manage* certificates over the lifetime of
 // long-running programs such as HTTPS or TLS servers, and should use CertMagic
@@ -28,6 +29,12 @@
 //
 // COMPATIBILITY: Exported identifiers that are related to draft specifications
 // are subject to change or removal without a major version bump.
+=======
+// NOTE: This package's main function is to get a certificate, not manage it.
+// Most users will want to *manage* certificates over the lifetime of a
+// long-running program such as a HTTPS or TLS server, and should use CertMagic
+// instead: https://github.com/caddyserver/certmagic.
+>>>>>>> deathstrox/main
 package acmez
 
 import (
@@ -50,6 +57,13 @@ import (
 	"golang.org/x/net/idna"
 )
 
+<<<<<<< HEAD
+=======
+func init() {
+	weakrand.Seed(time.Now().UnixNano())
+}
+
+>>>>>>> deathstrox/main
 // Client is a high-level API for ACME operations. It wraps
 // a lower-level ACME client with useful functions to make
 // common flows easier, especially for the issuance of
@@ -59,6 +73,7 @@ type Client struct {
 
 	// Map of solvers keyed by name of the challenge type.
 	ChallengeSolvers map[string]Solver
+<<<<<<< HEAD
 }
 
 // CSRSource is an interface that provides users of this
@@ -94,6 +109,50 @@ func (c *Client) ObtainCertificateUsingCSRSource(ctx context.Context, account ac
 
 	var err error
 	order := acme.Order{Identifiers: identifiers}
+=======
+
+	// An optional logger. Default: no logs
+	Logger *zap.Logger
+}
+
+// ObtainCertificateUsingCSR obtains all resulting certificate chains using the given CSR, which
+// must be completely and properly filled out (particularly its DNSNames and Raw fields - this
+// usually involves creating a template CSR, then calling x509.CreateCertificateRequest, then
+// x509.ParseCertificateRequest on the output). The Subject CommonName is NOT considered.
+//
+// It implements every single part of the ACME flow described in RFC 8555 §7.1 with the exception
+// of "Create account" because this method signature does not have a way to return the udpated
+// account object. The account's status MUST be "valid" in order to succeed.
+//
+// As far as SANs go, this method currently only supports DNSNames and IPAddresses on the csr.
+func (c *Client) ObtainCertificateUsingCSR(ctx context.Context, account acme.Account, csr *x509.CertificateRequest) ([]acme.Certificate, error) {
+	if account.Status != acme.StatusValid {
+		return nil, fmt.Errorf("account status is not valid: %s", account.Status)
+	}
+	if csr == nil {
+		return nil, fmt.Errorf("missing CSR")
+	}
+
+	var ids []acme.Identifier
+	for _, name := range csr.DNSNames {
+		ids = append(ids, acme.Identifier{
+			Type:  "dns", // RFC 8555 §9.7.7
+			Value: name,
+		})
+	}
+	for _, ip := range csr.IPAddresses {
+		ids = append(ids, acme.Identifier{
+			Type:  "ip", // RFC 8738
+			Value: ip.String(),
+		})
+	}
+	if len(ids) == 0 {
+		return nil, fmt.Errorf("no identifiers found")
+	}
+
+	order := acme.Order{Identifiers: ids}
+	var err error
+>>>>>>> deathstrox/main
 
 	// remember which challenge types failed for which identifiers
 	// so we can retry with other challenge types
@@ -156,6 +215,7 @@ func (c *Client) ObtainCertificateUsingCSRSource(ctx context.Context, account ac
 		c.Logger.Info("validations succeeded; finalizing order", zap.String("order", order.Location))
 	}
 
+<<<<<<< HEAD
 	// get the CSR from its source
 	csr, err := source.CSR(ctx)
 	if err != nil {
@@ -170,6 +230,8 @@ func (c *Client) ObtainCertificateUsingCSRSource(ctx context.Context, account ac
 		return nil, fmt.Errorf("validating order identifiers: %w", err)
 	}
 
+=======
+>>>>>>> deathstrox/main
 	// finalize the order, which requests the CA to issue us a certificate
 	order, err = c.Client.FinalizeOrder(ctx, account, order, csr.Raw)
 	if err != nil {
@@ -196,6 +258,7 @@ func (c *Client) ObtainCertificateUsingCSRSource(ctx context.Context, account ac
 	return certChains, nil
 }
 
+<<<<<<< HEAD
 // validateOrderIdentifiers checks if the ACME identifiers provided for the
 // Order match the identifiers that are in the CSR. A mismatch between the two
 // should result the certificate not being issued by the ACME server, but
@@ -270,6 +333,8 @@ func (c *Client) ObtainCertificateUsingCSR(ctx context.Context, account acme.Acc
 	return c.ObtainCertificateUsingCSRSource(ctx, account, ids, csrSource)
 }
 
+=======
+>>>>>>> deathstrox/main
 // ObtainCertificate is the same as ObtainCertificateUsingCSR, except it is a slight wrapper
 // that generates the CSR for you. Doing so requires the private key you will be using for
 // the certificate (different from the account private key). It obtains a certificate for
@@ -342,12 +407,19 @@ func (c *Client) getAuthzObjects(ctx context.Context, account acme.Account, orde
 			preferredChallenges.addUnique(chal.Type)
 		}
 		if preferredWasEmpty {
+<<<<<<< HEAD
 			randomSourceMu.Lock()
 			randomSource.Shuffle(len(preferredChallenges), func(i, j int) {
 				preferredChallenges[i], preferredChallenges[j] =
 					preferredChallenges[j], preferredChallenges[i]
 			})
 			randomSourceMu.Unlock()
+=======
+			weakrand.Shuffle(len(preferredChallenges), func(i, j int) {
+				preferredChallenges[i], preferredChallenges[j] =
+					preferredChallenges[j], preferredChallenges[i]
+			})
+>>>>>>> deathstrox/main
 		}
 		preferredChallengesMu.Unlock()
 
@@ -489,11 +561,14 @@ func (c *Client) presentForNextChallenge(ctx context.Context, authz *authzState)
 
 func (c *Client) initiateCurrentChallenge(ctx context.Context, authz *authzState) error {
 	if authz.Status != acme.StatusPending {
+<<<<<<< HEAD
 		if c.Logger != nil {
 			c.Logger.Debug("skipping challenge initiation because authorization is not pending",
 				zap.String("identifier", authz.IdentifierValue()),
 				zap.String("authz_status", authz.Status))
 		}
+=======
+>>>>>>> deathstrox/main
 		return nil
 	}
 
@@ -503,6 +578,7 @@ func (c *Client) initiateCurrentChallenge(ctx context.Context, authz *authzState
 	// that's probably OK, since we can't finalize the order until the slow
 	// challenges are done too)
 	if waiter, ok := authz.currentSolver.(Waiter); ok {
+<<<<<<< HEAD
 		if c.Logger != nil {
 			c.Logger.Debug("waiting for solver before continuing",
 				zap.String("identifier", authz.IdentifierValue()),
@@ -514,11 +590,15 @@ func (c *Client) initiateCurrentChallenge(ctx context.Context, authz *authzState
 				zap.String("identifier", authz.IdentifierValue()),
 				zap.String("challenge_type", authz.currentChallenge.Type))
 		}
+=======
+		err := waiter.Wait(ctx, authz.currentChallenge)
+>>>>>>> deathstrox/main
 		if err != nil {
 			return fmt.Errorf("waiting for solver %T to be ready: %w", authz.currentSolver, err)
 		}
 	}
 
+<<<<<<< HEAD
 	// for device-attest-01 challenges the client needs to present a payload
 	// that will be validated by the CA.
 	if payloader, ok := authz.currentSolver.(Payloader); ok {
@@ -539,6 +619,8 @@ func (c *Client) initiateCurrentChallenge(ctx context.Context, authz *authzState
 		authz.currentChallenge.Payload = p
 	}
 
+=======
+>>>>>>> deathstrox/main
 	// tell the server to initiate the challenge
 	var err error
 	authz.currentChallenge, err = c.Client.InitiateChallenge(ctx, authz.account, authz.currentChallenge)
@@ -648,6 +730,7 @@ func (c *Client) pollAuthorization(ctx context.Context, account acme.Account, au
 		}
 		return fmt.Errorf("[%s] %w", authz.Authorization.IdentifierValue(), err)
 	}
+<<<<<<< HEAD
 
 	if c.Logger != nil {
 		c.Logger.Info("authorization finalized",
@@ -655,6 +738,8 @@ func (c *Client) pollAuthorization(ctx context.Context, account acme.Account, au
 			zap.String("authz_status", authz.Status))
 	}
 
+=======
+>>>>>>> deathstrox/main
 	return nil
 }
 
@@ -794,11 +879,17 @@ type retryableErr struct{ error }
 
 func (re retryableErr) Unwrap() error { return re.error }
 
+<<<<<<< HEAD
 // Keep a list of challenges we've seen offered by servers, ordered by success rate.
+=======
+// Keep a list of challenges we've seen offered by servers,
+// and prefer keep an ordered list of
+>>>>>>> deathstrox/main
 var (
 	preferredChallenges   challengeTypes
 	preferredChallengesMu sync.Mutex
 )
+<<<<<<< HEAD
 
 // Best practice is to avoid the default RNG source and seed our own;
 // custom sources are not safe for concurrent use, hence the mutex.
@@ -806,3 +897,5 @@ var (
 	randomSource   = weakrand.New(weakrand.NewSource(time.Now().UnixNano()))
 	randomSourceMu sync.Mutex
 )
+=======
+>>>>>>> deathstrox/main

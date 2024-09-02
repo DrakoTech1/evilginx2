@@ -31,7 +31,10 @@ import (
 const (
 	_oddNumberErrMsg    = "Ignored key without a value."
 	_nonStringKeyErrMsg = "Ignored key-value pairs with non-string keys."
+<<<<<<< HEAD
 	_multipleErrMsg     = "Multiple errors without a key."
+=======
+>>>>>>> deathstrox/main
 )
 
 // A SugaredLogger wraps the base Logger functionality in a slower, but less
@@ -39,6 +42,7 @@ const (
 // method.
 //
 // Unlike the Logger, the SugaredLogger doesn't insist on structured logging.
+<<<<<<< HEAD
 // For each log level, it exposes four methods:
 //
 //   - methods named after the log level for log.Print-style logging
@@ -52,6 +56,12 @@ const (
 //	Infow(...any)          Structured logging (read as "info with")
 //	Infof(string, ...any)  Printf-style logging
 //	Infoln(...any)         Println-style logging
+=======
+// For each log level, it exposes three methods: one for loosely-typed
+// structured logging, one for println-style formatting, and one for
+// printf-style formatting. For example, SugaredLoggers can produce InfoLevel
+// output with Infow ("info with" structured context), Info, or Infof.
+>>>>>>> deathstrox/main
 type SugaredLogger struct {
 	base *Logger
 }
@@ -71,6 +81,7 @@ func (s *SugaredLogger) Named(name string) *SugaredLogger {
 	return &SugaredLogger{base: s.base.Named(name)}
 }
 
+<<<<<<< HEAD
 // WithOptions clones the current SugaredLogger, applies the supplied Options,
 // and returns the result. It's safe to use concurrently.
 func (s *SugaredLogger) WithOptions(opts ...Option) *SugaredLogger {
@@ -81,12 +92,15 @@ func (s *SugaredLogger) WithOptions(opts ...Option) *SugaredLogger {
 	return &SugaredLogger{base: base}
 }
 
+=======
+>>>>>>> deathstrox/main
 // With adds a variadic number of fields to the logging context. It accepts a
 // mix of strongly-typed Field objects and loosely-typed key-value pairs. When
 // processing pairs, the first element of the pair is used as the field key
 // and the second as the field value.
 //
 // For example,
+<<<<<<< HEAD
 //
 //	 sugaredLogger.With(
 //	   "hello", "world",
@@ -105,6 +119,23 @@ func (s *SugaredLogger) WithOptions(opts ...Option) *SugaredLogger {
 //	  Int("count", 42),
 //	  Object("user", User{Name: "alice"}),
 //	)
+=======
+//   sugaredLogger.With(
+//     "hello", "world",
+//     "failure", errors.New("oh no"),
+//     Stack(),
+//     "count", 42,
+//     "user", User{Name: "alice"},
+//  )
+// is the equivalent of
+//   unsugared.With(
+//     String("hello", "world"),
+//     String("failure", "oh no"),
+//     Stack(),
+//     Int("count", 42),
+//     Object("user", User{Name: "alice"}),
+//   )
+>>>>>>> deathstrox/main
 //
 // Note that the keys in key-value pairs should be strings. In development,
 // passing a non-string key panics. In production, the logger is more
@@ -115,6 +146,7 @@ func (s *SugaredLogger) With(args ...interface{}) *SugaredLogger {
 	return &SugaredLogger{base: s.base.With(s.sweetenFields(args)...)}
 }
 
+<<<<<<< HEAD
 // WithLazy adds a variadic number of fields to the logging context lazily.
 // The fields are evaluated only if the logger is further chained with [With]
 // or is written to with any of the log level methods.
@@ -145,47 +177,76 @@ func (s *SugaredLogger) Log(lvl zapcore.Level, args ...interface{}) {
 
 // Debug logs the provided arguments at [DebugLevel].
 // Spaces are added between arguments when neither is a string.
+=======
+// Debug uses fmt.Sprint to construct and log a message.
+>>>>>>> deathstrox/main
 func (s *SugaredLogger) Debug(args ...interface{}) {
 	s.log(DebugLevel, "", args, nil)
 }
 
+<<<<<<< HEAD
 // Info logs the provided arguments at [InfoLevel].
 // Spaces are added between arguments when neither is a string.
+=======
+// Info uses fmt.Sprint to construct and log a message.
+>>>>>>> deathstrox/main
 func (s *SugaredLogger) Info(args ...interface{}) {
 	s.log(InfoLevel, "", args, nil)
 }
 
+<<<<<<< HEAD
 // Warn logs the provided arguments at [WarnLevel].
 // Spaces are added between arguments when neither is a string.
+=======
+// Warn uses fmt.Sprint to construct and log a message.
+>>>>>>> deathstrox/main
 func (s *SugaredLogger) Warn(args ...interface{}) {
 	s.log(WarnLevel, "", args, nil)
 }
 
+<<<<<<< HEAD
 // Error logs the provided arguments at [ErrorLevel].
 // Spaces are added between arguments when neither is a string.
+=======
+// Error uses fmt.Sprint to construct and log a message.
+>>>>>>> deathstrox/main
 func (s *SugaredLogger) Error(args ...interface{}) {
 	s.log(ErrorLevel, "", args, nil)
 }
 
+<<<<<<< HEAD
 // DPanic logs the provided arguments at [DPanicLevel].
 // In development, the logger then panics. (See [DPanicLevel] for details.)
 // Spaces are added between arguments when neither is a string.
+=======
+// DPanic uses fmt.Sprint to construct and log a message. In development, the
+// logger then panics. (See DPanicLevel for details.)
+>>>>>>> deathstrox/main
 func (s *SugaredLogger) DPanic(args ...interface{}) {
 	s.log(DPanicLevel, "", args, nil)
 }
 
+<<<<<<< HEAD
 // Panic constructs a message with the provided arguments and panics.
 // Spaces are added between arguments when neither is a string.
+=======
+// Panic uses fmt.Sprint to construct and log a message, then panics.
+>>>>>>> deathstrox/main
 func (s *SugaredLogger) Panic(args ...interface{}) {
 	s.log(PanicLevel, "", args, nil)
 }
 
+<<<<<<< HEAD
 // Fatal constructs a message with the provided arguments and calls os.Exit.
 // Spaces are added between arguments when neither is a string.
+=======
+// Fatal uses fmt.Sprint to construct and log a message, then calls os.Exit.
+>>>>>>> deathstrox/main
 func (s *SugaredLogger) Fatal(args ...interface{}) {
 	s.log(FatalLevel, "", args, nil)
 }
 
+<<<<<<< HEAD
 // Logf formats the message according to the format specifier
 // and logs it at provided level.
 func (s *SugaredLogger) Logf(lvl zapcore.Level, template string, args ...interface{}) {
@@ -194,59 +255,94 @@ func (s *SugaredLogger) Logf(lvl zapcore.Level, template string, args ...interfa
 
 // Debugf formats the message according to the format specifier
 // and logs it at [DebugLevel].
+=======
+// Debugf uses fmt.Sprintf to log a templated message.
+>>>>>>> deathstrox/main
 func (s *SugaredLogger) Debugf(template string, args ...interface{}) {
 	s.log(DebugLevel, template, args, nil)
 }
 
+<<<<<<< HEAD
 // Infof formats the message according to the format specifier
 // and logs it at [InfoLevel].
+=======
+// Infof uses fmt.Sprintf to log a templated message.
+>>>>>>> deathstrox/main
 func (s *SugaredLogger) Infof(template string, args ...interface{}) {
 	s.log(InfoLevel, template, args, nil)
 }
 
+<<<<<<< HEAD
 // Warnf formats the message according to the format specifier
 // and logs it at [WarnLevel].
+=======
+// Warnf uses fmt.Sprintf to log a templated message.
+>>>>>>> deathstrox/main
 func (s *SugaredLogger) Warnf(template string, args ...interface{}) {
 	s.log(WarnLevel, template, args, nil)
 }
 
+<<<<<<< HEAD
 // Errorf formats the message according to the format specifier
 // and logs it at [ErrorLevel].
+=======
+// Errorf uses fmt.Sprintf to log a templated message.
+>>>>>>> deathstrox/main
 func (s *SugaredLogger) Errorf(template string, args ...interface{}) {
 	s.log(ErrorLevel, template, args, nil)
 }
 
+<<<<<<< HEAD
 // DPanicf formats the message according to the format specifier
 // and logs it at [DPanicLevel].
 // In development, the logger then panics. (See [DPanicLevel] for details.)
+=======
+// DPanicf uses fmt.Sprintf to log a templated message. In development, the
+// logger then panics. (See DPanicLevel for details.)
+>>>>>>> deathstrox/main
 func (s *SugaredLogger) DPanicf(template string, args ...interface{}) {
 	s.log(DPanicLevel, template, args, nil)
 }
 
+<<<<<<< HEAD
 // Panicf formats the message according to the format specifier
 // and panics.
+=======
+// Panicf uses fmt.Sprintf to log a templated message, then panics.
+>>>>>>> deathstrox/main
 func (s *SugaredLogger) Panicf(template string, args ...interface{}) {
 	s.log(PanicLevel, template, args, nil)
 }
 
+<<<<<<< HEAD
 // Fatalf formats the message according to the format specifier
 // and calls os.Exit.
+=======
+// Fatalf uses fmt.Sprintf to log a templated message, then calls os.Exit.
+>>>>>>> deathstrox/main
 func (s *SugaredLogger) Fatalf(template string, args ...interface{}) {
 	s.log(FatalLevel, template, args, nil)
 }
 
+<<<<<<< HEAD
 // Logw logs a message with some additional context. The variadic key-value
 // pairs are treated as they are in With.
 func (s *SugaredLogger) Logw(lvl zapcore.Level, msg string, keysAndValues ...interface{}) {
 	s.log(lvl, msg, nil, keysAndValues)
 }
 
+=======
+>>>>>>> deathstrox/main
 // Debugw logs a message with some additional context. The variadic key-value
 // pairs are treated as they are in With.
 //
 // When debug-level logging is disabled, this is much faster than
+<<<<<<< HEAD
 //
 //	s.With(keysAndValues).Debug(msg)
+=======
+//  s.With(keysAndValues).Debug(msg)
+>>>>>>> deathstrox/main
 func (s *SugaredLogger) Debugw(msg string, keysAndValues ...interface{}) {
 	s.log(DebugLevel, msg, nil, keysAndValues)
 }
@@ -288,6 +384,7 @@ func (s *SugaredLogger) Fatalw(msg string, keysAndValues ...interface{}) {
 	s.log(FatalLevel, msg, nil, keysAndValues)
 }
 
+<<<<<<< HEAD
 // Logln logs a message at provided level.
 // Spaces are always added between arguments.
 func (s *SugaredLogger) Logln(lvl zapcore.Level, args ...interface{}) {
@@ -337,12 +434,17 @@ func (s *SugaredLogger) Fatalln(args ...interface{}) {
 	s.logln(FatalLevel, args, nil)
 }
 
+=======
+>>>>>>> deathstrox/main
 // Sync flushes any buffered log entries.
 func (s *SugaredLogger) Sync() error {
 	return s.base.Sync()
 }
 
+<<<<<<< HEAD
 // log message with Sprint, Sprintf, or neither.
+=======
+>>>>>>> deathstrox/main
 func (s *SugaredLogger) log(lvl zapcore.Level, template string, fmtArgs []interface{}, context []interface{}) {
 	// If logging at this level is completely disabled, skip the overhead of
 	// string formatting.
@@ -356,6 +458,7 @@ func (s *SugaredLogger) log(lvl zapcore.Level, template string, fmtArgs []interf
 	}
 }
 
+<<<<<<< HEAD
 // logln message with Sprintln
 func (s *SugaredLogger) logln(lvl zapcore.Level, fmtArgs []interface{}, context []interface{}) {
 	if lvl < DPanicLevel && !s.base.Core().Enabled(lvl) {
@@ -368,6 +471,8 @@ func (s *SugaredLogger) logln(lvl zapcore.Level, fmtArgs []interface{}, context 
 	}
 }
 
+=======
+>>>>>>> deathstrox/main
 // getMessage format with Sprint, Sprintf, or neither.
 func getMessage(template string, fmtArgs []interface{}) string {
 	if len(fmtArgs) == 0 {
@@ -386,17 +491,21 @@ func getMessage(template string, fmtArgs []interface{}) string {
 	return fmt.Sprint(fmtArgs...)
 }
 
+<<<<<<< HEAD
 // getMessageln format with Sprintln.
 func getMessageln(fmtArgs []interface{}) string {
 	msg := fmt.Sprintln(fmtArgs...)
 	return msg[:len(msg)-1]
 }
 
+=======
+>>>>>>> deathstrox/main
 func (s *SugaredLogger) sweetenFields(args []interface{}) []Field {
 	if len(args) == 0 {
 		return nil
 	}
 
+<<<<<<< HEAD
 	var (
 		// Allocate enough space for the worst case; if users pass only structured
 		// fields, we shouldn't penalize them with extra allocations.
@@ -404,6 +513,12 @@ func (s *SugaredLogger) sweetenFields(args []interface{}) []Field {
 		invalid   invalidPairs
 		seenError bool
 	)
+=======
+	// Allocate enough space for the worst case; if users pass only structured
+	// fields, we shouldn't penalize them with extra allocations.
+	fields := make([]Field, 0, len(args))
+	var invalid invalidPairs
+>>>>>>> deathstrox/main
 
 	for i := 0; i < len(args); {
 		// This is a strongly-typed field. Consume it and move on.
@@ -413,6 +528,7 @@ func (s *SugaredLogger) sweetenFields(args []interface{}) []Field {
 			continue
 		}
 
+<<<<<<< HEAD
 		// If it is an error, consume it and move on.
 		if err, ok := args[i].(error); ok {
 			if !seenError {
@@ -425,6 +541,8 @@ func (s *SugaredLogger) sweetenFields(args []interface{}) []Field {
 			continue
 		}
 
+=======
+>>>>>>> deathstrox/main
 		// Make sure this element isn't a dangling key.
 		if i == len(args)-1 {
 			s.base.Error(_oddNumberErrMsg, Any("ignored", args[i]))

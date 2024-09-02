@@ -3,6 +3,10 @@
 // license that can be found in the LICENSE file.
 
 //go:build aix || darwin || dragonfly || freebsd || netbsd || openbsd || solaris || windows
+<<<<<<< HEAD
+=======
+// +build aix darwin dragonfly freebsd netbsd openbsd solaris windows
+>>>>>>> deathstrox/main
 
 package ipv4
 

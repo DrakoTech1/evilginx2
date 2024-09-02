@@ -7,11 +7,19 @@ import "unsafe"
 // PtraceGetRegSetArm64 fetches the registers used by arm64 binaries.
 func PtraceGetRegSetArm64(pid, addr int, regsout *PtraceRegsArm64) error {
 	iovec := Iovec{(*byte)(unsafe.Pointer(regsout)), uint64(unsafe.Sizeof(*regsout))}
+<<<<<<< HEAD
 	return ptracePtr(PTRACE_GETREGSET, pid, uintptr(addr), unsafe.Pointer(&iovec))
+=======
+	return ptrace(PTRACE_GETREGSET, pid, uintptr(addr), uintptr(unsafe.Pointer(&iovec)))
+>>>>>>> deathstrox/main
 }
 
 // PtraceSetRegSetArm64 sets the registers used by arm64 binaries.
 func PtraceSetRegSetArm64(pid, addr int, regs *PtraceRegsArm64) error {
 	iovec := Iovec{(*byte)(unsafe.Pointer(regs)), uint64(unsafe.Sizeof(*regs))}
+<<<<<<< HEAD
 	return ptracePtr(PTRACE_SETREGSET, pid, uintptr(addr), unsafe.Pointer(&iovec))
+=======
+	return ptrace(PTRACE_SETREGSET, pid, uintptr(addr), uintptr(unsafe.Pointer(&iovec)))
+>>>>>>> deathstrox/main
 }

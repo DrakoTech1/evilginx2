@@ -27,11 +27,14 @@ type hooked struct {
 	funcs []func(Entry) error
 }
 
+<<<<<<< HEAD
 var (
 	_ Core           = (*hooked)(nil)
 	_ leveledEnabler = (*hooked)(nil)
 )
 
+=======
+>>>>>>> deathstrox/main
 // RegisterHooks wraps a Core and runs a collection of user-defined callback
 // hooks each time a message is logged. Execution of the callbacks is blocking.
 //
@@ -45,10 +48,13 @@ func RegisterHooks(core Core, hooks ...func(Entry) error) Core {
 	}
 }
 
+<<<<<<< HEAD
 func (h *hooked) Level() Level {
 	return LevelOf(h.Core)
 }
 
+=======
+>>>>>>> deathstrox/main
 func (h *hooked) Check(ent Entry, ce *CheckedEntry) *CheckedEntry {
 	// Let the wrapped Core decide whether to log this message or not. This
 	// also gives the downstream a chance to register itself directly with the

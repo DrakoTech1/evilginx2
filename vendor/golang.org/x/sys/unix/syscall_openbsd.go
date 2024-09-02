@@ -137,6 +137,7 @@ func sendfile(outfd int, infd int, offset *int64, count int) (written int, err e
 }
 
 func Getfsstat(buf []Statfs_t, flags int) (n int, err error) {
+<<<<<<< HEAD
 	var bufptr *Statfs_t
 	var bufsize uintptr
 	if len(buf) > 0 {
@@ -180,6 +181,26 @@ func FcntlFlock(fd uintptr, cmd int, lk *Flock_t) error {
 	return err
 }
 
+=======
+	var _p0 unsafe.Pointer
+	var bufsize uintptr
+	if len(buf) > 0 {
+		_p0 = unsafe.Pointer(&buf[0])
+		bufsize = unsafe.Sizeof(Statfs_t{}) * uintptr(len(buf))
+	}
+	r0, _, e1 := Syscall(SYS_GETFSSTAT, uintptr(_p0), bufsize, uintptr(flags))
+	n = int(r0)
+	if e1 != 0 {
+		err = e1
+	}
+	return
+}
+
+//sys	ioctl(fd int, req uint, arg uintptr) (err error)
+
+//sys	sysctl(mib []_C_int, old *byte, oldlen *uintptr, new *byte, newlen uintptr) (err error) = SYS___SYSCTL
+
+>>>>>>> deathstrox/main
 //sys	ppoll(fds *PollFd, nfds int, timeout *Timespec, sigmask *Sigset_t) (n int, err error)
 
 func Ppoll(fds []PollFd, timeout *Timespec, sigmask *Sigset_t) (n int, err error) {
@@ -245,7 +266,10 @@ func Uname(uname *Utsname) error {
 //sys	Chmod(path string, mode uint32) (err error)
 //sys	Chown(path string, uid int, gid int) (err error)
 //sys	Chroot(path string) (err error)
+<<<<<<< HEAD
 //sys	ClockGettime(clockid int32, time *Timespec) (err error)
+=======
+>>>>>>> deathstrox/main
 //sys	Close(fd int) (err error)
 //sys	Dup(fd int) (nfd int, err error)
 //sys	Dup2(from int, to int) (err error)
@@ -318,6 +342,10 @@ func Uname(uname *Utsname) error {
 //sysnb	Setreuid(ruid int, euid int) (err error)
 //sysnb	Setresgid(rgid int, egid int, sgid int) (err error)
 //sysnb	Setresuid(ruid int, euid int, suid int) (err error)
+<<<<<<< HEAD
+=======
+//sysnb	Setrlimit(which int, lim *Rlimit) (err error)
+>>>>>>> deathstrox/main
 //sysnb	Setrtable(rtable int) (err error)
 //sysnb	Setsid() (pid int, err error)
 //sysnb	Settimeofday(tp *Timeval) (err error)
@@ -335,7 +363,87 @@ func Uname(uname *Utsname) error {
 //sys	write(fd int, p []byte) (n int, err error)
 //sys	mmap(addr uintptr, length uintptr, prot int, flag int, fd int, pos int64) (ret uintptr, err error)
 //sys	munmap(addr uintptr, length uintptr) (err error)
+<<<<<<< HEAD
 //sys	getfsstat(stat *Statfs_t, bufsize uintptr, flags int) (n int, err error)
 //sys	utimensat(dirfd int, path string, times *[2]Timespec, flags int) (err error)
 //sys	pledge(promises *byte, execpromises *byte) (err error)
 //sys	unveil(path *byte, flags *byte) (err error)
+=======
+//sys	readlen(fd int, buf *byte, nbuf int) (n int, err error) = SYS_READ
+//sys	writelen(fd int, buf *byte, nbuf int) (n int, err error) = SYS_WRITE
+//sys	utimensat(dirfd int, path string, times *[2]Timespec, flags int) (err error)
+
+/*
+ * Unimplemented
+ */
+// __getcwd
+// __semctl
+// __syscall
+// __sysctl
+// adjfreq
+// break
+// clock_getres
+// clock_gettime
+// clock_settime
+// closefrom
+// execve
+// fhopen
+// fhstat
+// fhstatfs
+// fork
+// futimens
+// getfh
+// getgid
+// getitimer
+// getlogin
+// getresgid
+// getresuid
+// getthrid
+// ktrace
+// lfs_bmapv
+// lfs_markv
+// lfs_segclean
+// lfs_segwait
+// mincore
+// minherit
+// mount
+// mquery
+// msgctl
+// msgget
+// msgrcv
+// msgsnd
+// nfssvc
+// nnpfspioctl
+// preadv
+// profil
+// pwritev
+// quotactl
+// readv
+// reboot
+// renameat
+// rfork
+// sched_yield
+// semget
+// semop
+// setgroups
+// setitimer
+// setsockopt
+// shmat
+// shmctl
+// shmdt
+// shmget
+// sigaction
+// sigaltstack
+// sigpending
+// sigprocmask
+// sigreturn
+// sigsuspend
+// sysarch
+// syscall
+// threxit
+// thrsigdivert
+// thrsleep
+// thrwakeup
+// vfork
+// writev
+>>>>>>> deathstrox/main

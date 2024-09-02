@@ -3,15 +3,24 @@
 // license that can be found in the LICENSE file.
 
 //go:build zos && s390x
+<<<<<<< HEAD
+=======
+// +build zos,s390x
+>>>>>>> deathstrox/main
 
 package unix
 
 import (
 	"bytes"
+<<<<<<< HEAD
 	"fmt"
 	"runtime"
 	"sort"
 	"strings"
+=======
+	"runtime"
+	"sort"
+>>>>>>> deathstrox/main
 	"sync"
 	"syscall"
 	"unsafe"
@@ -56,6 +65,7 @@ func (d *Dirent) NameString() string {
 	if d == nil {
 		return ""
 	}
+<<<<<<< HEAD
 	s := string(d.Name[:])
 	idx := strings.IndexByte(s, 0)
 	if idx == -1 {
@@ -63,6 +73,9 @@ func (d *Dirent) NameString() string {
 	} else {
 		return s[:idx]
 	}
+=======
+	return string(d.Name[:d.Namlen])
+>>>>>>> deathstrox/main
 }
 
 func (sa *SockaddrInet4) sockaddr() (unsafe.Pointer, _Socklen, error) {
@@ -138,7 +151,12 @@ func anyToSockaddr(_ int, rsa *RawSockaddrAny) (Sockaddr, error) {
 		for n < int(pp.Len) && pp.Path[n] != 0 {
 			n++
 		}
+<<<<<<< HEAD
 		sa.Name = string(unsafe.Slice((*byte)(unsafe.Pointer(&pp.Path[0])), n))
+=======
+		bytes := (*[len(pp.Path)]byte)(unsafe.Pointer(&pp.Path[0]))[0:n]
+		sa.Name = string(bytes)
+>>>>>>> deathstrox/main
 		return sa, nil
 
 	case AF_INET:
@@ -191,6 +209,10 @@ func (cmsg *Cmsghdr) SetLen(length int) {
 
 //sys   fcntl(fd int, cmd int, arg int) (val int, err error)
 //sys	read(fd int, p []byte) (n int, err error)
+<<<<<<< HEAD
+=======
+//sys   readlen(fd int, buf *byte, nbuf int) (n int, err error) = SYS_READ
+>>>>>>> deathstrox/main
 //sys	write(fd int, p []byte) (n int, err error)
 
 //sys	accept(s int, rsa *RawSockaddrAny, addrlen *_Socklen) (fd int, err error) = SYS___ACCEPT_A
@@ -210,8 +232,12 @@ func (cmsg *Cmsghdr) SetLen(length int) {
 //sys	sendmsg(s int, msg *Msghdr, flags int) (n int, err error) = SYS___SENDMSG_A
 //sys   mmap(addr uintptr, length uintptr, prot int, flag int, fd int, pos int64) (ret uintptr, err error) = SYS_MMAP
 //sys   munmap(addr uintptr, length uintptr) (err error) = SYS_MUNMAP
+<<<<<<< HEAD
 //sys   ioctl(fd int, req int, arg uintptr) (err error) = SYS_IOCTL
 //sys   ioctlPtr(fd int, req int, arg unsafe.Pointer) (err error) = SYS_IOCTL
+=======
+//sys   ioctl(fd int, req uint, arg uintptr) (err error) = SYS_IOCTL
+>>>>>>> deathstrox/main
 
 //sys   Access(path string, mode uint32) (err error) = SYS___ACCESS_A
 //sys   Chdir(path string) (err error) = SYS___CHDIR_A
@@ -283,11 +309,31 @@ func Close(fd int) (err error) {
 	return
 }
 
+<<<<<<< HEAD
+=======
+var mapper = &mmapper{
+	active: make(map[*byte][]byte),
+	mmap:   mmap,
+	munmap: munmap,
+}
+
+>>>>>>> deathstrox/main
 // Dummy function: there are no semantics for Madvise on z/OS
 func Madvise(b []byte, advice int) (err error) {
 	return
 }
 
+<<<<<<< HEAD
+=======
+func Mmap(fd int, offset int64, length int, prot int, flags int) (data []byte, err error) {
+	return mapper.Mmap(fd, offset, length, prot, flags)
+}
+
+func Munmap(b []byte) (err error) {
+	return mapper.Munmap(b)
+}
+
+>>>>>>> deathstrox/main
 //sys   Gethostname(buf []byte) (err error) = SYS___GETHOSTNAME_A
 //sysnb	Getegid() (egid int)
 //sysnb	Geteuid() (uid int)
@@ -1104,7 +1150,11 @@ func GetsockoptString(fd, level, opt int) (string, error) {
 		return "", err
 	}
 
+<<<<<<< HEAD
 	return ByteSliceToString(buf[:vallen]), nil
+=======
+	return string(buf[:vallen-1]), nil
+>>>>>>> deathstrox/main
 }
 
 func Recvmsg(fd int, p, oob []byte, flags int) (n, oobn int, recvflags int, from Sockaddr, err error) {
@@ -1222,6 +1272,7 @@ func Readdir(dir uintptr) (*Dirent, error) {
 	return &ent, err
 }
 
+<<<<<<< HEAD
 func readdir_r(dirp uintptr, entry *direntLE, result **direntLE) (err error) {
 	r0, _, e1 := syscall_syscall(SYS___READDIR_R_A, dirp, uintptr(unsafe.Pointer(entry)), uintptr(unsafe.Pointer(result)))
 	if int64(r0) == -1 {
@@ -1230,6 +1281,8 @@ func readdir_r(dirp uintptr, entry *direntLE, result **direntLE) (err error) {
 	return
 }
 
+=======
+>>>>>>> deathstrox/main
 func Closedir(dir uintptr) error {
 	_, _, e := syscall_syscall(SYS_CLOSEDIR, dir, 0, 0)
 	if e != 0 {
@@ -1821,6 +1874,7 @@ func Unmount(name string, mtm int) (err error) {
 	}
 	return err
 }
+<<<<<<< HEAD
 
 func fdToPath(dirfd int) (path string, err error) {
 	var buffer [1024]byte
@@ -1976,3 +2030,5 @@ func direntNamlen(buf []byte) (uint64, bool) {
 	}
 	return reclen - uint64(unsafe.Offsetof(Dirent{}.Name)), true
 }
+=======
+>>>>>>> deathstrox/main

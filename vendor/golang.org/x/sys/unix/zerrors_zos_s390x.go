@@ -3,6 +3,10 @@
 // license that can be found in the LICENSE file.
 
 //go:build zos && s390x
+<<<<<<< HEAD
+=======
+// +build zos,s390x
+>>>>>>> deathstrox/main
 
 // Hand edited based on zerrors_linux_s390x.go
 // TODO: auto-generate.

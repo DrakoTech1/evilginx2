@@ -70,6 +70,7 @@ type Solver interface {
 type Waiter interface {
 	Wait(context.Context, acme.Challenge) error
 }
+<<<<<<< HEAD
 
 // Payloader is an optional interface for Solvers to implement. Its purpose is
 // to return the payload sent to the CA when responding to a challenge. This
@@ -83,3 +84,5 @@ type Waiter interface {
 type Payloader interface {
 	Payload(context.Context, acme.Challenge) (any, error)
 }
+=======
+>>>>>>> deathstrox/main

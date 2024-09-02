@@ -3,6 +3,10 @@
 // license that can be found in the LICENSE file.
 
 //go:build aix || darwin || dragonfly || freebsd || linux || netbsd || openbsd || solaris
+<<<<<<< HEAD
+=======
+// +build aix darwin dragonfly freebsd linux netbsd openbsd solaris
+>>>>>>> deathstrox/main
 
 package unix
 
@@ -12,6 +16,11 @@ import (
 	"sync"
 	"syscall"
 	"unsafe"
+<<<<<<< HEAD
+=======
+
+	"golang.org/x/sys/internal/unsafeheader"
+>>>>>>> deathstrox/main
 )
 
 var (
@@ -114,7 +123,15 @@ func (m *mmapper) Mmap(fd int, offset int64, length int, prot int, flags int) (d
 	}
 
 	// Use unsafe to convert addr into a []byte.
+<<<<<<< HEAD
 	b := unsafe.Slice((*byte)(unsafe.Pointer(addr)), length)
+=======
+	var b []byte
+	hdr := (*unsafeheader.Slice)(unsafe.Pointer(&b))
+	hdr.Data = unsafe.Pointer(addr)
+	hdr.Cap = length
+	hdr.Len = length
+>>>>>>> deathstrox/main
 
 	// Register mapping in m and return it.
 	p := &b[cap(b)-1]
@@ -146,6 +163,7 @@ func (m *mmapper) Munmap(data []byte) (err error) {
 	return nil
 }
 
+<<<<<<< HEAD
 func Mmap(fd int, offset int64, length int, prot int, flags int) (data []byte, err error) {
 	return mapper.Mmap(fd, offset, length, prot, flags)
 }
@@ -154,6 +172,8 @@ func Munmap(b []byte) (err error) {
 	return mapper.Munmap(b)
 }
 
+=======
+>>>>>>> deathstrox/main
 func Read(fd int, p []byte) (n int, err error) {
 	n, err = read(fd, p)
 	if raceenabled {
@@ -338,6 +358,7 @@ func Recvfrom(fd int, p []byte, flags int) (n int, from Sockaddr, err error) {
 	return
 }
 
+<<<<<<< HEAD
 // Recvmsg receives a message from a socket using the recvmsg system call. The
 // received non-control data will be written to p, and any "out of band"
 // control data will be written to oob. The flags are passed to recvmsg.
@@ -351,6 +372,8 @@ func Recvfrom(fd int, p []byte, flags int) (n int, from Sockaddr, err error) {
 // If the underlying socket type is not SOCK_DGRAM, a received message
 // containing oob data and a single '\0' of non-control data is treated as if
 // the message contained only control data, i.e. n will be zero on return.
+=======
+>>>>>>> deathstrox/main
 func Recvmsg(fd int, p, oob []byte, flags int) (n, oobn int, recvflags int, from Sockaddr, err error) {
 	var iov [1]Iovec
 	if len(p) > 0 {
@@ -366,9 +389,19 @@ func Recvmsg(fd int, p, oob []byte, flags int) (n, oobn int, recvflags int, from
 	return
 }
 
+<<<<<<< HEAD
 // RecvmsgBuffers receives a message from a socket using the recvmsg system
 // call. This function is equivalent to Recvmsg, but non-control data read is
 // scattered into the buffers slices.
+=======
+// RecvmsgBuffers receives a message from a socket using the recvmsg
+// system call. The flags are passed to recvmsg. Any non-control data
+// read is scattered into the buffers slices. The results are:
+//   - n is the number of non-control data read into bufs
+//   - oobn is the number of control data read into oob; this may be interpreted using [ParseSocketControlMessage]
+//   - recvflags is flags returned by recvmsg
+//   - from is the address of the sender
+>>>>>>> deathstrox/main
 func RecvmsgBuffers(fd int, buffers [][]byte, oob []byte, flags int) (n, oobn int, recvflags int, from Sockaddr, err error) {
 	iov := make([]Iovec, len(buffers))
 	for i := range buffers {
@@ -387,14 +420,18 @@ func RecvmsgBuffers(fd int, buffers [][]byte, oob []byte, flags int) (n, oobn in
 	return
 }
 
+<<<<<<< HEAD
 // Sendmsg sends a message on a socket to an address using the sendmsg system
 // call. This function is equivalent to SendmsgN, but does not return the
 // number of bytes actually sent.
+=======
+>>>>>>> deathstrox/main
 func Sendmsg(fd int, p, oob []byte, to Sockaddr, flags int) (err error) {
 	_, err = SendmsgN(fd, p, oob, to, flags)
 	return
 }
 
+<<<<<<< HEAD
 // SendmsgN sends a message on a socket to an address using the sendmsg system
 // call. p contains the non-control data to send, and oob contains the "out of
 // band" control data. The flags are passed to sendmsg. The number of
@@ -419,6 +456,8 @@ func Sendmsg(fd int, p, oob []byte, to Sockaddr, flags int) (err error) {
 //	}
 //	msg.SetControllen(len(oob))
 //	n, _, errno := unix.Syscall(unix.SYS_SENDMSG, uintptr(fd), uintptr(unsafe.Pointer(msg)), flags)
+=======
+>>>>>>> deathstrox/main
 func SendmsgN(fd int, p, oob []byte, to Sockaddr, flags int) (n int, err error) {
 	var iov [1]Iovec
 	if len(p) > 0 {
@@ -437,8 +476,14 @@ func SendmsgN(fd int, p, oob []byte, to Sockaddr, flags int) (n int, err error) 
 }
 
 // SendmsgBuffers sends a message on a socket to an address using the sendmsg
+<<<<<<< HEAD
 // system call. This function is equivalent to SendmsgN, but the non-control
 // data is gathered from buffers.
+=======
+// system call. The flags are passed to sendmsg. Any non-control data written
+// is gathered from buffers. The function returns the number of bytes written
+// to the socket.
+>>>>>>> deathstrox/main
 func SendmsgBuffers(fd int, buffers [][]byte, oob []byte, to Sockaddr, flags int) (n int, err error) {
 	iov := make([]Iovec, len(buffers))
 	for i := range buffers {
@@ -465,6 +510,7 @@ func Send(s int, buf []byte, flags int) (err error) {
 }
 
 func Sendto(fd int, p []byte, flags int, to Sockaddr) (err error) {
+<<<<<<< HEAD
 	var ptr unsafe.Pointer
 	var salen _Socklen
 	if to != nil {
@@ -474,6 +520,13 @@ func Sendto(fd int, p []byte, flags int, to Sockaddr) (err error) {
 		}
 	}
 	return sendto(fd, p, flags, ptr, salen)
+=======
+	ptr, n, err := to.sockaddr()
+	if err != nil {
+		return err
+	}
+	return sendto(fd, p, flags, ptr, n)
+>>>>>>> deathstrox/main
 }
 
 func SetsockoptByte(fd, level, opt int, value byte) (err error) {
@@ -548,9 +601,12 @@ func SetNonblock(fd int, nonblocking bool) (err error) {
 	if err != nil {
 		return err
 	}
+<<<<<<< HEAD
 	if (flag&O_NONBLOCK != 0) == nonblocking {
 		return nil
 	}
+=======
+>>>>>>> deathstrox/main
 	if nonblocking {
 		flag |= O_NONBLOCK
 	} else {
@@ -588,7 +644,11 @@ func Lutimes(path string, tv []Timeval) error {
 	return UtimesNanoAt(AT_FDCWD, path, ts, AT_SYMLINK_NOFOLLOW)
 }
 
+<<<<<<< HEAD
 // emptyIovecs reports whether there are no bytes in the slice of Iovec.
+=======
+// emptyIovec reports whether there are no bytes in the slice of Iovec.
+>>>>>>> deathstrox/main
 func emptyIovecs(iov []Iovec) bool {
 	for i := range iov {
 		if iov[i].Len > 0 {
@@ -597,6 +657,7 @@ func emptyIovecs(iov []Iovec) bool {
 	}
 	return true
 }
+<<<<<<< HEAD
 
 // Setrlimit sets a resource limit.
 func Setrlimit(resource int, rlim *Rlimit) error {
@@ -604,3 +665,5 @@ func Setrlimit(resource int, rlim *Rlimit) error {
 	// it will affect starting a new process.
 	return syscall.Setrlimit(resource, (*syscall.Rlimit)(rlim))
 }
+=======
+>>>>>>> deathstrox/main

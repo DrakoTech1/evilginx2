@@ -3,6 +3,10 @@
 // license that can be found in the LICENSE file.
 
 //go:build darwin || dragonfly || freebsd || linux || netbsd || openbsd || solaris
+<<<<<<< HEAD
+=======
+// +build darwin dragonfly freebsd linux netbsd openbsd solaris
+>>>>>>> deathstrox/main
 
 package socket
 

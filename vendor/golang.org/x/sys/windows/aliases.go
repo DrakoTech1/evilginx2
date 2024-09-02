@@ -3,6 +3,10 @@
 // license that can be found in the LICENSE file.
 
 //go:build windows && go1.9
+<<<<<<< HEAD
+=======
+// +build windows,go1.9
+>>>>>>> deathstrox/main
 
 package windows
 

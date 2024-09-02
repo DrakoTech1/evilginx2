@@ -3,6 +3,12 @@
 // license that can be found in the LICENSE file.
 
 //go:build zos && s390x && gc
+<<<<<<< HEAD
+=======
+// +build zos
+// +build s390x
+// +build gc
+>>>>>>> deathstrox/main
 
 #include "textflag.h"
 

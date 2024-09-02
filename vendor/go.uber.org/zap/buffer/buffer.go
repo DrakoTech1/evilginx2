@@ -42,11 +42,14 @@ func (b *Buffer) AppendByte(v byte) {
 	b.bs = append(b.bs, v)
 }
 
+<<<<<<< HEAD
 // AppendBytes writes the given slice of bytes to the Buffer.
 func (b *Buffer) AppendBytes(v []byte) {
 	b.bs = append(b.bs, v...)
 }
 
+=======
+>>>>>>> deathstrox/main
 // AppendString writes a string to the Buffer.
 func (b *Buffer) AppendString(s string) {
 	b.bs = append(b.bs, s...)

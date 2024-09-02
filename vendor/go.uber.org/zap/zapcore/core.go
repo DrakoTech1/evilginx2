@@ -69,6 +69,7 @@ type ioCore struct {
 	out WriteSyncer
 }
 
+<<<<<<< HEAD
 var (
 	_ Core           = (*ioCore)(nil)
 	_ leveledEnabler = (*ioCore)(nil)
@@ -78,6 +79,8 @@ func (c *ioCore) Level() Level {
 	return LevelOf(c.LevelEnabler)
 }
 
+=======
+>>>>>>> deathstrox/main
 func (c *ioCore) With(fields []Field) Core {
 	clone := c.clone()
 	addFields(clone.enc, fields)
@@ -102,9 +105,15 @@ func (c *ioCore) Write(ent Entry, fields []Field) error {
 		return err
 	}
 	if ent.Level > ErrorLevel {
+<<<<<<< HEAD
 		// Since we may be crashing the program, sync the output.
 		// Ignore Sync errors, pending a clean solution to issue #370.
 		_ = c.Sync()
+=======
+		// Since we may be crashing the program, sync the output. Ignore Sync
+		// errors, pending a clean solution to issue #370.
+		c.Sync()
+>>>>>>> deathstrox/main
 	}
 	return nil
 }

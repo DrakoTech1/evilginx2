@@ -3,6 +3,10 @@
 // license that can be found in the LICENSE file.
 
 //go:build windows
+<<<<<<< HEAD
+=======
+// +build windows
+>>>>>>> deathstrox/main
 
 package windows
 
@@ -140,12 +144,15 @@ const (
 	SERVICE_DYNAMIC_INFORMATION_LEVEL_START_REASON = 1
 )
 
+<<<<<<< HEAD
 type ENUM_SERVICE_STATUS struct {
 	ServiceName   *uint16
 	DisplayName   *uint16
 	ServiceStatus SERVICE_STATUS
 }
 
+=======
+>>>>>>> deathstrox/main
 type SERVICE_STATUS struct {
 	ServiceType             uint32
 	CurrentState            uint32
@@ -217,10 +224,13 @@ type SERVICE_FAILURE_ACTIONS struct {
 	Actions      *SC_ACTION
 }
 
+<<<<<<< HEAD
 type SERVICE_FAILURE_ACTIONS_FLAG struct {
 	FailureActionsOnNonCrashFailures int32
 }
 
+=======
+>>>>>>> deathstrox/main
 type SC_ACTION struct {
 	Type  uint32
 	Delay uint32
@@ -254,4 +264,7 @@ type QUERY_SERVICE_LOCK_STATUS struct {
 //sys	UnsubscribeServiceChangeNotifications(subscription uintptr) = sechost.UnsubscribeServiceChangeNotifications?
 //sys	RegisterServiceCtrlHandlerEx(serviceName *uint16, handlerProc uintptr, context uintptr) (handle Handle, err error) = advapi32.RegisterServiceCtrlHandlerExW
 //sys	QueryServiceDynamicInformation(service Handle, infoLevel uint32, dynamicInfo unsafe.Pointer) (err error) = advapi32.QueryServiceDynamicInformation?
+<<<<<<< HEAD
 //sys	EnumDependentServices(service Handle, activityState uint32, services *ENUM_SERVICE_STATUS, buffSize uint32, bytesNeeded *uint32, servicesReturned *uint32) (err error) = advapi32.EnumDependentServicesW
+=======
+>>>>>>> deathstrox/main

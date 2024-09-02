@@ -279,6 +279,7 @@ func getOIDFromHashAlgorithm(target crypto.Hash) asn1.ObjectIdentifier {
 
 // This is the exposed reflection of the internal OCSP structures.
 
+<<<<<<< HEAD
 // The status values that can be expressed in OCSP. See RFC 6960.
 // These are used for the Response.Status field.
 const (
@@ -295,6 +296,23 @@ const (
 )
 
 // The enumerated reasons for revoking a certificate. See RFC 5280.
+=======
+// The status values that can be expressed in OCSP.  See RFC 6960.
+const (
+	// Good means that the certificate is valid.
+	Good = iota
+	// Revoked means that the certificate has been deliberately revoked.
+	Revoked
+	// Unknown means that the OCSP responder doesn't know about the certificate.
+	Unknown
+	// ServerFailed is unused and was never used (see
+	// https://go-review.googlesource.com/#/c/18944). ParseResponse will
+	// return a ResponseError when an error response is parsed.
+	ServerFailed
+)
+
+// The enumerated reasons for revoking a certificate.  See RFC 5280.
+>>>>>>> deathstrox/main
 const (
 	Unspecified          = 0
 	KeyCompromise        = 1

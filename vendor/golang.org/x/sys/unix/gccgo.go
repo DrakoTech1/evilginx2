@@ -2,7 +2,12 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+<<<<<<< HEAD
 //go:build gccgo && !aix && !hurd
+=======
+//go:build gccgo && !aix
+// +build gccgo,!aix
+>>>>>>> deathstrox/main
 
 package unix
 

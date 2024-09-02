@@ -3,6 +3,10 @@
 // license that can be found in the LICENSE file.
 
 //go:build s390x && zos
+<<<<<<< HEAD
+=======
+// +build s390x,zos
+>>>>>>> deathstrox/main
 
 package socket
 

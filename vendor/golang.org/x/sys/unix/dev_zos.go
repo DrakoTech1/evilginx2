@@ -3,6 +3,10 @@
 // license that can be found in the LICENSE file.
 
 //go:build zos && s390x
+<<<<<<< HEAD
+=======
+// +build zos,s390x
+>>>>>>> deathstrox/main
 
 // Functions to access/create device major and minor numbers matching the
 // encoding used by z/OS.

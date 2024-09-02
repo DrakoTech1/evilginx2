@@ -26,9 +26,13 @@ import (
 
 // Certificate represents a certificate chain, which we usually refer
 // to as "a certificate" because in practice an end-entity certificate
+<<<<<<< HEAD
 // is seldom useful/practical without a chain. This structure can be
 // JSON-encoded and stored alongside the certificate chain to preserve
 // potentially-useful metadata.
+=======
+// is seldom useful/practical without a chain.
+>>>>>>> deathstrox/main
 type Certificate struct {
 	// The certificate resource URL as provisioned by
 	// the ACME server. Some ACME servers may split
@@ -38,6 +42,7 @@ type Certificate struct {
 	URL string `json:"url"`
 
 	// The PEM-encoded certificate chain, end-entity first.
+<<<<<<< HEAD
 	// It is excluded from JSON marshalling since the
 	// chain is usually stored in its own file.
 	ChainPEM []byte `json:"-"`
@@ -47,6 +52,9 @@ type Certificate struct {
 	// ACME spec, but it can be useful to save this along with
 	// the certificate for restoring a lost ACME client config.
 	CA string `json:"ca,omitempty"`
+=======
+	ChainPEM []byte `json:"-"`
+>>>>>>> deathstrox/main
 }
 
 // GetCertificateChain downloads all available certificate chains originating from
@@ -84,7 +92,10 @@ func (c *Client) GetCertificateChain(ctx context.Context, account Account, certU
 			chains = append(chains, Certificate{
 				URL:      certURL,
 				ChainPEM: buf.Bytes(),
+<<<<<<< HEAD
 				CA:       c.Directory,
+=======
+>>>>>>> deathstrox/main
 			})
 		default:
 			return resp, fmt.Errorf("unrecognized Content-Type from server: %s", contentType)

@@ -3,6 +3,10 @@
 // license that can be found in the LICENSE file.
 
 //go:build go1.10
+<<<<<<< HEAD
+=======
+// +build go1.10
+>>>>>>> deathstrox/main
 
 package bidirule
 

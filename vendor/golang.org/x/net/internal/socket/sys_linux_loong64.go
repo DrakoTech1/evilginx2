@@ -3,6 +3,10 @@
 // license that can be found in the LICENSE file.
 
 //go:build loong64
+<<<<<<< HEAD
+=======
+// +build loong64
+>>>>>>> deathstrox/main
 
 package socket
 

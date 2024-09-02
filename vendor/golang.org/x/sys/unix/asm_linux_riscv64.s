@@ -3,6 +3,11 @@
 // license that can be found in the LICENSE file.
 
 //go:build riscv64 && gc
+<<<<<<< HEAD
+=======
+// +build riscv64
+// +build gc
+>>>>>>> deathstrox/main
 
 #include "textflag.h"
 

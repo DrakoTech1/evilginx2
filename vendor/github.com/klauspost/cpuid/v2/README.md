@@ -9,6 +9,7 @@ You can access the CPU information by accessing the shared CPU variable of the c
 Package home: https://github.com/klauspost/cpuid
 
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/klauspost/cpuid)](https://pkg.go.dev/github.com/klauspost/cpuid/v2)
+<<<<<<< HEAD
 [![Go](https://github.com/klauspost/cpuid/actions/workflows/go.yml/badge.svg)](https://github.com/klauspost/cpuid/actions/workflows/go.yml)
 
 ## installing
@@ -30,6 +31,19 @@ For macOS/Linux users, you can install via [brew](https://brew.sh/)
 $ brew install cpuid
 ```
 
+=======
+[![Build Status][3]][4]
+
+[3]: https://travis-ci.org/klauspost/cpuid.svg?branch=master
+[4]: https://travis-ci.org/klauspost/cpuid
+
+## installing
+
+`go get -u github.com/klauspost/cpuid/v2` using modules. 
+
+Drop `v2` for others.
+
+>>>>>>> deathstrox/main
 ## example
 
 ```Go
@@ -87,6 +101,7 @@ We have Streaming SIMD 2 Extensions
 The `cpuid.CPU` provides access to CPU features. Use `cpuid.CPU.Supports()` to check for CPU features.
 A faster `cpuid.CPU.Has()` is provided which will usually be inlined by the gc compiler.  
 
+<<<<<<< HEAD
 To test a larger number of features, they can be combined using `f := CombineFeatures(CMOV, CMPXCHG8, X87, FXSR, MMX, SYSCALL, SSE, SSE2)`, etc.
 This can be using with `cpuid.CPU.HasAll(f)` to quickly test if all features are supported.
 
@@ -95,6 +110,12 @@ Note that for some cpu/os combinations some features will not be detected.
 
 Note that hypervisors may not pass through all CPU features through to the guest OS,
 so even if your host supports a feature it may not be visible on guests.
+=======
+Note that for some cpu/os combinations some features will not be detected.
+`amd64` has rather good support and should work reliably on all platforms.
+
+Note that hypervisors may not pass through all CPU features.
+>>>>>>> deathstrox/main
 
 ## arm64 feature detection
 
@@ -267,6 +288,7 @@ Exit Code 0
 Exit Code 1
 ```
 
+<<<<<<< HEAD
 
 ## Available flags
 
@@ -492,6 +514,8 @@ Exit Code 1
 | SM4          | SM4 instructions                                                 |
 | SVE          | Scalable Vector Extension                                        |
 
+=======
+>>>>>>> deathstrox/main
 # license
 
 This code is published under an MIT license. See LICENSE file for more information.

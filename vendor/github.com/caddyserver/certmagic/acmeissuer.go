@@ -2,16 +2,25 @@ package certmagic
 
 import (
 	"context"
+<<<<<<< HEAD
 	"crypto/tls"
 	"crypto/x509"
 	"errors"
 	"fmt"
 	"net"
+=======
+	"crypto/x509"
+	"errors"
+	"fmt"
+>>>>>>> deathstrox/main
 	"net/http"
 	"net/url"
 	"sort"
 	"strings"
+<<<<<<< HEAD
 	"sync"
+=======
+>>>>>>> deathstrox/main
 	"time"
 
 	"github.com/mholt/acmez"
@@ -110,6 +119,7 @@ type ACMEIssuer struct {
 	// certificate chains
 	PreferredChains ChainPreference
 
+<<<<<<< HEAD
 	// Set a logger to configure logging; a default
 	// logger must always be set; if no logging is
 	// desired, set this to zap.NewNop().
@@ -133,6 +143,13 @@ type ACMEIssuer struct {
 	email  string
 	agreed bool
 	mu     *sync.Mutex // protects the above grouped fields, as well as entire struct during NewAccountFunc calls
+=======
+	// Set a logger to enable logging
+	Logger *zap.Logger
+
+	config     *Config
+	httpClient *http.Client
+>>>>>>> deathstrox/main
 }
 
 // NewACMEIssuer constructs a valid ACMEIssuer based on a template
@@ -202,6 +219,7 @@ func NewACMEIssuer(cfg *Config, template ACMEIssuer) *ACMEIssuer {
 	if template.Logger == nil {
 		template.Logger = DefaultACME.Logger
 	}
+<<<<<<< HEAD
 
 	// absolutely do not allow a nil logger; that would panic
 	if template.Logger == nil {
@@ -251,6 +269,9 @@ func NewACMEIssuer(cfg *Config, template ACMEIssuer) *ACMEIssuer {
 		Timeout:   HTTPTimeout,
 	}
 
+=======
+	template.config = cfg
+>>>>>>> deathstrox/main
 	return &template
 }
 
@@ -282,6 +303,7 @@ func (*ACMEIssuer) issuerKey(ca string) string {
 	return key
 }
 
+<<<<<<< HEAD
 func (iss *ACMEIssuer) getEmail() string {
 	iss.mu.Lock()
 	defer iss.mu.Unlock()
@@ -294,12 +316,18 @@ func (iss *ACMEIssuer) isAgreed() bool {
 	return iss.agreed
 }
 
+=======
+>>>>>>> deathstrox/main
 // PreCheck performs a few simple checks before obtaining or
 // renewing a certificate with ACME, and returns whether this
 // batch is eligible for certificates if using Let's Encrypt.
 // It also ensures that an email address is available.
 func (am *ACMEIssuer) PreCheck(ctx context.Context, names []string, interactive bool) error {
+<<<<<<< HEAD
 	publicCA := strings.Contains(am.CA, "api.letsencrypt.org") || strings.Contains(am.CA, "acme.zerossl.com") || strings.Contains(am.CA, "api.pki.goog")
+=======
+	publicCA := strings.Contains(am.CA, "api.letsencrypt.org") || strings.Contains(am.CA, "acme.zerossl.com")
+>>>>>>> deathstrox/main
 	if publicCA {
 		for _, name := range names {
 			if !SubjectQualifiesForPublicCert(name) {
@@ -307,7 +335,11 @@ func (am *ACMEIssuer) PreCheck(ctx context.Context, names []string, interactive 
 			}
 		}
 	}
+<<<<<<< HEAD
 	return am.setEmail(ctx, interactive)
+=======
+	return am.getEmail(ctx, interactive)
+>>>>>>> deathstrox/main
 }
 
 // Issue implements the Issuer interface. It obtains a certificate for the given csr using
@@ -416,7 +448,11 @@ func (am *ACMEIssuer) doIssue(ctx context.Context, csr *x509.CertificateRequest,
 // processing. If there are no matches, the first chain is returned.
 func (am *ACMEIssuer) selectPreferredChain(certChains []acme.Certificate) acme.Certificate {
 	if len(certChains) == 1 {
+<<<<<<< HEAD
 		if len(am.PreferredChains.AnyCommonName) > 0 || len(am.PreferredChains.RootCommonName) > 0 {
+=======
+		if am.Logger != nil && (len(am.PreferredChains.AnyCommonName) > 0 || len(am.PreferredChains.RootCommonName) > 0) {
+>>>>>>> deathstrox/main
 			am.Logger.Debug("there is only one chain offered; selecting it regardless of preferences",
 				zap.String("chain_url", certChains[0].URL))
 		}
@@ -441,9 +477,17 @@ func (am *ACMEIssuer) selectPreferredChain(certChains []acme.Certificate) acme.C
 		for i, chain := range certChains {
 			certs, err := parseCertsFromPEMBundle(chain.ChainPEM)
 			if err != nil {
+<<<<<<< HEAD
 				am.Logger.Error("unable to parse PEM certificate chain",
 					zap.Int("chain", i),
 					zap.Error(err))
+=======
+				if am.Logger != nil {
+					am.Logger.Error("unable to parse PEM certificate chain",
+						zap.Int("chain", i),
+						zap.Error(err))
+				}
+>>>>>>> deathstrox/main
 				continue
 			}
 			decodedChains[i] = certs
@@ -454,9 +498,17 @@ func (am *ACMEIssuer) selectPreferredChain(certChains []acme.Certificate) acme.C
 				for i, chain := range decodedChains {
 					for _, cert := range chain {
 						if cert.Issuer.CommonName == prefAnyCN {
+<<<<<<< HEAD
 							am.Logger.Debug("found preferred certificate chain by issuer common name",
 								zap.String("preference", prefAnyCN),
 								zap.Int("chain", i))
+=======
+							if am.Logger != nil {
+								am.Logger.Debug("found preferred certificate chain by issuer common name",
+									zap.String("preference", prefAnyCN),
+									zap.Int("chain", i))
+							}
+>>>>>>> deathstrox/main
 							return certChains[i]
 						}
 					}
@@ -468,16 +520,30 @@ func (am *ACMEIssuer) selectPreferredChain(certChains []acme.Certificate) acme.C
 			for _, prefRootCN := range am.PreferredChains.RootCommonName {
 				for i, chain := range decodedChains {
 					if chain[len(chain)-1].Issuer.CommonName == prefRootCN {
+<<<<<<< HEAD
 						am.Logger.Debug("found preferred certificate chain by root common name",
 							zap.String("preference", prefRootCN),
 							zap.Int("chain", i))
+=======
+						if am.Logger != nil {
+							am.Logger.Debug("found preferred certificate chain by root common name",
+								zap.String("preference", prefRootCN),
+								zap.Int("chain", i))
+						}
+>>>>>>> deathstrox/main
 						return certChains[i]
 					}
 				}
 			}
 		}
 
+<<<<<<< HEAD
 		am.Logger.Warn("did not find chain matching preferences; using first")
+=======
+		if am.Logger != nil {
+			am.Logger.Warn("did not find chain matching preferences; using first")
+		}
+>>>>>>> deathstrox/main
 	}
 
 	return certChains[0]
@@ -517,10 +583,15 @@ type ChainPreference struct {
 // DefaultACME specifies default settings to use for ACMEIssuers.
 // Using this value is optional but can be convenient.
 var DefaultACME = ACMEIssuer{
+<<<<<<< HEAD
 	CA:        LetsEncryptProductionCA,
 	TestCA:    LetsEncryptStagingCA,
 	Logger:    defaultLogger,
 	HTTPProxy: http.ProxyFromEnvironment,
+=======
+	CA:     LetsEncryptProductionCA,
+	TestCA: LetsEncryptStagingCA,
+>>>>>>> deathstrox/main
 }
 
 // Some well-known CA endpoints available to use.

@@ -3,6 +3,10 @@
 // license that can be found in the LICENSE file.
 
 //go:build gccgo && linux && amd64
+<<<<<<< HEAD
+=======
+// +build gccgo,linux,amd64
+>>>>>>> deathstrox/main
 
 package unix
 

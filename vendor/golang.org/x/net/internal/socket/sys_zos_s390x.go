@@ -5,7 +5,10 @@
 package socket
 
 import (
+<<<<<<< HEAD
 	"net"
+=======
+>>>>>>> deathstrox/main
 	"syscall"
 	"unsafe"
 )

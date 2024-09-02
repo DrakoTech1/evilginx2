@@ -3,6 +3,10 @@
 // license that can be found in the LICENSE file.
 
 //go:build darwin || dragonfly || freebsd || netbsd || openbsd
+<<<<<<< HEAD
+=======
+// +build darwin dragonfly freebsd netbsd openbsd
+>>>>>>> deathstrox/main
 
 // BSD system call wrappers shared by *BSD based systems
 // including OS X (Darwin) and FreeBSD.  Like the other
@@ -244,7 +248,12 @@ func anyToSockaddr(fd int, rsa *RawSockaddrAny) (Sockaddr, error) {
 				break
 			}
 		}
+<<<<<<< HEAD
 		sa.Name = string(unsafe.Slice((*byte)(unsafe.Pointer(&pp.Path[0])), n))
+=======
+		bytes := (*[len(pp.Path)]byte)(unsafe.Pointer(&pp.Path[0]))[0:n]
+		sa.Name = string(bytes)
+>>>>>>> deathstrox/main
 		return sa, nil
 
 	case AF_INET:
@@ -316,7 +325,11 @@ func GetsockoptString(fd, level, opt int) (string, error) {
 	if err != nil {
 		return "", err
 	}
+<<<<<<< HEAD
 	return ByteSliceToString(buf[:vallen]), nil
+=======
+	return string(buf[:vallen-1]), nil
+>>>>>>> deathstrox/main
 }
 
 //sys	recvfrom(fd int, p []byte, flags int, from *RawSockaddrAny, fromlen *_Socklen) (n int, err error)
@@ -600,6 +613,23 @@ func Poll(fds []PollFd, timeout int) (n int, err error) {
 //	Gethostuuid(uuid *byte, timeout *Timespec) (err error)
 //	Ptrace(req int, pid int, addr uintptr, data int) (ret uintptr, err error)
 
+<<<<<<< HEAD
+=======
+var mapper = &mmapper{
+	active: make(map[*byte][]byte),
+	mmap:   mmap,
+	munmap: munmap,
+}
+
+func Mmap(fd int, offset int64, length int, prot int, flags int) (data []byte, err error) {
+	return mapper.Mmap(fd, offset, length, prot, flags)
+}
+
+func Munmap(b []byte) (err error) {
+	return mapper.Munmap(b)
+}
+
+>>>>>>> deathstrox/main
 //sys	Madvise(b []byte, behav int) (err error)
 //sys	Mlock(b []byte) (err error)
 //sys	Mlockall(flags int) (err error)

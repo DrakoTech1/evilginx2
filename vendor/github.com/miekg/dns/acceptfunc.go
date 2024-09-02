@@ -10,6 +10,11 @@ type MsgAcceptFunc func(dh Header) MsgAcceptAction
 //
 // * opcode isn't OpcodeQuery or OpcodeNotify
 //
+<<<<<<< HEAD
+=======
+// * Zero bit isn't zero
+//
+>>>>>>> deathstrox/main
 // * does not have exactly 1 question in the question section
 //
 // * has more than 1 RR in the Answer section
@@ -17,6 +22,10 @@ type MsgAcceptFunc func(dh Header) MsgAcceptAction
 // * has more than 0 RRs in the Authority section
 //
 // * has more than 2 RRs in the Additional section
+<<<<<<< HEAD
+=======
+//
+>>>>>>> deathstrox/main
 var DefaultMsgAcceptFunc MsgAcceptFunc = defaultMsgAcceptFunc
 
 // MsgAcceptAction represents the action to be taken.

@@ -32,6 +32,7 @@ func (rr *AFSDB) pack(msg []byte, off int, compression compressionMap, compress 
 	return off, nil
 }
 
+<<<<<<< HEAD
 func (rr *AMTRELAY) pack(msg []byte, off int, compression compressionMap, compress bool) (off1 int, err error) {
 	off, err = packUint8(rr.Precedence, msg, off)
 	if err != nil {
@@ -48,6 +49,8 @@ func (rr *AMTRELAY) pack(msg []byte, off int, compression compressionMap, compre
 	return off, nil
 }
 
+=======
+>>>>>>> deathstrox/main
 func (rr *ANY) pack(msg []byte, off int, compression compressionMap, compress bool) (off1 int, err error) {
 	return off, nil
 }
@@ -348,6 +351,7 @@ func (rr *HTTPS) pack(msg []byte, off int, compression compressionMap, compress 
 	return off, nil
 }
 
+<<<<<<< HEAD
 func (rr *IPSECKEY) pack(msg []byte, off int, compression compressionMap, compress bool) (off1 int, err error) {
 	off, err = packUint8(rr.Precedence, msg, off)
 	if err != nil {
@@ -384,6 +388,8 @@ func (rr *ISDN) pack(msg []byte, off int, compression compressionMap, compress b
 	return off, nil
 }
 
+=======
+>>>>>>> deathstrox/main
 func (rr *KEY) pack(msg []byte, off int, compression compressionMap, compress bool) (off1 int, err error) {
 	off, err = packUint16(rr.Flags, msg, off)
 	if err != nil {
@@ -706,6 +712,7 @@ func (rr *NULL) pack(msg []byte, off int, compression compressionMap, compress b
 	return off, nil
 }
 
+<<<<<<< HEAD
 func (rr *NXT) pack(msg []byte, off int, compression compressionMap, compress bool) (off1 int, err error) {
 	off, err = packDomainName(rr.NextDomain, msg, off, compression, false)
 	if err != nil {
@@ -718,6 +725,8 @@ func (rr *NXT) pack(msg []byte, off int, compression compressionMap, compress bo
 	return off, nil
 }
 
+=======
+>>>>>>> deathstrox/main
 func (rr *OPENPGPKEY) pack(msg []byte, off int, compression compressionMap, compress bool) (off1 int, err error) {
 	off, err = packStringBase64(rr.PublicKey, msg, off)
 	if err != nil {
@@ -1244,6 +1253,7 @@ func (rr *AFSDB) unpack(msg []byte, off int) (off1 int, err error) {
 	return off, nil
 }
 
+<<<<<<< HEAD
 func (rr *AMTRELAY) unpack(msg []byte, off int) (off1 int, err error) {
 	rdStart := off
 	_ = rdStart
@@ -1272,6 +1282,8 @@ func (rr *AMTRELAY) unpack(msg []byte, off int) (off1 int, err error) {
 	return off, nil
 }
 
+=======
+>>>>>>> deathstrox/main
 func (rr *ANY) unpack(msg []byte, off int) (off1 int, err error) {
 	rdStart := off
 	_ = rdStart
@@ -1728,6 +1740,7 @@ func (rr *HTTPS) unpack(msg []byte, off int) (off1 int, err error) {
 	return off, nil
 }
 
+<<<<<<< HEAD
 func (rr *IPSECKEY) unpack(msg []byte, off int) (off1 int, err error) {
 	rdStart := off
 	_ = rdStart
@@ -1788,6 +1801,8 @@ func (rr *ISDN) unpack(msg []byte, off int) (off1 int, err error) {
 	return off, nil
 }
 
+=======
+>>>>>>> deathstrox/main
 func (rr *KEY) unpack(msg []byte, off int) (off1 int, err error) {
 	rdStart := off
 	_ = rdStart
@@ -2266,6 +2281,7 @@ func (rr *NULL) unpack(msg []byte, off int) (off1 int, err error) {
 	return off, nil
 }
 
+<<<<<<< HEAD
 func (rr *NXT) unpack(msg []byte, off int) (off1 int, err error) {
 	rdStart := off
 	_ = rdStart
@@ -2284,6 +2300,8 @@ func (rr *NXT) unpack(msg []byte, off int) (off1 int, err error) {
 	return off, nil
 }
 
+=======
+>>>>>>> deathstrox/main
 func (rr *OPENPGPKEY) unpack(msg []byte, off int) (off1 int, err error) {
 	rdStart := off
 	_ = rdStart

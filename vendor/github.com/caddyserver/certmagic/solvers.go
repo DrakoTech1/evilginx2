@@ -99,7 +99,11 @@ func (s *httpSolver) serve(ctx context.Context, si *solverInfo) {
 }
 
 // CleanUp cleans up the HTTP server if it is the last one to finish.
+<<<<<<< HEAD
 func (s *httpSolver) CleanUp(_ context.Context, _ acme.Challenge) error {
+=======
+func (s *httpSolver) CleanUp(ctx context.Context, _ acme.Challenge) error {
+>>>>>>> deathstrox/main
 	solversMu.Lock()
 	defer solversMu.Unlock()
 	si := getSolverInfo(s.address)
@@ -220,7 +224,11 @@ func (*tlsALPNSolver) handleConn(conn net.Conn) {
 
 // CleanUp removes the challenge certificate from the cache, and if
 // it is the last one to finish, stops the TLS server.
+<<<<<<< HEAD
 func (s *tlsALPNSolver) CleanUp(_ context.Context, chal acme.Challenge) error {
+=======
+func (s *tlsALPNSolver) CleanUp(ctx context.Context, chal acme.Challenge) error {
+>>>>>>> deathstrox/main
 	solversMu.Lock()
 	defer solversMu.Unlock()
 	si := getSolverInfo(s.address)
@@ -234,6 +242,7 @@ func (s *tlsALPNSolver) CleanUp(_ context.Context, chal acme.Challenge) error {
 		}
 		delete(solvers, s.address)
 	}
+<<<<<<< HEAD
 	return nil
 }
 
@@ -249,6 +258,15 @@ func (s *tlsALPNSolver) CleanUp(_ context.Context, chal acme.Challenge) error {
 // between different records with the same name by looking at their values.
 // DNS provider APIs and implementations of the libdns interfaces must also
 // support multiple same-named TXT records.
+=======
+
+	return nil
+}
+
+// DNS01Solver is a type that makes libdns providers usable
+// as ACME dns-01 challenge solvers.
+// See https://github.com/libdns/libdns
+>>>>>>> deathstrox/main
 type DNS01Solver struct {
 	// The implementation that interacts with the DNS
 	// provider to set or delete records. (REQUIRED)
@@ -274,6 +292,7 @@ type DNS01Solver struct {
 	// that the solver doesn't follow CNAME/NS record.
 	OverrideDomain string
 
+<<<<<<< HEAD
 	// Remember DNS records while challenges are active; i.e.
 	// records we have presented and not yet cleaned up.
 	// This lets us clean them up quickly and efficiently.
@@ -286,6 +305,9 @@ type DNS01Solver struct {
 	// unique challenge tokens.
 	// See https://github.com/caddyserver/caddy/issues/3474.
 	txtRecords   map[string][]dnsPresentMemory
+=======
+	txtRecords   map[string]dnsPresentMemory // keyed by domain name
+>>>>>>> deathstrox/main
 	txtRecordsMu sync.Mutex
 }
 
@@ -297,6 +319,16 @@ func (s *DNS01Solver) Present(ctx context.Context, challenge acme.Challenge) err
 	}
 	keyAuth := challenge.DNS01KeyAuthorization()
 
+<<<<<<< HEAD
+=======
+	// multiple identifiers can have the same ACME challenge
+	// domain (e.g. example.com and *.example.com) so we need
+	// to ensure that we don't solve those concurrently and
+	// step on each challenges' metaphorical toes; see
+	// https://github.com/caddyserver/caddy/issues/3474
+	activeDNSChallenges.Lock(dnsName)
+
+>>>>>>> deathstrox/main
 	zone, err := findZoneByFQDN(dnsName, recursiveNameservers(s.Resolvers))
 	if err != nil {
 		return fmt.Errorf("could not determine zone for domain %q: %v", dnsName, err)
@@ -311,18 +343,31 @@ func (s *DNS01Solver) Present(ctx context.Context, challenge acme.Challenge) err
 
 	results, err := s.DNSProvider.AppendRecords(ctx, zone, []libdns.Record{rec})
 	if err != nil {
+<<<<<<< HEAD
 		return fmt.Errorf("adding temporary record for zone %q: %w", zone, err)
+=======
+		return fmt.Errorf("adding temporary record for zone %s: %w", zone, err)
+>>>>>>> deathstrox/main
 	}
 	if len(results) != 1 {
 		return fmt.Errorf("expected one record, got %d: %v", len(results), results)
 	}
 
 	// remember the record and zone we got so we can clean up more efficiently
+<<<<<<< HEAD
 	s.saveDNSPresentMemory(dnsPresentMemory{
 		dnsZone: zone,
 		dnsName: dnsName,
 		rec:     results[0],
 	})
+=======
+	s.txtRecordsMu.Lock()
+	if s.txtRecords == nil {
+		s.txtRecords = make(map[string]dnsPresentMemory)
+	}
+	s.txtRecords[dnsName] = dnsPresentMemory{dnsZone: zone, rec: results[0]}
+	s.txtRecordsMu.Unlock()
+>>>>>>> deathstrox/main
 
 	return nil
 }
@@ -356,7 +401,11 @@ func (s *DNS01Solver) Wait(ctx context.Context, challenge acme.Challenge) error 
 	// timings
 	timeout := s.PropagationTimeout
 	if timeout == 0 {
+<<<<<<< HEAD
 		timeout = defaultDNSPropagationTimeout
+=======
+		timeout = 2 * time.Minute
+>>>>>>> deathstrox/main
 	}
 	const interval = 2 * time.Second
 
@@ -374,7 +423,11 @@ func (s *DNS01Solver) Wait(ctx context.Context, challenge acme.Challenge) error 
 		var ready bool
 		ready, err = checkDNSPropagation(dnsName, keyAuth, resolvers)
 		if err != nil {
+<<<<<<< HEAD
 			return fmt.Errorf("checking DNS propagation of %q: %w", dnsName, err)
+=======
+			return fmt.Errorf("checking DNS propagation of %s: %w", dnsName, err)
+>>>>>>> deathstrox/main
 		}
 		if ready {
 			return nil
@@ -385,6 +438,7 @@ func (s *DNS01Solver) Wait(ctx context.Context, challenge acme.Challenge) error 
 }
 
 // CleanUp deletes the DNS TXT record created in Present().
+<<<<<<< HEAD
 //
 // We ignore the context because cleanup is often/likely performed after
 // a context cancellation, and properly-implemented DNS providers should
@@ -420,11 +474,40 @@ func (s *DNS01Solver) CleanUp(_ context.Context, challenge acme.Challenge) error
 	_, err = s.DNSProvider.DeleteRecords(ctx, memory.dnsZone, []libdns.Record{memory.rec})
 	if err != nil {
 		return fmt.Errorf("deleting temporary record for name %q in zone %q: %w", memory.dnsName, memory.dnsZone, err)
+=======
+func (s *DNS01Solver) CleanUp(ctx context.Context, challenge acme.Challenge) error {
+	dnsName := challenge.DNS01TXTRecordName()
+
+	defer func() {
+		// always forget about it so we don't leak memory
+		s.txtRecordsMu.Lock()
+		delete(s.txtRecords, dnsName)
+		s.txtRecordsMu.Unlock()
+
+		// always do this last - but always do it!
+		activeDNSChallenges.Unlock(dnsName)
+	}()
+
+	// recall the record we created and zone we looked up
+	s.txtRecordsMu.Lock()
+	memory, ok := s.txtRecords[dnsName]
+	if !ok {
+		s.txtRecordsMu.Unlock()
+		return fmt.Errorf("no memory of presenting a DNS record for %s (probably OK if presenting failed)", challenge.Identifier.Value)
+	}
+	s.txtRecordsMu.Unlock()
+
+	// clean up the record
+	_, err := s.DNSProvider.DeleteRecords(ctx, memory.dnsZone, []libdns.Record{memory.rec})
+	if err != nil {
+		return fmt.Errorf("deleting temporary record for zone %s: %w", memory.dnsZone, err)
+>>>>>>> deathstrox/main
 	}
 
 	return nil
 }
 
+<<<<<<< HEAD
 const defaultDNSPropagationTimeout = 2 * time.Minute
 
 type dnsPresentMemory struct {
@@ -473,6 +556,13 @@ func (s *DNS01Solver) deleteDNSPresentMemory(dnsName, keyAuth string) {
 	}
 }
 
+=======
+type dnsPresentMemory struct {
+	dnsZone string
+	rec     libdns.Record
+}
+
+>>>>>>> deathstrox/main
 // ACMEDNSProvider defines the set of operations required for
 // ACME challenges. A DNS provider must be able to append and
 // delete records in order to solve ACME challenges. Find one
@@ -483,6 +573,50 @@ type ACMEDNSProvider interface {
 	libdns.RecordDeleter
 }
 
+<<<<<<< HEAD
+=======
+// activeDNSChallenges synchronizes DNS challenges for
+// names to ensure that challenges for the same ACME
+// DNS name do not overlap; for example, the TXT record
+// to make for both example.com and *.example.com are
+// the same; thus we cannot solve them concurrently.
+var activeDNSChallenges = newMapMutex()
+
+// mapMutex implements named mutexes.
+type mapMutex struct {
+	cond *sync.Cond
+	set  map[interface{}]struct{}
+}
+
+func newMapMutex() *mapMutex {
+	return &mapMutex{
+		cond: sync.NewCond(new(sync.Mutex)),
+		set:  make(map[interface{}]struct{}),
+	}
+}
+
+func (mmu *mapMutex) Lock(key interface{}) {
+	mmu.cond.L.Lock()
+	defer mmu.cond.L.Unlock()
+	for mmu.locked(key) {
+		mmu.cond.Wait()
+	}
+	mmu.set[key] = struct{}{}
+}
+
+func (mmu *mapMutex) Unlock(key interface{}) {
+	mmu.cond.L.Lock()
+	defer mmu.cond.L.Unlock()
+	delete(mmu.set, key)
+	mmu.cond.Broadcast()
+}
+
+func (mmu *mapMutex) locked(key interface{}) (ok bool) {
+	_, ok = mmu.set[key]
+	return
+}
+
+>>>>>>> deathstrox/main
 // distributedSolver allows the ACME HTTP-01 and TLS-ALPN challenges
 // to be solved by an instance other than the one which initiated it.
 // This is useful behind load balancers or in other cluster/fleet
@@ -629,6 +763,7 @@ func robustTryListen(addr string) (net.Listener, error) {
 			return nil, nil
 		}
 
+<<<<<<< HEAD
 		// Hmm, we couldn't connect to the socket, so something else must
 		// be wrong, right? wrong!! Apparently if a port is bound by another
 		// listener with a specific host, i.e. 'x:1234', we cannot bind to
@@ -646,6 +781,23 @@ func robustTryListen(addr string) (net.Listener, error) {
 		if strings.Contains(listenErr.Error(), "address already in use") ||
 			strings.Contains(listenErr.Error(), "one usage of each socket address") {
 			log.Printf("[WARNING] %v - be sure to set the ACMEIssuer.ListenHost field; assuming conflicting listener is correctly configured and continuing", listenErr)
+=======
+		// hmm, we couldn't connect to the socket, so something else must
+		// be wrong, right? wrong!! we've had reports across multiple OSes
+		// now that sometimes connections fail even though the OS told us
+		// that the address was already in use; either the listener is
+		// fluctuating between open and closed very, very quickly, or the
+		// OS is inconsistent and contradicting itself; I have been unable
+		// to reproduce this, so I'm now resorting to hard-coding substring
+		// matching in error messages as a really hacky and unreliable
+		// safeguard against this, until we can idenify exactly what was
+		// happening; see the following threads for more info:
+		// https://caddy.community/t/caddy-retry-error/7317
+		// https://caddy.community/t/v2-upgrade-to-caddy2-failing-with-errors/7423
+		if strings.Contains(listenErr.Error(), "address already in use") ||
+			strings.Contains(listenErr.Error(), "one usage of each socket address") {
+			log.Printf("[WARNING] OS reports a contradiction: %v - but we cannot connect to it, with this error: %v; continuing anyway 🤞 (I don't know what causes this... if you do, please help?)", listenErr, connectErr)
+>>>>>>> deathstrox/main
 			return nil, nil
 		}
 	}
@@ -698,7 +850,11 @@ var (
 // data that can make it easier or more efficient to solve.
 type Challenge struct {
 	acme.Challenge
+<<<<<<< HEAD
 	data any
+=======
+	data interface{}
+>>>>>>> deathstrox/main
 }
 
 // challengeKey returns the map key for a given challenge; it is the identifier

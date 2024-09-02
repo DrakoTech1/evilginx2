@@ -3,10 +3,18 @@
 // license that can be found in the LICENSE file.
 
 //go:build aix && ppc64
+<<<<<<< HEAD
+=======
+// +build aix,ppc64
+>>>>>>> deathstrox/main
 
 package unix
 
 //sysnb	Getrlimit(resource int, rlim *Rlimit) (err error)
+<<<<<<< HEAD
+=======
+//sysnb	Setrlimit(resource int, rlim *Rlimit) (err error)
+>>>>>>> deathstrox/main
 //sys	Seek(fd int, offset int64, whence int) (off int64, err error) = lseek
 
 //sys	mmap(addr uintptr, length uintptr, prot int, flags int, fd int, offset int64) (xaddr uintptr, err error) = mmap64

@@ -122,7 +122,11 @@ func Split(s string) []int {
 }
 
 // NextLabel returns the index of the start of the next label in the
+<<<<<<< HEAD
 // string s starting at offset. A negative offset will cause a panic.
+=======
+// string s starting at offset.
+>>>>>>> deathstrox/main
 // The bool end is true when the end of the string has been reached.
 // Also see PrevLabel.
 func NextLabel(s string, offset int) (i int, end bool) {

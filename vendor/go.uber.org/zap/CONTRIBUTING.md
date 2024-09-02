@@ -16,7 +16,11 @@ you to accept the CLA when you open your pull request.
 
 [Fork][fork], then clone the repository:
 
+<<<<<<< HEAD
 ```bash
+=======
+```
+>>>>>>> deathstrox/main
 mkdir -p $GOPATH/src/go.uber.org
 cd $GOPATH/src/go.uber.org
 git clone git@github.com:your_github_username/zap.git
@@ -27,16 +31,32 @@ git fetch upstream
 
 Make sure that the tests and the linters pass:
 
+<<<<<<< HEAD
 ```bash
+=======
+```
+>>>>>>> deathstrox/main
 make test
 make lint
 ```
 
+<<<<<<< HEAD
+=======
+If you're not using the minor version of Go specified in the Makefile's
+`LINTABLE_MINOR_VERSIONS` variable, `make lint` doesn't do anything. This is
+fine, but it means that you'll only discover lint failures after you open your
+pull request.
+
+>>>>>>> deathstrox/main
 ## Making Changes
 
 Start by creating a new branch for your changes:
 
+<<<<<<< HEAD
 ```bash
+=======
+```
+>>>>>>> deathstrox/main
 cd $GOPATH/src/go.uber.org/zap
 git checkout master
 git fetch upstream
@@ -47,22 +67,36 @@ git checkout -b cool_new_feature
 Make your changes, then ensure that `make lint` and `make test` still pass. If
 you're satisfied with your changes, push them to your fork.
 
+<<<<<<< HEAD
 ```bash
+=======
+```
+>>>>>>> deathstrox/main
 git push origin cool_new_feature
 ```
 
 Then use the GitHub UI to open a pull request.
 
+<<<<<<< HEAD
 At this point, you're waiting on us to review your changes. We _try_ to respond
+=======
+At this point, you're waiting on us to review your changes. We *try* to respond
+>>>>>>> deathstrox/main
 to issues and pull requests within a few business days, and we may suggest some
 improvements or alternatives. Once your changes are approved, one of the
 project maintainers will merge them.
 
 We're much more likely to approve your changes if you:
 
+<<<<<<< HEAD
 - Add tests for new functionality.
 - Write a [good commit message][commit-message].
 - Maintain backward compatibility.
+=======
+* Add tests for new functionality.
+* Write a [good commit message][commit-message].
+* Maintain backward compatibility.
+>>>>>>> deathstrox/main
 
 [fork]: https://github.com/uber-go/zap/fork
 [open-issue]: https://github.com/uber-go/zap/issues/new

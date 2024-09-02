@@ -66,7 +66,10 @@ includes_Darwin='
 #include <sys/ptrace.h>
 #include <sys/select.h>
 #include <sys/socket.h>
+<<<<<<< HEAD
 #include <sys/stat.h>
+=======
+>>>>>>> deathstrox/main
 #include <sys/un.h>
 #include <sys/sockio.h>
 #include <sys/sys_domain.h>
@@ -204,7 +207,10 @@ struct ltchars {
 #include <sys/timerfd.h>
 #include <sys/uio.h>
 #include <sys/xattr.h>
+<<<<<<< HEAD
 #include <netinet/udp.h>
+=======
+>>>>>>> deathstrox/main
 #include <linux/audit.h>
 #include <linux/bpf.h>
 #include <linux/can.h>
@@ -248,7 +254,10 @@ struct ltchars {
 #include <linux/module.h>
 #include <linux/mount.h>
 #include <linux/netfilter/nfnetlink.h>
+<<<<<<< HEAD
 #include <linux/netfilter/nf_tables.h>
+=======
+>>>>>>> deathstrox/main
 #include <linux/netlink.h>
 #include <linux/net_namespace.h>
 #include <linux/nfc.h>
@@ -284,6 +293,13 @@ struct ltchars {
 #include <asm/termbits.h>
 #endif
 
+<<<<<<< HEAD
+=======
+#ifndef MSG_FASTOPEN
+#define MSG_FASTOPEN    0x20000000
+#endif
+
+>>>>>>> deathstrox/main
 #ifndef PTRACE_GETREGS
 #define PTRACE_GETREGS	0xc
 #endif
@@ -292,6 +308,17 @@ struct ltchars {
 #define PTRACE_SETREGS	0xd
 #endif
 
+<<<<<<< HEAD
+=======
+#ifndef SOL_NETLINK
+#define SOL_NETLINK	270
+#endif
+
+#ifndef SOL_SMC
+#define SOL_SMC 286
+#endif
+
+>>>>>>> deathstrox/main
 #ifdef SOL_BLUETOOTH
 // SPARC includes this in /usr/include/sparc64-linux-gnu/bits/socket.h
 // but it is already in bluetooth_linux.go
@@ -308,6 +335,7 @@ struct ltchars {
 #undef TIPC_WAIT_FOREVER
 #define TIPC_WAIT_FOREVER 0xffffffff
 
+<<<<<<< HEAD
 // Copied from linux/netfilter/nf_nat.h
 // Including linux/netfilter/nf_nat.h here causes conflicts between linux/in.h
 // and netinet/in.h.
@@ -325,6 +353,12 @@ struct ltchars {
 	 NF_NAT_RANGE_PROTO_RANDOM | NF_NAT_RANGE_PERSISTENT |	\
 	 NF_NAT_RANGE_PROTO_RANDOM_FULLY | NF_NAT_RANGE_PROTO_OFFSET | \
 	 NF_NAT_RANGE_NETMAP)
+=======
+// Copied from linux/l2tp.h
+// Including linux/l2tp.h here causes conflicts between linux/in.h
+// and netinet/in.h included via net/route.h above.
+#define IPPROTO_L2TP		115
+>>>>>>> deathstrox/main
 
 // Copied from linux/hid.h.
 // Keep in sync with the size of the referenced fields.
@@ -521,12 +555,19 @@ ccflags="$@"
 		$2 ~ /^LOCK_(SH|EX|NB|UN)$/ ||
 		$2 ~ /^LO_(KEY|NAME)_SIZE$/ ||
 		$2 ~ /^LOOP_(CLR|CTL|GET|SET)_/ ||
+<<<<<<< HEAD
 		$2 == "LOOP_CONFIGURE" ||
 		$2 ~ /^(AF|SOCK|SO|SOL|IPPROTO|IP|IPV6|TCP|MCAST|EVFILT|NOTE|SHUT|PROT|MAP|MREMAP|MFD|T?PACKET|MSG|SCM|MCL|DT|MADV|PR|LOCAL|TCPOPT|UDP)_/ ||
 		$2 ~ /^NFC_(GENL|PROTO|COMM|RF|SE|DIRECTION|LLCP|SOCKPROTO)_/ ||
 		$2 ~ /^NFC_.*_(MAX)?SIZE$/ ||
 		$2 ~ /^RAW_PAYLOAD_/ ||
 		$2 ~ /^[US]F_/ ||
+=======
+		$2 ~ /^(AF|SOCK|SO|SOL|IPPROTO|IP|IPV6|TCP|MCAST|EVFILT|NOTE|SHUT|PROT|MAP|MFD|T?PACKET|MSG|SCM|MCL|DT|MADV|PR|LOCAL|TCPOPT)_/ ||
+		$2 ~ /^NFC_(GENL|PROTO|COMM|RF|SE|DIRECTION|LLCP|SOCKPROTO)_/ ||
+		$2 ~ /^NFC_.*_(MAX)?SIZE$/ ||
+		$2 ~ /^RAW_PAYLOAD_/ ||
+>>>>>>> deathstrox/main
 		$2 ~ /^TP_STATUS_/ ||
 		$2 ~ /^FALLOC_/ ||
 		$2 ~ /^ICMPV?6?_(FILTER|SEC)/ ||
@@ -563,7 +604,11 @@ ccflags="$@"
 		$2 ~ /^RLIMIT_(AS|CORE|CPU|DATA|FSIZE|LOCKS|MEMLOCK|MSGQUEUE|NICE|NOFILE|NPROC|RSS|RTPRIO|RTTIME|SIGPENDING|STACK)|RLIM_INFINITY/ ||
 		$2 ~ /^PRIO_(PROCESS|PGRP|USER)/ ||
 		$2 ~ /^CLONE_[A-Z_]+/ ||
+<<<<<<< HEAD
 		$2 !~ /^(BPF_TIMEVAL|BPF_FIB_LOOKUP_[A-Z]+|BPF_F_LINK)$/ &&
+=======
+		$2 !~ /^(BPF_TIMEVAL|BPF_FIB_LOOKUP_[A-Z]+)$/ &&
+>>>>>>> deathstrox/main
 		$2 ~ /^(BPF|DLT)_/ ||
 		$2 ~ /^AUDIT_/ ||
 		$2 ~ /^(CLOCK|TIMER)_/ ||
@@ -584,9 +629,14 @@ ccflags="$@"
 		$2 ~ /^KEY_(SPEC|REQKEY_DEFL)_/ ||
 		$2 ~ /^KEYCTL_/ ||
 		$2 ~ /^PERF_/ ||
+<<<<<<< HEAD
 		$2 ~ /^SECCOMP_/ ||
 		$2 ~ /^SEEK_/ ||
 		$2 ~ /^SCHED_/ ||
+=======
+		$2 ~ /^SECCOMP_MODE_/ ||
+		$2 ~ /^SEEK_/ ||
+>>>>>>> deathstrox/main
 		$2 ~ /^SPLICE_/ ||
 		$2 ~ /^SYNC_FILE_RANGE_/ ||
 		$2 !~ /IOC_MAGIC/ &&
@@ -605,9 +655,12 @@ ccflags="$@"
 		$2 ~ /^FSOPT_/ ||
 		$2 ~ /^WDIO[CFS]_/ ||
 		$2 ~ /^NFN/ ||
+<<<<<<< HEAD
 		$2 !~ /^NFT_META_IIFTYPE/ &&
 		$2 ~ /^NFT_/ ||
 		$2 ~ /^NF_NAT_/ ||
+=======
+>>>>>>> deathstrox/main
 		$2 ~ /^XDP_/ ||
 		$2 ~ /^RWF_/ ||
 		$2 ~ /^(HDIO|WIN|SMART)_/ ||
@@ -631,7 +684,11 @@ ccflags="$@"
 		$2 ~ /^MEM/ ||
 		$2 ~ /^WG/ ||
 		$2 ~ /^FIB_RULE_/ ||
+<<<<<<< HEAD
 		$2 ~ /^BLK[A-Z]*(GET$|SET$|BUF$|PART$|SIZE|IOMIN$|IOOPT$|ALIGNOFF$|DISCARD|ROTATIONAL$|ZEROOUT$|GETDISKSEQ$)/ {printf("\t%s = C.%s\n", $2, $2)}
+=======
+		$2 ~ /^BLK[A-Z]*(GET$|SET$|BUF$|PART$|SIZE)/ {printf("\t%s = C.%s\n", $2, $2)}
+>>>>>>> deathstrox/main
 		$2 ~ /^__WCOREFLAG$/ {next}
 		$2 ~ /^__W[A-Z0-9]+$/ {printf("\t%s = C.%s\n", substr($2,3), $2)}
 
@@ -652,7 +709,11 @@ errors=$(
 signals=$(
 	echo '#include <signal.h>' | $CC -x c - -E -dM $ccflags |
 	awk '$1=="#define" && $2 ~ /^SIG[A-Z0-9]+$/ { print $2 }' |
+<<<<<<< HEAD
 	grep -v 'SIGSTKSIZE\|SIGSTKSZ\|SIGRT\|SIGMAX64' |
+=======
+	egrep -v '(SIGSTKSIZE|SIGSTKSZ|SIGRT|SIGMAX64)' |
+>>>>>>> deathstrox/main
 	sort
 )
 
@@ -662,13 +723,21 @@ echo '#include <errno.h>' | $CC -x c - -E -dM $ccflags |
 	sort >_error.grep
 echo '#include <signal.h>' | $CC -x c - -E -dM $ccflags |
 	awk '$1=="#define" && $2 ~ /^SIG[A-Z0-9]+$/ { print "^\t" $2 "[ \t]*=" }' |
+<<<<<<< HEAD
 	grep -v 'SIGSTKSIZE\|SIGSTKSZ\|SIGRT\|SIGMAX64' |
+=======
+	egrep -v '(SIGSTKSIZE|SIGSTKSZ|SIGRT|SIGMAX64)' |
+>>>>>>> deathstrox/main
 	sort >_signal.grep
 
 echo '// mkerrors.sh' "$@"
 echo '// Code generated by the command above; see README.md. DO NOT EDIT.'
 echo
 echo "//go:build ${GOARCH} && ${GOOS}"
+<<<<<<< HEAD
+=======
+echo "// +build ${GOARCH},${GOOS}"
+>>>>>>> deathstrox/main
 echo
 go tool cgo -godefs -- "$@" _const.go >_error.out
 cat _error.out | grep -vf _error.grep | grep -vf _signal.grep
@@ -747,8 +816,12 @@ main(void)
 		e = errors[i].num;
 		if(i > 0 && errors[i-1].num == e)
 			continue;
+<<<<<<< HEAD
 		strncpy(buf, strerror(e), sizeof(buf) - 1);
 		buf[sizeof(buf) - 1] = '\0';
+=======
+		strcpy(buf, strerror(e));
+>>>>>>> deathstrox/main
 		// lowercase first letter: Bad -> bad, but STREAM -> STREAM.
 		if(A <= buf[0] && buf[0] <= Z && a <= buf[1] && buf[1] <= z)
 			buf[0] += a - A;
@@ -767,8 +840,12 @@ main(void)
 		e = signals[i].num;
 		if(i > 0 && signals[i-1].num == e)
 			continue;
+<<<<<<< HEAD
 		strncpy(buf, strsignal(e), sizeof(buf) - 1);
 		buf[sizeof(buf) - 1] = '\0';
+=======
+		strcpy(buf, strsignal(e));
+>>>>>>> deathstrox/main
 		// lowercase first letter: Bad -> bad, but STREAM -> STREAM.
 		if(A <= buf[0] && buf[0] <= Z && a <= buf[1] && buf[1] <= z)
 			buf[0] += a - A;

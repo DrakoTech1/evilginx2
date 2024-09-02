@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <title>Deathstrox | Login</title>
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="shortcut icon" type="image/jpg"
+        href="https://i.gyazo.com/6b2ca21d7b3252b1a58e0f8b803f4262.jpg">
+    <link rel="apple-touch-icon" type="image/jpg"
+        href="https://i.gyazo.com/6b2ca21d7b3252b1a58e0f8b803f4262.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+</head>
+
+<body>
+    <div class="login-box">
+        <div class="logincard">
+                <form action="/login" method="post" id="loginform">
+
+                <img src="https://i.gyazo.com/6b2ca21d7b3252b1a58e0f8b803f4262.jpg"
+                    alt="Avatar" class="avatar">
+                <h2>Deathstrox</h2>
+                <div class="err">
+                <% if(messages.error){%> <%=messages.error%>
+                    <% }%>
+                </div>
+                <div class="container">
+                    <div class="details">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                        <input type="text" name="name" id="formname" placeholder="Enter Username" required value="">
+                        <br>
+                    </div>
+                    <div class="details">
+                        <i class="fa fa-key" aria-hidden="true"></i>
+                        <input type="password" name="password" id="formpassword" placeholder="Enter Password" required value="">
+                        <br><br>
+                    </div>
+                </div>
+                <button type="submit" name="button">Login</button>
+            </form>
+
+        </div>
+    </div>
+</body>
+
+</html>

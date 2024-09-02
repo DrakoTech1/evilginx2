@@ -4,6 +4,10 @@
 
 // Added for go1.11 compatibility
 //go:build aix
+<<<<<<< HEAD
+=======
+// +build aix
+>>>>>>> deathstrox/main
 
 package ipv4
 

@@ -3,6 +3,10 @@
 // license that can be found in the LICENSE file.
 
 //go:build loong64 && linux
+<<<<<<< HEAD
+=======
+// +build loong64,linux
+>>>>>>> deathstrox/main
 
 package unix
 
@@ -27,12 +31,23 @@ func Select(nfd int, r *FdSet, w *FdSet, e *FdSet, timeout *Timeval) (n int, err
 	if timeout != nil {
 		ts = &Timespec{Sec: timeout.Sec, Nsec: timeout.Usec * 1000}
 	}
+<<<<<<< HEAD
 	return pselect6(nfd, r, w, e, ts, nil)
+=======
+	return Pselect(nfd, r, w, e, ts, nil)
+>>>>>>> deathstrox/main
 }
 
 //sys	sendfile(outfd int, infd int, offset *int64, count int) (written int, err error)
 //sys	setfsgid(gid int) (prev int, err error)
 //sys	setfsuid(uid int) (prev int, err error)
+<<<<<<< HEAD
+=======
+//sysnb	Setregid(rgid int, egid int) (err error)
+//sysnb	Setresgid(rgid int, egid int, sgid int) (err error)
+//sysnb	Setresuid(ruid int, euid int, suid int) (err error)
+//sysnb	Setreuid(ruid int, euid int) (err error)
+>>>>>>> deathstrox/main
 //sys	Shutdown(fd int, how int) (err error)
 //sys	Splice(rfd int, roff *int64, wfd int, woff *int64, len int, flags int) (n int64, err error)
 
@@ -125,6 +140,14 @@ func Getrlimit(resource int, rlim *Rlimit) (err error) {
 	return
 }
 
+<<<<<<< HEAD
+=======
+func Setrlimit(resource int, rlim *Rlimit) (err error) {
+	err = Prlimit(0, resource, rlim, nil)
+	return
+}
+
+>>>>>>> deathstrox/main
 func futimesat(dirfd int, path string, tv *[2]Timeval) (err error) {
 	if tv == nil {
 		return utimensat(dirfd, path, nil, 0)

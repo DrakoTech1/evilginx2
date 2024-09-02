@@ -3,6 +3,10 @@
 // license that can be found in the LICENSE file.
 
 //go:build amd64 && netbsd
+<<<<<<< HEAD
+=======
+// +build amd64,netbsd
+>>>>>>> deathstrox/main
 
 package unix
 

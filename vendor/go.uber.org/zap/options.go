@@ -132,6 +132,7 @@ func IncreaseLevel(lvl zapcore.LevelEnabler) Option {
 	})
 }
 
+<<<<<<< HEAD
 // WithPanicHook sets a CheckWriteHook to run on Panic/DPanic logs.
 // Zap will call this hook after writing a log statement with a Panic/DPanic level.
 //
@@ -170,6 +171,12 @@ func OnFatal(action zapcore.CheckWriteAction) Option {
 func WithFatalHook(hook zapcore.CheckWriteHook) Option {
 	return optionFunc(func(log *Logger) {
 		log.onFatal = hook
+=======
+// OnFatal sets the action to take on fatal logs.
+func OnFatal(action zapcore.CheckWriteAction) Option {
+	return optionFunc(func(log *Logger) {
+		log.onFatal = action
+>>>>>>> deathstrox/main
 	})
 }
 

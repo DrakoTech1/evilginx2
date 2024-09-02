@@ -2,7 +2,15 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+<<<<<<< HEAD
 //go:build (darwin || dragonfly || freebsd || (linux && !ppc64 && !ppc64le) || netbsd || openbsd || solaris) && gc
+=======
+//go:build (darwin || dragonfly || freebsd || linux || netbsd || openbsd || solaris) && gc && !ppc64le && !ppc64
+// +build darwin dragonfly freebsd linux netbsd openbsd solaris
+// +build gc
+// +build !ppc64le
+// +build !ppc64
+>>>>>>> deathstrox/main
 
 package unix
 

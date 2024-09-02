@@ -53,11 +53,14 @@ const (
 
 	_minLevel = DebugLevel
 	_maxLevel = FatalLevel
+<<<<<<< HEAD
 
 	// InvalidLevel is an invalid value for Level.
 	//
 	// Core implementations may panic if they see messages of this level.
 	InvalidLevel = _maxLevel + 1
+=======
+>>>>>>> deathstrox/main
 )
 
 // ParseLevel parses a level based on the lower-case or all-caps ASCII
@@ -72,6 +75,7 @@ func ParseLevel(text string) (Level, error) {
 	return level, err
 }
 
+<<<<<<< HEAD
 type leveledEnabler interface {
 	LevelEnabler
 
@@ -109,6 +113,8 @@ func LevelOf(enab LevelEnabler) Level {
 	return InvalidLevel
 }
 
+=======
+>>>>>>> deathstrox/main
 // String returns a lower-case ASCII representation of the log level.
 func (l Level) String() string {
 	switch l {

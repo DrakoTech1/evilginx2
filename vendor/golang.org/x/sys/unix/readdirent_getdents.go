@@ -3,6 +3,10 @@
 // license that can be found in the LICENSE file.
 
 //go:build aix || dragonfly || freebsd || linux || netbsd || openbsd
+<<<<<<< HEAD
+=======
+// +build aix dragonfly freebsd linux netbsd openbsd
+>>>>>>> deathstrox/main
 
 package unix
 

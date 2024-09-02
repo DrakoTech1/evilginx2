@@ -3,6 +3,10 @@
 // license that can be found in the LICENSE file.
 
 //go:build aix || linux || netbsd
+<<<<<<< HEAD
+=======
+// +build aix linux netbsd
+>>>>>>> deathstrox/main
 
 package socket
 
@@ -171,6 +175,7 @@ type mmsgTmpsPool struct {
 }
 
 func (p *mmsgTmpsPool) Get() *mmsgTmps {
+<<<<<<< HEAD
 	m := p.p.Get().(*mmsgTmps)
 	// Clear fields up to the len (not the cap) of the slice,
 	// assuming that the previous caller only used that many elements.
@@ -188,6 +193,9 @@ func (p *mmsgTmpsPool) Get() *mmsgTmps {
 	}
 	m.packer.hs = m.packer.hs[:0]
 	return m
+=======
+	return p.p.Get().(*mmsgTmps)
+>>>>>>> deathstrox/main
 }
 
 func (p *mmsgTmpsPool) Put(tmps *mmsgTmps) {

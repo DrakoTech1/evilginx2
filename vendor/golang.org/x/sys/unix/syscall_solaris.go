@@ -128,8 +128,12 @@ func (sa *SockaddrUnix) sockaddr() (unsafe.Pointer, _Socklen, error) {
 	if n > 0 {
 		sl += _Socklen(n) + 1
 	}
+<<<<<<< HEAD
 	if sa.raw.Path[0] == '@' || (sa.raw.Path[0] == 0 && sl > 3) {
 		// Check sl > 3 so we don't change unnamed socket behavior.
+=======
+	if sa.raw.Path[0] == '@' {
+>>>>>>> deathstrox/main
 		sa.raw.Path[0] = 0
 		// Don't count trailing NUL for abstract address.
 		sl--
@@ -158,7 +162,11 @@ func GetsockoptString(fd, level, opt int) (string, error) {
 	if err != nil {
 		return "", err
 	}
+<<<<<<< HEAD
 	return ByteSliceToString(buf[:vallen]), nil
+=======
+	return string(buf[:vallen-1]), nil
+>>>>>>> deathstrox/main
 }
 
 const ImplementsGetwd = true
@@ -409,7 +417,12 @@ func anyToSockaddr(fd int, rsa *RawSockaddrAny) (Sockaddr, error) {
 		for n < len(pp.Path) && pp.Path[n] != 0 {
 			n++
 		}
+<<<<<<< HEAD
 		sa.Name = string(unsafe.Slice((*byte)(unsafe.Pointer(&pp.Path[0])), n))
+=======
+		bytes := (*[len(pp.Path)]byte)(unsafe.Pointer(&pp.Path[0]))[0:n]
+		sa.Name = string(bytes)
+>>>>>>> deathstrox/main
 		return sa, nil
 
 	case AF_INET:
@@ -546,14 +559,21 @@ func Minor(dev uint64) uint32 {
  * Expose the ioctl function
  */
 
+<<<<<<< HEAD
 //sys	ioctlRet(fd int, req int, arg uintptr) (ret int, err error) = libc.ioctl
 //sys	ioctlPtrRet(fd int, req int, arg unsafe.Pointer) (ret int, err error) = libc.ioctl
 
 func ioctl(fd int, req int, arg uintptr) (err error) {
+=======
+//sys	ioctlRet(fd int, req uint, arg uintptr) (ret int, err error) = libc.ioctl
+
+func ioctl(fd int, req uint, arg uintptr) (err error) {
+>>>>>>> deathstrox/main
 	_, err = ioctlRet(fd, req, arg)
 	return err
 }
 
+<<<<<<< HEAD
 func ioctlPtr(fd int, req int, arg unsafe.Pointer) (err error) {
 	_, err = ioctlPtrRet(fd, req, arg)
 	return err
@@ -566,6 +586,17 @@ func IoctlSetTermio(fd int, req int, value *Termio) error {
 func IoctlGetTermio(fd int, req int) (*Termio, error) {
 	var value Termio
 	err := ioctlPtr(fd, req, unsafe.Pointer(&value))
+=======
+func IoctlSetTermio(fd int, req uint, value *Termio) error {
+	err := ioctl(fd, req, uintptr(unsafe.Pointer(value)))
+	runtime.KeepAlive(value)
+	return err
+}
+
+func IoctlGetTermio(fd int, req uint) (*Termio, error) {
+	var value Termio
+	err := ioctl(fd, req, uintptr(unsafe.Pointer(&value)))
+>>>>>>> deathstrox/main
 	return &value, err
 }
 
@@ -594,7 +625,10 @@ func Sendfile(outfd int, infd int, offset *int64, count int) (written int, err e
 //sys	Chmod(path string, mode uint32) (err error)
 //sys	Chown(path string, uid int, gid int) (err error)
 //sys	Chroot(path string) (err error)
+<<<<<<< HEAD
 //sys	ClockGettime(clockid int32, time *Timespec) (err error)
+=======
+>>>>>>> deathstrox/main
 //sys	Close(fd int) (err error)
 //sys	Creat(path string, mode uint32) (fd int, err error)
 //sys	Dup(fd int) (nfd int, err error)
@@ -666,6 +700,10 @@ func Sendfile(outfd int, infd int, offset *int64, count int) (written int, err e
 //sys	Setpriority(which int, who int, prio int) (err error)
 //sysnb	Setregid(rgid int, egid int) (err error)
 //sysnb	Setreuid(ruid int, euid int) (err error)
+<<<<<<< HEAD
+=======
+//sysnb	Setrlimit(which int, lim *Rlimit) (err error)
+>>>>>>> deathstrox/main
 //sysnb	Setsid() (pid int, err error)
 //sysnb	Setuid(uid int) (err error)
 //sys	Shutdown(s int, how int) (err error) = libsocket.shutdown
@@ -699,6 +737,41 @@ func Sendfile(outfd int, infd int, offset *int64, count int) (written int, err e
 //sys	setsockopt(s int, level int, name int, val unsafe.Pointer, vallen uintptr) (err error) = libsocket.setsockopt
 //sys	recvfrom(fd int, p []byte, flags int, from *RawSockaddrAny, fromlen *_Socklen) (n int, err error) = libsocket.recvfrom
 
+<<<<<<< HEAD
+=======
+func readlen(fd int, buf *byte, nbuf int) (n int, err error) {
+	r0, _, e1 := sysvicall6(uintptr(unsafe.Pointer(&procread)), 3, uintptr(fd), uintptr(unsafe.Pointer(buf)), uintptr(nbuf), 0, 0, 0)
+	n = int(r0)
+	if e1 != 0 {
+		err = e1
+	}
+	return
+}
+
+func writelen(fd int, buf *byte, nbuf int) (n int, err error) {
+	r0, _, e1 := sysvicall6(uintptr(unsafe.Pointer(&procwrite)), 3, uintptr(fd), uintptr(unsafe.Pointer(buf)), uintptr(nbuf), 0, 0, 0)
+	n = int(r0)
+	if e1 != 0 {
+		err = e1
+	}
+	return
+}
+
+var mapper = &mmapper{
+	active: make(map[*byte][]byte),
+	mmap:   mmap,
+	munmap: munmap,
+}
+
+func Mmap(fd int, offset int64, length int, prot int, flags int) (data []byte, err error) {
+	return mapper.Mmap(fd, offset, length, prot, flags)
+}
+
+func Munmap(b []byte) (err error) {
+	return mapper.Munmap(b)
+}
+
+>>>>>>> deathstrox/main
 // Event Ports
 
 type fileObjCookie struct {
@@ -722,8 +795,13 @@ type EventPort struct {
 	// we should handle things gracefully. To do so, we need to keep an extra
 	// reference to the cookie around until the event is processed
 	// thus the otherwise seemingly extraneous "cookies" map
+<<<<<<< HEAD
 	// The key of this map is a pointer to the corresponding fCookie
 	cookies map[*fileObjCookie]struct{}
+=======
+	// The key of this map is a pointer to the corresponding &fCookie.cookie
+	cookies map[*interface{}]*fileObjCookie
+>>>>>>> deathstrox/main
 }
 
 // PortEvent is an abstraction of the port_event C struct.
@@ -750,7 +828,11 @@ func NewEventPort() (*EventPort, error) {
 		port:    port,
 		fds:     make(map[uintptr]*fileObjCookie),
 		paths:   make(map[string]*fileObjCookie),
+<<<<<<< HEAD
 		cookies: make(map[*fileObjCookie]struct{}),
+=======
+		cookies: make(map[*interface{}]*fileObjCookie),
+>>>>>>> deathstrox/main
 	}
 	return e, nil
 }
@@ -771,7 +853,10 @@ func (e *EventPort) Close() error {
 	}
 	e.fds = nil
 	e.paths = nil
+<<<<<<< HEAD
 	e.cookies = nil
+=======
+>>>>>>> deathstrox/main
 	return nil
 }
 
@@ -799,16 +884,29 @@ func (e *EventPort) AssociatePath(path string, stat os.FileInfo, events int, coo
 	if _, found := e.paths[path]; found {
 		return fmt.Errorf("%v is already associated with this Event Port", path)
 	}
+<<<<<<< HEAD
 	fCookie, err := createFileObjCookie(path, stat, cookie)
 	if err != nil {
 		return err
 	}
 	_, err = port_associate(e.port, PORT_SOURCE_FILE, uintptr(unsafe.Pointer(fCookie.fobj)), events, (*byte)(unsafe.Pointer(fCookie)))
+=======
+	fobj, err := createFileObj(path, stat)
+	if err != nil {
+		return err
+	}
+	fCookie := &fileObjCookie{fobj, cookie}
+	_, err = port_associate(e.port, PORT_SOURCE_FILE, uintptr(unsafe.Pointer(fobj)), events, (*byte)(unsafe.Pointer(&fCookie.cookie)))
+>>>>>>> deathstrox/main
 	if err != nil {
 		return err
 	}
 	e.paths[path] = fCookie
+<<<<<<< HEAD
 	e.cookies[fCookie] = struct{}{}
+=======
+	e.cookies[&fCookie.cookie] = fCookie
+>>>>>>> deathstrox/main
 	return nil
 }
 
@@ -830,7 +928,11 @@ func (e *EventPort) DissociatePath(path string) error {
 	if err == nil {
 		// dissociate was successful, safe to delete the cookie
 		fCookie := e.paths[path]
+<<<<<<< HEAD
 		delete(e.cookies, fCookie)
+=======
+		delete(e.cookies, &fCookie.cookie)
+>>>>>>> deathstrox/main
 	}
 	delete(e.paths, path)
 	return err
@@ -843,16 +945,25 @@ func (e *EventPort) AssociateFd(fd uintptr, events int, cookie interface{}) erro
 	if _, found := e.fds[fd]; found {
 		return fmt.Errorf("%v is already associated with this Event Port", fd)
 	}
+<<<<<<< HEAD
 	fCookie, err := createFileObjCookie("", nil, cookie)
 	if err != nil {
 		return err
 	}
 	_, err = port_associate(e.port, PORT_SOURCE_FD, fd, events, (*byte)(unsafe.Pointer(fCookie)))
+=======
+	fCookie := &fileObjCookie{nil, cookie}
+	_, err := port_associate(e.port, PORT_SOURCE_FD, fd, events, (*byte)(unsafe.Pointer(&fCookie.cookie)))
+>>>>>>> deathstrox/main
 	if err != nil {
 		return err
 	}
 	e.fds[fd] = fCookie
+<<<<<<< HEAD
 	e.cookies[fCookie] = struct{}{}
+=======
+	e.cookies[&fCookie.cookie] = fCookie
+>>>>>>> deathstrox/main
 	return nil
 }
 
@@ -871,12 +982,17 @@ func (e *EventPort) DissociateFd(fd uintptr) error {
 	if err == nil {
 		// dissociate was successful, safe to delete the cookie
 		fCookie := e.fds[fd]
+<<<<<<< HEAD
 		delete(e.cookies, fCookie)
+=======
+		delete(e.cookies, &fCookie.cookie)
+>>>>>>> deathstrox/main
 	}
 	delete(e.fds, fd)
 	return err
 }
 
+<<<<<<< HEAD
 func createFileObjCookie(name string, stat os.FileInfo, cookie interface{}) (*fileObjCookie, error) {
 	fCookie := new(fileObjCookie)
 	fCookie.cookie = cookie
@@ -896,6 +1012,23 @@ func createFileObjCookie(name string, stat os.FileInfo, cookie interface{}) (*fi
 		fCookie.fobj.Ctim.Nsec = s.Ctim.Nsec
 	}
 	return fCookie, nil
+=======
+func createFileObj(name string, stat os.FileInfo) (*fileObj, error) {
+	fobj := new(fileObj)
+	bs, err := ByteSliceFromString(name)
+	if err != nil {
+		return nil, err
+	}
+	fobj.Name = (*int8)(unsafe.Pointer(&bs[0]))
+	s := stat.Sys().(*syscall.Stat_t)
+	fobj.Atim.Sec = s.Atim.Sec
+	fobj.Atim.Nsec = s.Atim.Nsec
+	fobj.Mtim.Sec = s.Mtim.Sec
+	fobj.Mtim.Nsec = s.Mtim.Nsec
+	fobj.Ctim.Sec = s.Ctim.Sec
+	fobj.Ctim.Nsec = s.Ctim.Nsec
+	return fobj, nil
+>>>>>>> deathstrox/main
 }
 
 // GetOne wraps port_get(3c) and returns a single PortEvent.
@@ -908,15 +1041,20 @@ func (e *EventPort) GetOne(t *Timespec) (*PortEvent, error) {
 	p := new(PortEvent)
 	e.mu.Lock()
 	defer e.mu.Unlock()
+<<<<<<< HEAD
 	err = e.peIntToExt(pe, p)
 	if err != nil {
 		return nil, err
 	}
+=======
+	e.peIntToExt(pe, p)
+>>>>>>> deathstrox/main
 	return p, nil
 }
 
 // peIntToExt converts a cgo portEvent struct into the friendlier PortEvent
 // NOTE: Always call this function while holding the e.mu mutex
+<<<<<<< HEAD
 func (e *EventPort) peIntToExt(peInt *portEvent, peExt *PortEvent) error {
 	if e.cookies == nil {
 		return fmt.Errorf("this EventPort is already closed")
@@ -938,20 +1076,52 @@ func (e *EventPort) peIntToExt(peInt *portEvent, peExt *PortEvent) error {
 		// Only remove the fds entry if it exists and this cookie matches
 		if fobj, ok := e.fds[peExt.Fd]; ok {
 			if fobj == fCookie {
+=======
+func (e *EventPort) peIntToExt(peInt *portEvent, peExt *PortEvent) {
+	peExt.Events = peInt.Events
+	peExt.Source = peInt.Source
+	cookie := (*interface{})(unsafe.Pointer(peInt.User))
+	peExt.Cookie = *cookie
+	switch peInt.Source {
+	case PORT_SOURCE_FD:
+		delete(e.cookies, cookie)
+		peExt.Fd = uintptr(peInt.Object)
+		// Only remove the fds entry if it exists and this cookie matches
+		if fobj, ok := e.fds[peExt.Fd]; ok {
+			if &fobj.cookie == cookie {
+>>>>>>> deathstrox/main
 				delete(e.fds, peExt.Fd)
 			}
 		}
 	case PORT_SOURCE_FILE:
+<<<<<<< HEAD
 		peExt.fobj = fCookie.fobj
 		peExt.Path = BytePtrToString((*byte)(unsafe.Pointer(peExt.fobj.Name)))
 		// Only remove the paths entry if it exists and this cookie matches
 		if fobj, ok := e.paths[peExt.Path]; ok {
 			if fobj == fCookie {
+=======
+		if fCookie, ok := e.cookies[cookie]; ok && uintptr(unsafe.Pointer(fCookie.fobj)) == uintptr(peInt.Object) {
+			// Use our stashed reference rather than using unsafe on what we got back
+			// the unsafe version would be (*fileObj)(unsafe.Pointer(uintptr(peInt.Object)))
+			peExt.fobj = fCookie.fobj
+		} else {
+			panic("mismanaged memory")
+		}
+		delete(e.cookies, cookie)
+		peExt.Path = BytePtrToString((*byte)(unsafe.Pointer(peExt.fobj.Name)))
+		// Only remove the paths entry if it exists and this cookie matches
+		if fobj, ok := e.paths[peExt.Path]; ok {
+			if &fobj.cookie == cookie {
+>>>>>>> deathstrox/main
 				delete(e.paths, peExt.Path)
 			}
 		}
 	}
+<<<<<<< HEAD
 	return nil
+=======
+>>>>>>> deathstrox/main
 }
 
 // Pending wraps port_getn(3c) and returns how many events are pending.
@@ -975,7 +1145,11 @@ func (e *EventPort) Get(s []PortEvent, min int, timeout *Timespec) (int, error) 
 	got := uint32(min)
 	max := uint32(len(s))
 	var err error
+<<<<<<< HEAD
 	ps := make([]portEvent, max)
+=======
+	ps := make([]portEvent, max, max)
+>>>>>>> deathstrox/main
 	_, err = port_getn(e.port, &ps[0], max, &got, timeout)
 	// got will be trustworthy with ETIME, but not any other error.
 	if err != nil && err != ETIME {
@@ -983,6 +1157,7 @@ func (e *EventPort) Get(s []PortEvent, min int, timeout *Timespec) (int, error) 
 	}
 	e.mu.Lock()
 	defer e.mu.Unlock()
+<<<<<<< HEAD
 	valid := 0
 	for i := 0; i < int(got); i++ {
 		err2 := e.peIntToExt(&ps[i], &s[i])
@@ -1101,4 +1276,10 @@ func (s *Strioctl) SetInt(i int) {
 
 func IoctlSetStrioctlRetInt(fd int, req int, s *Strioctl) (int, error) {
 	return ioctlPtrRet(fd, req, unsafe.Pointer(s))
+=======
+	for i := 0; i < int(got); i++ {
+		e.peIntToExt(&ps[i], &s[i])
+	}
+	return int(got), err
+>>>>>>> deathstrox/main
 }

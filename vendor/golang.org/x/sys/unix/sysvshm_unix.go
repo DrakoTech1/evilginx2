@@ -3,10 +3,22 @@
 // license that can be found in the LICENSE file.
 
 //go:build (darwin && !ios) || linux
+<<<<<<< HEAD
 
 package unix
 
 import "unsafe"
+=======
+// +build darwin,!ios linux
+
+package unix
+
+import (
+	"unsafe"
+
+	"golang.org/x/sys/internal/unsafeheader"
+)
+>>>>>>> deathstrox/main
 
 // SysvShmAttach attaches the Sysv shared memory segment associated with the
 // shared memory identifier id.
@@ -29,7 +41,16 @@ func SysvShmAttach(id int, addr uintptr, flag int) ([]byte, error) {
 	}
 
 	// Use unsafe to convert addr into a []byte.
+<<<<<<< HEAD
 	b := unsafe.Slice((*byte)(unsafe.Pointer(addr)), int(info.Segsz))
+=======
+	// TODO: convert to unsafe.Slice once we can assume Go 1.17
+	var b []byte
+	hdr := (*unsafeheader.Slice)(unsafe.Pointer(&b))
+	hdr.Data = unsafe.Pointer(addr)
+	hdr.Cap = int(info.Segsz)
+	hdr.Len = int(info.Segsz)
+>>>>>>> deathstrox/main
 	return b, nil
 }
 

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // Copyright (c) 2016-2022 Uber Technologies, Inc.
+=======
+// Copyright (c) 2016 Uber Technologies, Inc.
+>>>>>>> deathstrox/main
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +27,10 @@ package zap
 import (
 	"fmt"
 	"io"
+<<<<<<< HEAD
+=======
+	"io/ioutil"
+>>>>>>> deathstrox/main
 
 	"go.uber.org/zap/zapcore"
 
@@ -48,40 +56,68 @@ import (
 // os.Stdout and os.Stderr. When specified without a scheme, relative file
 // paths also work.
 func Open(paths ...string) (zapcore.WriteSyncer, func(), error) {
+<<<<<<< HEAD
 	writers, closeAll, err := open(paths)
+=======
+	writers, close, err := open(paths)
+>>>>>>> deathstrox/main
 	if err != nil {
 		return nil, nil, err
 	}
 
 	writer := CombineWriteSyncers(writers...)
+<<<<<<< HEAD
 	return writer, closeAll, nil
+=======
+	return writer, close, nil
+>>>>>>> deathstrox/main
 }
 
 func open(paths []string) ([]zapcore.WriteSyncer, func(), error) {
 	writers := make([]zapcore.WriteSyncer, 0, len(paths))
 	closers := make([]io.Closer, 0, len(paths))
+<<<<<<< HEAD
 	closeAll := func() {
 		for _, c := range closers {
 			_ = c.Close()
+=======
+	close := func() {
+		for _, c := range closers {
+			c.Close()
+>>>>>>> deathstrox/main
 		}
 	}
 
 	var openErr error
 	for _, path := range paths {
+<<<<<<< HEAD
 		sink, err := _sinkRegistry.newSink(path)
 		if err != nil {
 			openErr = multierr.Append(openErr, fmt.Errorf("open sink %q: %w", path, err))
+=======
+		sink, err := newSink(path)
+		if err != nil {
+			openErr = multierr.Append(openErr, fmt.Errorf("couldn't open sink %q: %v", path, err))
+>>>>>>> deathstrox/main
 			continue
 		}
 		writers = append(writers, sink)
 		closers = append(closers, sink)
 	}
 	if openErr != nil {
+<<<<<<< HEAD
 		closeAll()
 		return nil, nil, openErr
 	}
 
 	return writers, closeAll, nil
+=======
+		close()
+		return writers, nil, openErr
+	}
+
+	return writers, close, nil
+>>>>>>> deathstrox/main
 }
 
 // CombineWriteSyncers is a utility that combines multiple WriteSyncers into a
@@ -92,7 +128,11 @@ func open(paths []string) ([]zapcore.WriteSyncer, func(), error) {
 // using zapcore.NewMultiWriteSyncer and zapcore.Lock individually.
 func CombineWriteSyncers(writers ...zapcore.WriteSyncer) zapcore.WriteSyncer {
 	if len(writers) == 0 {
+<<<<<<< HEAD
 		return zapcore.AddSync(io.Discard)
+=======
+		return zapcore.AddSync(ioutil.Discard)
+>>>>>>> deathstrox/main
 	}
 	return zapcore.Lock(zapcore.NewMultiWriteSyncer(writers...))
 }

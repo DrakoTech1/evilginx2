@@ -3,6 +3,10 @@
 // license that can be found in the LICENSE file.
 
 //go:build !aix && !darwin && !freebsd && !linux && !solaris && !zos
+<<<<<<< HEAD
+=======
+// +build !aix,!darwin,!freebsd,!linux,!solaris,!zos
+>>>>>>> deathstrox/main
 
 package ipv6
 

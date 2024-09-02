@@ -128,6 +128,13 @@ type dnskeyWireFmt struct {
 	/* Nothing is left out */
 }
 
+<<<<<<< HEAD
+=======
+func divRoundUp(a, b int) int {
+	return (a + b - 1) / b
+}
+
+>>>>>>> deathstrox/main
 // KeyTag calculates the keytag (or key-id) of the DNSKEY.
 func (k *DNSKEY) KeyTag() uint16 {
 	if k == nil {
@@ -413,11 +420,19 @@ func (rr *RRSIG) Verify(k *DNSKEY, rrset []RR) error {
 		return err
 	}
 
+<<<<<<< HEAD
 	sigbuf := rr.sigBuf() // Get the binary signature data
 	// TODO(miek)
 	// remove the domain name and assume its ours?
 	// if rr.Algorithm == PRIVATEDNS { // PRIVATEOID
 	// }
+=======
+	sigbuf := rr.sigBuf()           // Get the binary signature data
+	if rr.Algorithm == PRIVATEDNS { // PRIVATEOID
+		// TODO(miek)
+		// remove the domain name and assume its ours?
+	}
+>>>>>>> deathstrox/main
 
 	h, cryptohash, err := hashFromAlgorithm(rr.Algorithm)
 	if err != nil {

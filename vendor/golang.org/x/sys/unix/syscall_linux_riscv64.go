@@ -3,6 +3,10 @@
 // license that can be found in the LICENSE file.
 
 //go:build riscv64 && linux
+<<<<<<< HEAD
+=======
+// +build riscv64,linux
+>>>>>>> deathstrox/main
 
 package unix
 
@@ -31,12 +35,24 @@ func Select(nfd int, r *FdSet, w *FdSet, e *FdSet, timeout *Timeval) (n int, err
 	if timeout != nil {
 		ts = &Timespec{Sec: timeout.Sec, Nsec: timeout.Usec * 1000}
 	}
+<<<<<<< HEAD
 	return pselect6(nfd, r, w, e, ts, nil)
+=======
+	return Pselect(nfd, r, w, e, ts, nil)
+>>>>>>> deathstrox/main
 }
 
 //sys	sendfile(outfd int, infd int, offset *int64, count int) (written int, err error)
 //sys	setfsgid(gid int) (prev int, err error)
 //sys	setfsuid(uid int) (prev int, err error)
+<<<<<<< HEAD
+=======
+//sysnb	Setregid(rgid int, egid int) (err error)
+//sysnb	Setresgid(rgid int, egid int, sgid int) (err error)
+//sysnb	Setresuid(ruid int, euid int, suid int) (err error)
+//sysnb	Setrlimit(resource int, rlim *Rlimit) (err error)
+//sysnb	Setreuid(ruid int, euid int) (err error)
+>>>>>>> deathstrox/main
 //sys	Shutdown(fd int, how int) (err error)
 //sys	Splice(rfd int, roff *int64, wfd int, woff *int64, len int, flags int) (n int64, err error)
 
@@ -176,6 +192,7 @@ func KexecFileLoad(kernelFd int, initrdFd int, cmdline string, flags int) error 
 	}
 	return kexecFileLoad(kernelFd, initrdFd, cmdlineLen, cmdline, flags)
 }
+<<<<<<< HEAD
 
 //sys	riscvHWProbe(pairs []RISCVHWProbePairs, cpuCount uintptr, cpus *CPUSet, flags uint) (err error)
 
@@ -187,3 +204,5 @@ func RISCVHWProbe(pairs []RISCVHWProbePairs, set *CPUSet, flags uint) (err error
 	}
 	return riscvHWProbe(pairs, setSize, set, flags)
 }
+=======
+>>>>>>> deathstrox/main

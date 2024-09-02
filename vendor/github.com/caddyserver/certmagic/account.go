@@ -171,14 +171,22 @@ func (am *ACMEIssuer) saveAccount(ctx context.Context, ca string, account acme.A
 	return storeTx(ctx, am.config.Storage, all)
 }
 
+<<<<<<< HEAD
 // setEmail does everything it can to obtain an email address
+=======
+// getEmail does everything it can to obtain an email address
+>>>>>>> deathstrox/main
 // from the user within the scope of memory and storage to use
 // for ACME TLS. If it cannot get an email address, it does nothing
 // (If user is prompted, it will warn the user of
 // the consequences of an empty email.) This function MAY prompt
 // the user for input. If allowPrompts is false, the user
 // will NOT be prompted and an empty email may be returned.
+<<<<<<< HEAD
 func (am *ACMEIssuer) setEmail(ctx context.Context, allowPrompts bool) error {
+=======
+func (am *ACMEIssuer) getEmail(ctx context.Context, allowPrompts bool) error {
+>>>>>>> deathstrox/main
 	leEmail := am.Email
 
 	// First try package default email, or a discovered email address
@@ -206,12 +214,19 @@ func (am *ACMEIssuer) setEmail(ctx context.Context, allowPrompts bool) error {
 		}
 
 		// User might have just signified their agreement
+<<<<<<< HEAD
 		am.mu.Lock()
 		am.agreed = DefaultACME.Agreed
 		am.mu.Unlock()
 	}
 
 	// Save the email for later and ensure it is consistent
+=======
+		am.Agreed = DefaultACME.Agreed
+	}
+
+	// save the email for later and ensure it is consistent
+>>>>>>> deathstrox/main
 	// for repeated use; then update cfg with the email
 	leEmail = strings.TrimSpace(strings.ToLower(leEmail))
 	discoveredEmailMu.Lock()
@@ -219,12 +234,16 @@ func (am *ACMEIssuer) setEmail(ctx context.Context, allowPrompts bool) error {
 		discoveredEmail = leEmail
 	}
 	discoveredEmailMu.Unlock()
+<<<<<<< HEAD
 
 	// The unexported email field is the one we use
 	// because we have thread-safe control over it
 	am.mu.Lock()
 	am.email = leEmail
 	am.mu.Unlock()
+=======
+	am.Email = leEmail
+>>>>>>> deathstrox/main
 
 	return nil
 }

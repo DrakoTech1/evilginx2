@@ -3,6 +3,10 @@
 // license that can be found in the LICENSE file.
 
 //go:build dragonfly || netbsd || openbsd
+<<<<<<< HEAD
+=======
+// +build dragonfly netbsd openbsd
+>>>>>>> deathstrox/main
 
 package ipv6
 

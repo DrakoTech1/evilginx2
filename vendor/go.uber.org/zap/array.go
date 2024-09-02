@@ -21,7 +21,10 @@
 package zap
 
 import (
+<<<<<<< HEAD
 	"fmt"
+=======
+>>>>>>> deathstrox/main
 	"time"
 
 	"go.uber.org/zap/zapcore"
@@ -95,6 +98,7 @@ func Int8s(key string, nums []int8) Field {
 	return Array(key, int8s(nums))
 }
 
+<<<<<<< HEAD
 // Objects constructs a field with the given key, holding a list of the
 // provided objects that can be marshaled by Zap.
 //
@@ -193,11 +197,14 @@ func (os objectValues[T, P]) MarshalLogArray(arr zapcore.ArrayEncoder) error {
 	return nil
 }
 
+=======
+>>>>>>> deathstrox/main
 // Strings constructs a field that carries a slice of strings.
 func Strings(key string, ss []string) Field {
 	return Array(key, stringArray(ss))
 }
 
+<<<<<<< HEAD
 // Stringers constructs a field with the given key, holding a list of the
 // output provided by the value's String method
 //
@@ -226,6 +233,8 @@ func (os stringers[T]) MarshalLogArray(arr zapcore.ArrayEncoder) error {
 	return nil
 }
 
+=======
+>>>>>>> deathstrox/main
 // Times constructs a field that carries a slice of time.Times.
 func Times(key string, ts []time.Time) Field {
 	return Array(key, times(ts))

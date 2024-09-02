@@ -13,7 +13,10 @@ package unix
 
 import (
 	"encoding/binary"
+<<<<<<< HEAD
 	"strconv"
+=======
+>>>>>>> deathstrox/main
 	"syscall"
 	"time"
 	"unsafe"
@@ -61,6 +64,7 @@ func FanotifyMark(fd int, flags uint, mask uint64, dirFd int, pathname string) (
 }
 
 //sys	fchmodat(dirfd int, path string, mode uint32) (err error)
+<<<<<<< HEAD
 //sys	fchmodat2(dirfd int, path string, mode uint32, flags int) (err error)
 
 func Fchmodat(dirfd int, path string, mode uint32, flags int) error {
@@ -78,6 +82,17 @@ func Fchmodat(dirfd int, path string, mode uint32, flags int) error {
 			}
 		}
 		return err
+=======
+
+func Fchmodat(dirfd int, path string, mode uint32, flags int) (err error) {
+	// Linux fchmodat doesn't support the flags parameter. Mimick glibc's behavior
+	// and check the flags. Otherwise the mode would be applied to the symlink
+	// destination which is not what the user expects.
+	if flags&^AT_SYMLINK_NOFOLLOW != 0 {
+		return EINVAL
+	} else if flags&AT_SYMLINK_NOFOLLOW != 0 {
+		return EOPNOTSUPP
+>>>>>>> deathstrox/main
 	}
 	return fchmodat(dirfd, path, mode)
 }
@@ -242,7 +257,11 @@ func Futimesat(dirfd int, path string, tv []Timeval) error {
 func Futimes(fd int, tv []Timeval) (err error) {
 	// Believe it or not, this is the best we can do on Linux
 	// (and is what glibc does).
+<<<<<<< HEAD
 	return Utimes("/proc/self/fd/"+strconv.Itoa(fd), tv)
+=======
+	return Utimes("/proc/self/fd/"+itoa(fd), tv)
+>>>>>>> deathstrox/main
 }
 
 const ImplementsGetwd = true
@@ -425,8 +444,12 @@ func (sa *SockaddrUnix) sockaddr() (unsafe.Pointer, _Socklen, error) {
 	if n > 0 {
 		sl += _Socklen(n) + 1
 	}
+<<<<<<< HEAD
 	if sa.raw.Path[0] == '@' || (sa.raw.Path[0] == 0 && sl > 3) {
 		// Check sl > 3 so we don't change unnamed socket behavior.
+=======
+	if sa.raw.Path[0] == '@' {
+>>>>>>> deathstrox/main
 		sa.raw.Path[0] = 0
 		// Don't count trailing NUL for abstract address.
 		sl--
@@ -702,10 +725,17 @@ type SockaddrALG struct {
 
 func (sa *SockaddrALG) sockaddr() (unsafe.Pointer, _Socklen, error) {
 	// Leave room for NUL byte terminator.
+<<<<<<< HEAD
 	if len(sa.Type) > len(sa.raw.Type)-1 {
 		return nil, 0, EINVAL
 	}
 	if len(sa.Name) > len(sa.raw.Name)-1 {
+=======
+	if len(sa.Type) > 13 {
+		return nil, 0, EINVAL
+	}
+	if len(sa.Name) > 63 {
+>>>>>>> deathstrox/main
 		return nil, 0, EINVAL
 	}
 
@@ -713,8 +743,22 @@ func (sa *SockaddrALG) sockaddr() (unsafe.Pointer, _Socklen, error) {
 	sa.raw.Feat = sa.Feature
 	sa.raw.Mask = sa.Mask
 
+<<<<<<< HEAD
 	copy(sa.raw.Type[:], sa.Type)
 	copy(sa.raw.Name[:], sa.Name)
+=======
+	typ, err := ByteSliceFromString(sa.Type)
+	if err != nil {
+		return nil, 0, err
+	}
+	name, err := ByteSliceFromString(sa.Name)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	copy(sa.raw.Type[:], typ)
+	copy(sa.raw.Name[:], name)
+>>>>>>> deathstrox/main
 
 	return unsafe.Pointer(&sa.raw), SizeofSockaddrALG, nil
 }
@@ -1015,7 +1059,12 @@ func anyToSockaddr(fd int, rsa *RawSockaddrAny) (Sockaddr, error) {
 		for n < len(pp.Path) && pp.Path[n] != 0 {
 			n++
 		}
+<<<<<<< HEAD
 		sa.Name = string(unsafe.Slice((*byte)(unsafe.Pointer(&pp.Path[0])), n))
+=======
+		bytes := (*[len(pp.Path)]byte)(unsafe.Pointer(&pp.Path[0]))[0:n]
+		sa.Name = string(bytes)
+>>>>>>> deathstrox/main
 		return sa, nil
 
 	case AF_INET:
@@ -1310,7 +1359,11 @@ func GetsockoptString(fd, level, opt int) (string, error) {
 			return "", err
 		}
 	}
+<<<<<<< HEAD
 	return ByteSliceToString(buf[:vallen]), nil
+=======
+	return string(buf[:vallen-1]), nil
+>>>>>>> deathstrox/main
 }
 
 func GetsockoptTpacketStats(fd, level, opt int) (*TpacketStats, error) {
@@ -1364,10 +1417,13 @@ func SetsockoptTCPRepairOpt(fd, level, opt int, o []TCPRepairOpt) (err error) {
 	return setsockopt(fd, level, opt, unsafe.Pointer(&o[0]), uintptr(SizeofTCPRepairOpt*len(o)))
 }
 
+<<<<<<< HEAD
 func SetsockoptTCPMD5Sig(fd, level, opt int, s *TCPMD5Sig) error {
 	return setsockopt(fd, level, opt, unsafe.Pointer(s), unsafe.Sizeof(*s))
 }
 
+=======
+>>>>>>> deathstrox/main
 // Keyctl Commands (http://man7.org/linux/man-pages/man2/keyctl.2.html)
 
 // KeyctlInt calls keyctl commands in which each argument is an int.
@@ -1557,7 +1613,10 @@ func sendmsgN(fd int, iov []Iovec, oob []byte, ptr unsafe.Pointer, salen _Sockle
 				var iova [1]Iovec
 				iova[0].Base = &dummy
 				iova[0].SetLen(1)
+<<<<<<< HEAD
 				iov = iova[:]
+=======
+>>>>>>> deathstrox/main
 			}
 		}
 		msg.Control = &oob[0]
@@ -1582,7 +1641,10 @@ func BindToDevice(fd int, device string) (err error) {
 }
 
 //sys	ptrace(request int, pid int, addr uintptr, data uintptr) (err error)
+<<<<<<< HEAD
 //sys	ptracePtr(request int, pid int, addr uintptr, data unsafe.Pointer) (err error) = SYS_PTRACE
+=======
+>>>>>>> deathstrox/main
 
 func ptracePeek(req int, pid int, addr uintptr, out []byte) (count int, err error) {
 	// The peek requests are machine-size oriented, so we wrap it
@@ -1600,7 +1662,11 @@ func ptracePeek(req int, pid int, addr uintptr, out []byte) (count int, err erro
 	// boundary.
 	n := 0
 	if addr%SizeofPtr != 0 {
+<<<<<<< HEAD
 		err = ptracePtr(req, pid, addr-addr%SizeofPtr, unsafe.Pointer(&buf[0]))
+=======
+		err = ptrace(req, pid, addr-addr%SizeofPtr, uintptr(unsafe.Pointer(&buf[0])))
+>>>>>>> deathstrox/main
 		if err != nil {
 			return 0, err
 		}
@@ -1612,7 +1678,11 @@ func ptracePeek(req int, pid int, addr uintptr, out []byte) (count int, err erro
 	for len(out) > 0 {
 		// We use an internal buffer to guarantee alignment.
 		// It's not documented if this is necessary, but we're paranoid.
+<<<<<<< HEAD
 		err = ptracePtr(req, pid, addr+uintptr(n), unsafe.Pointer(&buf[0]))
+=======
+		err = ptrace(req, pid, addr+uintptr(n), uintptr(unsafe.Pointer(&buf[0])))
+>>>>>>> deathstrox/main
 		if err != nil {
 			return n, err
 		}
@@ -1644,7 +1714,11 @@ func ptracePoke(pokeReq int, peekReq int, pid int, addr uintptr, data []byte) (c
 	n := 0
 	if addr%SizeofPtr != 0 {
 		var buf [SizeofPtr]byte
+<<<<<<< HEAD
 		err = ptracePtr(peekReq, pid, addr-addr%SizeofPtr, unsafe.Pointer(&buf[0]))
+=======
+		err = ptrace(peekReq, pid, addr-addr%SizeofPtr, uintptr(unsafe.Pointer(&buf[0])))
+>>>>>>> deathstrox/main
 		if err != nil {
 			return 0, err
 		}
@@ -1671,7 +1745,11 @@ func ptracePoke(pokeReq int, peekReq int, pid int, addr uintptr, data []byte) (c
 	// Trailing edge.
 	if len(data) > 0 {
 		var buf [SizeofPtr]byte
+<<<<<<< HEAD
 		err = ptracePtr(peekReq, pid, addr+uintptr(n), unsafe.Pointer(&buf[0]))
+=======
+		err = ptrace(peekReq, pid, addr+uintptr(n), uintptr(unsafe.Pointer(&buf[0])))
+>>>>>>> deathstrox/main
 		if err != nil {
 			return n, err
 		}
@@ -1699,6 +1777,7 @@ func PtracePokeUser(pid int, addr uintptr, data []byte) (count int, err error) {
 	return ptracePoke(PTRACE_POKEUSR, PTRACE_PEEKUSR, pid, addr, data)
 }
 
+<<<<<<< HEAD
 // elfNT_PRSTATUS is a copy of the debug/elf.NT_PRSTATUS constant so
 // x/sys/unix doesn't need to depend on debug/elf and thus
 // compress/zlib, debug/dwarf, and other packages.
@@ -1716,6 +1795,14 @@ func PtraceSetRegs(pid int, regs *PtraceRegs) (err error) {
 	iov.Base = (*byte)(unsafe.Pointer(regs))
 	iov.SetLen(int(unsafe.Sizeof(*regs)))
 	return ptracePtr(PTRACE_SETREGSET, pid, uintptr(elfNT_PRSTATUS), unsafe.Pointer(&iov))
+=======
+func PtraceGetRegs(pid int, regsout *PtraceRegs) (err error) {
+	return ptrace(PTRACE_GETREGS, pid, 0, uintptr(unsafe.Pointer(regsout)))
+}
+
+func PtraceSetRegs(pid int, regs *PtraceRegs) (err error) {
+	return ptrace(PTRACE_SETREGS, pid, 0, uintptr(unsafe.Pointer(regs)))
+>>>>>>> deathstrox/main
 }
 
 func PtraceSetOptions(pid int, options int) (err error) {
@@ -1724,7 +1811,11 @@ func PtraceSetOptions(pid int, options int) (err error) {
 
 func PtraceGetEventMsg(pid int) (msg uint, err error) {
 	var data _C_long
+<<<<<<< HEAD
 	err = ptracePtr(PTRACE_GETEVENTMSG, pid, 0, unsafe.Pointer(&data))
+=======
+	err = ptrace(PTRACE_GETEVENTMSG, pid, 0, uintptr(unsafe.Pointer(&data)))
+>>>>>>> deathstrox/main
 	msg = uint(data)
 	return
 }
@@ -1815,7 +1906,10 @@ func Sendfile(outfd int, infd int, offset *int64, count int) (written int, err e
 //sysnb	Capset(hdr *CapUserHeader, data *CapUserData) (err error)
 //sys	Chdir(path string) (err error)
 //sys	Chroot(path string) (err error)
+<<<<<<< HEAD
 //sys	ClockAdjtime(clockid int32, buf *Timex) (state int, err error)
+=======
+>>>>>>> deathstrox/main
 //sys	ClockGetres(clockid int32, res *Timespec) (err error)
 //sys	ClockGettime(clockid int32, time *Timespec) (err error)
 //sys	ClockNanosleep(clockid int32, flags int, request *Timespec, remain *Timespec) (err error)
@@ -1849,6 +1943,7 @@ func Dup2(oldfd, newfd int) error {
 //sys	Fsmount(fd int, flags int, mountAttrs int) (fsfd int, err error)
 //sys	Fsopen(fsName string, flags int) (fd int, err error)
 //sys	Fspick(dirfd int, pathName string, flags int) (fd int, err error)
+<<<<<<< HEAD
 
 //sys	fsconfig(fd int, cmd uint, key *byte, value *byte, aux int) (err error)
 
@@ -1948,6 +2043,8 @@ func FsconfigReconfigure(fd int) (err error) {
 	return fsconfig(fd, FSCONFIG_CMD_RECONFIGURE, nil, nil, 0)
 }
 
+=======
+>>>>>>> deathstrox/main
 //sys	Getdents(fd int, buf []byte) (n int, err error) = SYS_GETDENTS64
 //sysnb	Getpgid(pid int) (pgid int, err error)
 
@@ -1983,8 +2080,14 @@ func Getpgrp() (pid int) {
 //sys	OpenTree(dfd int, fileName string, flags uint) (r int, err error)
 //sys	PerfEventOpen(attr *PerfEventAttr, pid int, cpu int, groupFd int, flags int) (fd int, err error)
 //sys	PivotRoot(newroot string, putold string) (err error) = SYS_PIVOT_ROOT
+<<<<<<< HEAD
 //sys	Prctl(option int, arg2 uintptr, arg3 uintptr, arg4 uintptr, arg5 uintptr) (err error)
 //sys	pselect6(nfd int, r *FdSet, w *FdSet, e *FdSet, timeout *Timespec, sigmask *sigset_argpack) (n int, err error)
+=======
+//sysnb	Prlimit(pid int, resource int, newlimit *Rlimit, old *Rlimit) (err error) = SYS_PRLIMIT64
+//sys	Prctl(option int, arg2 uintptr, arg3 uintptr, arg4 uintptr, arg5 uintptr) (err error)
+//sys	Pselect(nfd int, r *FdSet, w *FdSet, e *FdSet, timeout *Timespec, sigmask *Sigset_t) (n int, err error) = SYS_PSELECT6
+>>>>>>> deathstrox/main
 //sys	read(fd int, p []byte) (n int, err error)
 //sys	Removexattr(path string, attr string) (err error)
 //sys	Renameat2(olddirfd int, oldpath string, newdirfd int, newpath string, flags uint) (err error)
@@ -1996,6 +2099,7 @@ func Getpgrp() (pid int) {
 //sysnb	Settimeofday(tv *Timeval) (err error)
 //sys	Setns(fd int, nstype int) (err error)
 
+<<<<<<< HEAD
 //go:linkname syscall_prlimit syscall.prlimit
 func syscall_prlimit(pid, resource int, newlimit, old *syscall.Rlimit) error
 
@@ -2005,6 +2109,8 @@ func Prlimit(pid, resource int, newlimit, old *Rlimit) error {
 	return syscall_prlimit(pid, resource, (*syscall.Rlimit)(newlimit), (*syscall.Rlimit)(old))
 }
 
+=======
+>>>>>>> deathstrox/main
 // PrctlRetInt performs a prctl operation specified by option and further
 // optional arguments arg2 through arg5 depending on option. It returns a
 // non-negative integer that is returned by the prctl syscall.
@@ -2016,6 +2122,7 @@ func PrctlRetInt(option int, arg2 uintptr, arg3 uintptr, arg4 uintptr, arg5 uint
 	return int(ret), nil
 }
 
+<<<<<<< HEAD
 func Setuid(uid int) (err error) {
 	return syscall.Setuid(uid)
 }
@@ -2038,6 +2145,19 @@ func Setresuid(ruid, euid, suid int) (err error) {
 
 func Setresgid(rgid, egid, sgid int) (err error) {
 	return syscall.Setresgid(rgid, egid, sgid)
+=======
+// issue 1435.
+// On linux Setuid and Setgid only affects the current thread, not the process.
+// This does not match what most callers expect so we must return an error
+// here rather than letting the caller think that the call succeeded.
+
+func Setuid(uid int) (err error) {
+	return EOPNOTSUPP
+}
+
+func Setgid(uid int) (err error) {
+	return EOPNOTSUPP
+>>>>>>> deathstrox/main
 }
 
 // SetfsgidRetGid sets fsgid for current thread and returns previous fsgid set.
@@ -2087,6 +2207,11 @@ func Signalfd(fd int, sigmask *Sigset_t, flags int) (newfd int, err error) {
 //sys	Unshare(flags int) (err error)
 //sys	write(fd int, p []byte) (n int, err error)
 //sys	exitThread(code int) (err error) = SYS_EXIT
+<<<<<<< HEAD
+=======
+//sys	readlen(fd int, p *byte, np int) (n int, err error) = SYS_READ
+//sys	writelen(fd int, p *byte, np int) (n int, err error) = SYS_WRITE
+>>>>>>> deathstrox/main
 //sys	readv(fd int, iovs []Iovec) (n int, err error) = SYS_READV
 //sys	writev(fd int, iovs []Iovec) (n int, err error) = SYS_WRITEV
 //sys	preadv(fd int, iovs []Iovec, offs_l uintptr, offs_h uintptr) (n int, err error) = SYS_PREADV
@@ -2094,6 +2219,7 @@ func Signalfd(fd int, sigmask *Sigset_t, flags int) (newfd int, err error) {
 //sys	preadv2(fd int, iovs []Iovec, offs_l uintptr, offs_h uintptr, flags int) (n int, err error) = SYS_PREADV2
 //sys	pwritev2(fd int, iovs []Iovec, offs_l uintptr, offs_h uintptr, flags int) (n int, err error) = SYS_PWRITEV2
 
+<<<<<<< HEAD
 // minIovec is the size of the small initial allocation used by
 // Readv, Writev, etc.
 //
@@ -2126,14 +2252,43 @@ func offs2lohi(offs int64) (lo, hi uintptr) {
 func Readv(fd int, iovs [][]byte) (n int, err error) {
 	iovecs := make([]Iovec, 0, minIovec)
 	iovecs = appendBytes(iovecs, iovs)
+=======
+func bytes2iovec(bs [][]byte) []Iovec {
+	iovecs := make([]Iovec, len(bs))
+	for i, b := range bs {
+		iovecs[i].SetLen(len(b))
+		if len(b) > 0 {
+			iovecs[i].Base = &b[0]
+		} else {
+			iovecs[i].Base = (*byte)(unsafe.Pointer(&_zero))
+		}
+	}
+	return iovecs
+}
+
+// offs2lohi splits offs into its lower and upper unsigned long. On 64-bit
+// systems, hi will always be 0. On 32-bit systems, offs will be split in half.
+// preadv/pwritev chose this calling convention so they don't need to add a
+// padding-register for alignment on ARM.
+func offs2lohi(offs int64) (lo, hi uintptr) {
+	return uintptr(offs), uintptr(uint64(offs) >> SizeofLong)
+}
+
+func Readv(fd int, iovs [][]byte) (n int, err error) {
+	iovecs := bytes2iovec(iovs)
+>>>>>>> deathstrox/main
 	n, err = readv(fd, iovecs)
 	readvRacedetect(iovecs, n, err)
 	return n, err
 }
 
 func Preadv(fd int, iovs [][]byte, offset int64) (n int, err error) {
+<<<<<<< HEAD
 	iovecs := make([]Iovec, 0, minIovec)
 	iovecs = appendBytes(iovecs, iovs)
+=======
+	iovecs := bytes2iovec(iovs)
+>>>>>>> deathstrox/main
 	lo, hi := offs2lohi(offset)
 	n, err = preadv(fd, iovecs, lo, hi)
 	readvRacedetect(iovecs, n, err)
@@ -2141,8 +2296,12 @@ func Preadv(fd int, iovs [][]byte, offset int64) (n int, err error) {
 }
 
 func Preadv2(fd int, iovs [][]byte, offset int64, flags int) (n int, err error) {
+<<<<<<< HEAD
 	iovecs := make([]Iovec, 0, minIovec)
 	iovecs = appendBytes(iovecs, iovs)
+=======
+	iovecs := bytes2iovec(iovs)
+>>>>>>> deathstrox/main
 	lo, hi := offs2lohi(offset)
 	n, err = preadv2(fd, iovecs, lo, hi, flags)
 	readvRacedetect(iovecs, n, err)
@@ -2169,8 +2328,12 @@ func readvRacedetect(iovecs []Iovec, n int, err error) {
 }
 
 func Writev(fd int, iovs [][]byte) (n int, err error) {
+<<<<<<< HEAD
 	iovecs := make([]Iovec, 0, minIovec)
 	iovecs = appendBytes(iovecs, iovs)
+=======
+	iovecs := bytes2iovec(iovs)
+>>>>>>> deathstrox/main
 	if raceenabled {
 		raceReleaseMerge(unsafe.Pointer(&ioSync))
 	}
@@ -2180,8 +2343,12 @@ func Writev(fd int, iovs [][]byte) (n int, err error) {
 }
 
 func Pwritev(fd int, iovs [][]byte, offset int64) (n int, err error) {
+<<<<<<< HEAD
 	iovecs := make([]Iovec, 0, minIovec)
 	iovecs = appendBytes(iovecs, iovs)
+=======
+	iovecs := bytes2iovec(iovs)
+>>>>>>> deathstrox/main
 	if raceenabled {
 		raceReleaseMerge(unsafe.Pointer(&ioSync))
 	}
@@ -2192,8 +2359,12 @@ func Pwritev(fd int, iovs [][]byte, offset int64) (n int, err error) {
 }
 
 func Pwritev2(fd int, iovs [][]byte, offset int64, flags int) (n int, err error) {
+<<<<<<< HEAD
 	iovecs := make([]Iovec, 0, minIovec)
 	iovecs = appendBytes(iovecs, iovs)
+=======
+	iovecs := bytes2iovec(iovs)
+>>>>>>> deathstrox/main
 	if raceenabled {
 		raceReleaseMerge(unsafe.Pointer(&ioSync))
 	}
@@ -2221,7 +2392,25 @@ func writevRacedetect(iovecs []Iovec, n int) {
 
 // mmap varies by architecture; see syscall_linux_*.go.
 //sys	munmap(addr uintptr, length uintptr) (err error)
+<<<<<<< HEAD
 //sys	mremap(oldaddr uintptr, oldlength uintptr, newlength uintptr, flags int, newaddr uintptr) (xaddr uintptr, err error)
+=======
+
+var mapper = &mmapper{
+	active: make(map[*byte][]byte),
+	mmap:   mmap,
+	munmap: munmap,
+}
+
+func Mmap(fd int, offset int64, length int, prot int, flags int) (data []byte, err error) {
+	return mapper.Mmap(fd, offset, length, prot, flags)
+}
+
+func Munmap(b []byte) (err error) {
+	return mapper.Munmap(b)
+}
+
+>>>>>>> deathstrox/main
 //sys	Madvise(b []byte, advice int) (err error)
 //sys	Mprotect(b []byte, prot int) (err error)
 //sys	Mlock(b []byte) (err error)
@@ -2230,12 +2419,15 @@ func writevRacedetect(iovecs []Iovec, n int) {
 //sys	Munlock(b []byte) (err error)
 //sys	Munlockall() (err error)
 
+<<<<<<< HEAD
 const (
 	mremapFixed     = MREMAP_FIXED
 	mremapDontunmap = MREMAP_DONTUNMAP
 	mremapMaymove   = MREMAP_MAYMOVE
 )
 
+=======
+>>>>>>> deathstrox/main
 // Vmsplice splices user pages from a slice of Iovecs into a pipe specified by fd,
 // using the specified flags.
 func Vmsplice(fd int, iovs []Iovec, flags int) (int, error) {
@@ -2266,6 +2458,7 @@ func isGroupMember(gid int) bool {
 	return false
 }
 
+<<<<<<< HEAD
 func isCapDacOverrideSet() bool {
 	hdr := CapUserHeader{Version: LINUX_CAPABILITY_VERSION_3}
 	data := [2]CapUserData{}
@@ -2274,6 +2467,8 @@ func isCapDacOverrideSet() bool {
 	return err == nil && data[0].Effective&(1<<CAP_DAC_OVERRIDE) != 0
 }
 
+=======
+>>>>>>> deathstrox/main
 //sys	faccessat(dirfd int, path string, mode uint32) (err error)
 //sys	Faccessat2(dirfd int, path string, mode uint32, flags int) (err error)
 
@@ -2309,12 +2504,15 @@ func Faccessat(dirfd int, path string, mode uint32, flags int) (err error) {
 	var uid int
 	if flags&AT_EACCESS != 0 {
 		uid = Geteuid()
+<<<<<<< HEAD
 		if uid != 0 && isCapDacOverrideSet() {
 			// If CAP_DAC_OVERRIDE is set, file access check is
 			// done by the kernel in the same way as for root
 			// (see generic_permission() in the Linux sources).
 			uid = 0
 		}
+=======
+>>>>>>> deathstrox/main
 	} else {
 		uid = Getuid()
 	}
@@ -2394,7 +2592,11 @@ func (fh *FileHandle) Bytes() []byte {
 	if n == 0 {
 		return nil
 	}
+<<<<<<< HEAD
 	return unsafe.Slice((*byte)(unsafe.Pointer(uintptr(unsafe.Pointer(&fh.fileHandle.Type))+4)), n)
+=======
+	return (*[1 << 30]byte)(unsafe.Pointer(uintptr(unsafe.Pointer(&fh.fileHandle.Type)) + 4))[:n:n]
+>>>>>>> deathstrox/main
 }
 
 // NameToHandleAt wraps the name_to_handle_at system call; it obtains
@@ -2510,6 +2712,7 @@ func Setitimer(which ItimerWhich, it Itimerval) (Itimerval, error) {
 	return prev, nil
 }
 
+<<<<<<< HEAD
 //sysnb	rtSigprocmask(how int, set *Sigset_t, oldset *Sigset_t, sigsetsize uintptr) (err error) = SYS_RT_SIGPROCMASK
 
 func PthreadSigmask(how int, set, oldset *Sigset_t) error {
@@ -2592,3 +2795,102 @@ func SchedGetAttr(pid int, flags uint) (*SchedAttr, error) {
 }
 
 //sys	Cachestat(fd uint, crange *CachestatRange, cstat *Cachestat_t, flags uint) (err error)
+=======
+/*
+ * Unimplemented
+ */
+// AfsSyscall
+// ArchPrctl
+// Brk
+// ClockNanosleep
+// ClockSettime
+// Clone
+// EpollCtlOld
+// EpollPwait
+// EpollWaitOld
+// Execve
+// Fork
+// Futex
+// GetKernelSyms
+// GetMempolicy
+// GetRobustList
+// GetThreadArea
+// Getpmsg
+// IoCancel
+// IoDestroy
+// IoGetevents
+// IoSetup
+// IoSubmit
+// IoprioGet
+// IoprioSet
+// KexecLoad
+// LookupDcookie
+// Mbind
+// MigratePages
+// Mincore
+// ModifyLdt
+// Mount
+// MovePages
+// MqGetsetattr
+// MqNotify
+// MqOpen
+// MqTimedreceive
+// MqTimedsend
+// MqUnlink
+// Mremap
+// Msgctl
+// Msgget
+// Msgrcv
+// Msgsnd
+// Nfsservctl
+// Personality
+// Pselect6
+// Ptrace
+// Putpmsg
+// Quotactl
+// Readahead
+// Readv
+// RemapFilePages
+// RestartSyscall
+// RtSigaction
+// RtSigpending
+// RtSigprocmask
+// RtSigqueueinfo
+// RtSigreturn
+// RtSigsuspend
+// RtSigtimedwait
+// SchedGetPriorityMax
+// SchedGetPriorityMin
+// SchedGetparam
+// SchedGetscheduler
+// SchedRrGetInterval
+// SchedSetparam
+// SchedYield
+// Security
+// Semctl
+// Semget
+// Semop
+// Semtimedop
+// SetMempolicy
+// SetRobustList
+// SetThreadArea
+// SetTidAddress
+// Sigaltstack
+// Swapoff
+// Swapon
+// Sysfs
+// TimerCreate
+// TimerDelete
+// TimerGetoverrun
+// TimerGettime
+// TimerSettime
+// Tkill (obsolete)
+// Tuxcall
+// Umount2
+// Uselib
+// Utimensat
+// Vfork
+// Vhangup
+// Vserver
+// _Sysctl
+>>>>>>> deathstrox/main

@@ -94,7 +94,11 @@ func jumpIfCommon(cond JumpTest, skipTrue, skipFalse uint8, regA uint32, value u
 
 func loadAbsolute(ins LoadAbsolute, in []byte) (uint32, bool) {
 	offset := int(ins.Off)
+<<<<<<< HEAD
 	size := ins.Size
+=======
+	size := int(ins.Size)
+>>>>>>> deathstrox/main
 
 	return loadCommon(in, offset, size)
 }
@@ -121,7 +125,11 @@ func loadExtension(ins LoadExtension, in []byte) uint32 {
 
 func loadIndirect(ins LoadIndirect, in []byte, regX uint32) (uint32, bool) {
 	offset := int(ins.Off) + int(regX)
+<<<<<<< HEAD
 	size := ins.Size
+=======
+	size := int(ins.Size)
+>>>>>>> deathstrox/main
 
 	return loadCommon(in, offset, size)
 }

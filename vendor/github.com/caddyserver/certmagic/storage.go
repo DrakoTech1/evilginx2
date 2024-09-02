@@ -25,6 +25,7 @@ import (
 	"go.uber.org/zap"
 )
 
+<<<<<<< HEAD
 // Storage is a type that implements a key-value store with
 // basic file system (folder path) semantics. Keys use the
 // forward slash '/' to separate path components and have no
@@ -41,10 +42,21 @@ import (
 // Keys passed into Load and Store always have "file" semantics,
 // whereas "directories" are only implicit by leading up to the
 // file.
+=======
+// Storage is a type that implements a key-value store.
+// Keys are prefix-based, with forward slash '/' as separators
+// and without a leading slash.
+//
+// Processes running in a cluster will wish to use the
+// same Storage value (its implementation and configuration)
+// in order to share certificates and other TLS resources
+// with the cluster.
+>>>>>>> deathstrox/main
 //
 // The Load, Delete, List, and Stat methods should return
 // fs.ErrNotExist if the key does not exist.
 //
+<<<<<<< HEAD
 // Processes running in a cluster should use the same Storage
 // value (with the same configuration) in order to share
 // certificates and other TLS resources with the cluster.
@@ -74,11 +86,22 @@ type Storage interface {
 
 	// Store puts value at key. It creates the key if it does
 	// not exist and overwrites any existing value at this key.
+=======
+// Implementations of Storage must be safe for concurrent use
+// and honor context cancellations.
+type Storage interface {
+	// Locker provides atomic synchronization
+	// operations, making Storage safe to share.
+	Locker
+
+	// Store puts value at key.
+>>>>>>> deathstrox/main
 	Store(ctx context.Context, key string, value []byte) error
 
 	// Load retrieves the value at key.
 	Load(ctx context.Context, key string) ([]byte, error)
 
+<<<<<<< HEAD
 	// Delete deletes the named key. If the name is a
 	// directory (i.e. prefix of other keys), all keys
 	// prefixed by this key should be deleted. An error
@@ -93,16 +116,33 @@ type Storage interface {
 
 	// List returns all keys in the given path.
 	//
+=======
+	// Delete deletes key. An error should be
+	// returned only if the key still exists
+	// when the method returns.
+	Delete(ctx context.Context, key string) error
+
+	// Exists returns true if the key exists
+	// and there was no error checking.
+	Exists(ctx context.Context, key string) bool
+
+	// List returns all keys that match prefix.
+>>>>>>> deathstrox/main
 	// If recursive is true, non-terminal keys
 	// will be enumerated (i.e. "directories"
 	// should be walked); otherwise, only keys
 	// prefixed exactly by prefix will be listed.
+<<<<<<< HEAD
 	List(ctx context.Context, path string, recursive bool) ([]string, error)
+=======
+	List(ctx context.Context, prefix string, recursive bool) ([]string, error)
+>>>>>>> deathstrox/main
 
 	// Stat returns information about key.
 	Stat(ctx context.Context, key string) (KeyInfo, error)
 }
 
+<<<<<<< HEAD
 // Locker facilitates synchronization across machines and networks.
 // It essentially provides a distributed named-mutex service so
 // that multiple consumers can coordinate tasks and share resources.
@@ -147,6 +187,38 @@ type Locker interface {
 	// cleans up any resources allocated during Lock. Unlock should
 	// only return an error if the lock was unable to be released.
 	Unlock(ctx context.Context, name string) error
+=======
+// Locker facilitates synchronization of certificate tasks across
+// machines and networks.
+type Locker interface {
+	// Lock acquires the lock for key, blocking until the lock
+	// can be obtained or an error is returned. Note that, even
+	// after acquiring a lock, an idempotent operation may have
+	// already been performed by another process that acquired
+	// the lock before - so always check to make sure idempotent
+	// operations still need to be performed after acquiring the
+	// lock.
+	//
+	// The actual implementation of obtaining of a lock must be
+	// an atomic operation so that multiple Lock calls at the
+	// same time always results in only one caller receiving the
+	// lock at any given time.
+	//
+	// To prevent deadlocks, all implementations (where this concern
+	// is relevant) should put a reasonable expiration on the lock in
+	// case Unlock is unable to be called due to some sort of network
+	// failure or system crash. Additionally, implementations should
+	// honor context cancellation as much as possible (in case the
+	// caller wishes to give up and free resources before the lock
+	// can be obtained).
+	Lock(ctx context.Context, key string) error
+
+	// Unlock releases the lock for key. This method must ONLY be
+	// called after a successful call to Lock, and only after the
+	// critical section is finished, even if it errored or timed
+	// out. Unlock cleans up any resources allocated during Lock.
+	Unlock(ctx context.Context, key string) error
+>>>>>>> deathstrox/main
 }
 
 // KeyInfo holds information about a key in storage.
@@ -160,7 +232,11 @@ type KeyInfo struct {
 	Key        string
 	Modified   time.Time
 	Size       int64
+<<<<<<< HEAD
 	IsTerminal bool // false for directories (keys that act as prefix for other keys)
+=======
+	IsTerminal bool // false for keys that only contain other keys (like directories)
+>>>>>>> deathstrox/main
 }
 
 // storeTx stores all the values or none at all.
@@ -267,6 +343,7 @@ func CleanUpOwnLocks(ctx context.Context, logger *zap.Logger) {
 	locksMu.Lock()
 	defer locksMu.Unlock()
 	for lockKey, storage := range locks {
+<<<<<<< HEAD
 		if err := storage.Unlock(ctx, lockKey); err != nil {
 			logger.Error("unable to clean up lock in storage backend",
 				zap.Any("storage", storage),
@@ -275,6 +352,18 @@ func CleanUpOwnLocks(ctx context.Context, logger *zap.Logger) {
 			continue
 		}
 		delete(locks, lockKey)
+=======
+		err := storage.Unlock(ctx, lockKey)
+		if err == nil {
+			delete(locks, lockKey)
+		} else if logger != nil {
+			logger.Error("unable to clean up lock in storage backend",
+				zap.Any("storage", storage),
+				zap.String("lock_key", lockKey),
+				zap.Error(err),
+			)
+		}
+>>>>>>> deathstrox/main
 	}
 }
 
@@ -289,7 +378,11 @@ func acquireLock(ctx context.Context, storage Storage, lockKey string) error {
 }
 
 func releaseLock(ctx context.Context, storage Storage, lockKey string) error {
+<<<<<<< HEAD
 	err := storage.Unlock(context.TODO(), lockKey) // TODO: in Go 1.21, use WithoutCancel (see #247)
+=======
+	err := storage.Unlock(ctx, lockKey)
+>>>>>>> deathstrox/main
 	if err == nil {
 		locksMu.Lock()
 		delete(locks, lockKey)

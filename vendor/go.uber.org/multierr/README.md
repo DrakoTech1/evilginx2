@@ -2,6 +2,7 @@
 
 `multierr` allows combining one or more Go `error`s together.
 
+<<<<<<< HEAD
 ## Features
 
 - **Idiomatic**:
@@ -25,6 +26,11 @@
 ```bash
 go get -u go.uber.org/multierr@latest
 ```
+=======
+## Installation
+
+    go get -u go.uber.org/multierr
+>>>>>>> deathstrox/main
 
 ## Status
 

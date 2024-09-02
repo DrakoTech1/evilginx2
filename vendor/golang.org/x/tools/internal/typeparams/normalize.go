@@ -60,7 +60,11 @@ var ErrEmptyTypeSet = errors.New("empty type set")
 //
 // StructuralTerms makes no guarantees about the order of terms, except that it
 // is deterministic.
+<<<<<<< HEAD
 func StructuralTerms(tparam *types.TypeParam) ([]*types.Term, error) {
+=======
+func StructuralTerms(tparam *TypeParam) ([]*Term, error) {
+>>>>>>> deathstrox/main
 	constraint := tparam.Constraint()
 	if constraint == nil {
 		return nil, fmt.Errorf("%s has nil constraint", tparam)
@@ -78,7 +82,11 @@ func StructuralTerms(tparam *types.TypeParam) ([]*types.Term, error) {
 //
 // See the documentation of StructuralTerms for more information on
 // normalization.
+<<<<<<< HEAD
 func InterfaceTermSet(iface *types.Interface) ([]*types.Term, error) {
+=======
+func InterfaceTermSet(iface *types.Interface) ([]*Term, error) {
+>>>>>>> deathstrox/main
 	return computeTermSet(iface)
 }
 
@@ -88,11 +96,19 @@ func InterfaceTermSet(iface *types.Interface) ([]*types.Term, error) {
 //
 // See the documentation of StructuralTerms for more information on
 // normalization.
+<<<<<<< HEAD
 func UnionTermSet(union *types.Union) ([]*types.Term, error) {
 	return computeTermSet(union)
 }
 
 func computeTermSet(typ types.Type) ([]*types.Term, error) {
+=======
+func UnionTermSet(union *Union) ([]*Term, error) {
+	return computeTermSet(union)
+}
+
+func computeTermSet(typ types.Type) ([]*Term, error) {
+>>>>>>> deathstrox/main
 	tset, err := computeTermSetInternal(typ, make(map[types.Type]*termSet), 0)
 	if err != nil {
 		return nil, err
@@ -103,9 +119,15 @@ func computeTermSet(typ types.Type) ([]*types.Term, error) {
 	if tset.terms.isAll() {
 		return nil, nil
 	}
+<<<<<<< HEAD
 	var terms []*types.Term
 	for _, term := range tset.terms {
 		terms = append(terms, types.NewTerm(term.tilde, term.typ))
+=======
+	var terms []*Term
+	for _, term := range tset.terms {
+		terms = append(terms, NewTerm(term.tilde, term.typ))
+>>>>>>> deathstrox/main
 	}
 	return terms, nil
 }
@@ -162,7 +184,11 @@ func computeTermSetInternal(t types.Type, seen map[types.Type]*termSet, depth in
 		tset.terms = allTermlist
 		for i := 0; i < u.NumEmbeddeds(); i++ {
 			embedded := u.EmbeddedType(i)
+<<<<<<< HEAD
 			if _, ok := embedded.Underlying().(*types.TypeParam); ok {
+=======
+			if _, ok := embedded.Underlying().(*TypeParam); ok {
+>>>>>>> deathstrox/main
 				return nil, fmt.Errorf("invalid embedded type %T", embedded)
 			}
 			tset2, err := computeTermSetInternal(embedded, seen, depth+1)
@@ -171,7 +197,11 @@ func computeTermSetInternal(t types.Type, seen map[types.Type]*termSet, depth in
 			}
 			tset.terms = tset.terms.intersect(tset2.terms)
 		}
+<<<<<<< HEAD
 	case *types.Union:
+=======
+	case *Union:
+>>>>>>> deathstrox/main
 		// The term set of a union is the union of term sets of its terms.
 		tset.terms = nil
 		for i := 0; i < u.Len(); i++ {
@@ -184,7 +214,11 @@ func computeTermSetInternal(t types.Type, seen map[types.Type]*termSet, depth in
 					return nil, err
 				}
 				terms = tset2.terms
+<<<<<<< HEAD
 			case *types.TypeParam, *types.Union:
+=======
+			case *TypeParam, *Union:
+>>>>>>> deathstrox/main
 				// A stand-alone type parameter or union is not permitted as union
 				// term.
 				return nil, fmt.Errorf("invalid union term %T", t)
@@ -199,7 +233,11 @@ func computeTermSetInternal(t types.Type, seen map[types.Type]*termSet, depth in
 				return nil, fmt.Errorf("exceeded max term count %d", maxTermCount)
 			}
 		}
+<<<<<<< HEAD
 	case *types.TypeParam:
+=======
+	case *TypeParam:
+>>>>>>> deathstrox/main
 		panic("unreachable")
 	default:
 		// For all other types, the term set is just a single non-tilde term

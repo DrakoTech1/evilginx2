@@ -21,9 +21,13 @@
 package zap
 
 import (
+<<<<<<< HEAD
 	"sync/atomic"
 
 	"go.uber.org/zap/internal"
+=======
+	"go.uber.org/atomic"
+>>>>>>> deathstrox/main
 	"go.uber.org/zap/zapcore"
 )
 
@@ -72,6 +76,7 @@ type AtomicLevel struct {
 	l *atomic.Int32
 }
 
+<<<<<<< HEAD
 var _ internal.LeveledEnabler = AtomicLevel{}
 
 // NewAtomicLevel creates an AtomicLevel with InfoLevel and above logging
@@ -80,6 +85,14 @@ func NewAtomicLevel() AtomicLevel {
 	lvl := AtomicLevel{l: new(atomic.Int32)}
 	lvl.l.Store(int32(InfoLevel))
 	return lvl
+=======
+// NewAtomicLevel creates an AtomicLevel with InfoLevel and above logging
+// enabled.
+func NewAtomicLevel() AtomicLevel {
+	return AtomicLevel{
+		l: atomic.NewInt32(int32(InfoLevel)),
+	}
+>>>>>>> deathstrox/main
 }
 
 // NewAtomicLevelAt is a convenience function that creates an AtomicLevel

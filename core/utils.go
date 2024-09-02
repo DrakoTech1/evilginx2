@@ -7,9 +7,12 @@ import (
 	"io/fs"
 	"io/ioutil"
 	"os"
+<<<<<<< HEAD
 	"strconv"
 	"strings"
 	"time"
+=======
+>>>>>>> deathstrox/main
 )
 
 func GenRandomToken() string {
@@ -78,6 +81,7 @@ func SaveToFile(b []byte, fpath string, perm fs.FileMode) error {
 	}
 	return nil
 }
+<<<<<<< HEAD
 
 func ParseDurationString(s string) (t_dur time.Duration, err error) {
 	const DURATION_TYPES = "dhms"
@@ -170,3 +174,5 @@ func GetDurationString(t_now time.Time, t_expire time.Time) (ret string) {
 	}
 	return
 }
+=======
+>>>>>>> deathstrox/main

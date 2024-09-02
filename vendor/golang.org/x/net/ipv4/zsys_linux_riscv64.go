@@ -2,6 +2,10 @@
 // cgo -godefs defs_linux.go
 
 //go:build riscv64
+<<<<<<< HEAD
+=======
+// +build riscv64
+>>>>>>> deathstrox/main
 
 package ipv4
 

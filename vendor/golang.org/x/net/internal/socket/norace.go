@@ -3,6 +3,10 @@
 // license that can be found in the LICENSE file.
 
 //go:build !race
+<<<<<<< HEAD
+=======
+// +build !race
+>>>>>>> deathstrox/main
 
 package socket
 

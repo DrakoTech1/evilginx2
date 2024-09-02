@@ -3,6 +3,10 @@ package log
 import (
 	"fmt"
 	"io"
+<<<<<<< HEAD
+=======
+	"io/ioutil"
+>>>>>>> deathstrox/main
 	"log"
 	"sync"
 	"time"
@@ -53,7 +57,11 @@ func GetOutput() io.Writer {
 }
 
 func NullLogger() *log.Logger {
+<<<<<<< HEAD
 	return log.New(io.Discard, "", 0)
+=======
+	return log.New(ioutil.Discard, "", 0)
+>>>>>>> deathstrox/main
 }
 
 func refreshReadline() {

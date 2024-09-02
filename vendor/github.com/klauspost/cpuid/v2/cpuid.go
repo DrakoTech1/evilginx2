@@ -67,6 +67,7 @@ const (
 	// Keep index -1 as unknown
 	UNKNOWN = -1
 
+<<<<<<< HEAD
 	// x86 features
 	ADX                 FeatureID = iota // Intel ADX (Multi-Precision Add-Carry Instruction Extensions)
 	AESNI                                // Advanced Encryption Standard New Instructions
@@ -261,6 +262,151 @@ const (
 	XSAVEC                               // Supports XSAVEC and the compacted form of XRSTOR.
 	XSAVEOPT                             // XSAVEOPT available
 	XSAVES                               // Supports XSAVES/XRSTORS and IA32_XSS
+=======
+	// Add features
+	ADX                FeatureID = iota // Intel ADX (Multi-Precision Add-Carry Instruction Extensions)
+	AESNI                               // Advanced Encryption Standard New Instructions
+	AMD3DNOW                            // AMD 3DNOW
+	AMD3DNOWEXT                         // AMD 3DNowExt
+	AMXBF16                             // Tile computational operations on BFLOAT16 numbers
+	AMXINT8                             // Tile computational operations on 8-bit integers
+	AMXTILE                             // Tile architecture
+	AVX                                 // AVX functions
+	AVX2                                // AVX2 functions
+	AVX512BF16                          // AVX-512 BFLOAT16 Instructions
+	AVX512BITALG                        // AVX-512 Bit Algorithms
+	AVX512BW                            // AVX-512 Byte and Word Instructions
+	AVX512CD                            // AVX-512 Conflict Detection Instructions
+	AVX512DQ                            // AVX-512 Doubleword and Quadword Instructions
+	AVX512ER                            // AVX-512 Exponential and Reciprocal Instructions
+	AVX512F                             // AVX-512 Foundation
+	AVX512FP16                          // AVX-512 FP16 Instructions
+	AVX512IFMA                          // AVX-512 Integer Fused Multiply-Add Instructions
+	AVX512PF                            // AVX-512 Prefetch Instructions
+	AVX512VBMI                          // AVX-512 Vector Bit Manipulation Instructions
+	AVX512VBMI2                         // AVX-512 Vector Bit Manipulation Instructions, Version 2
+	AVX512VL                            // AVX-512 Vector Length Extensions
+	AVX512VNNI                          // AVX-512 Vector Neural Network Instructions
+	AVX512VP2INTERSECT                  // AVX-512 Intersect for D/Q
+	AVX512VPOPCNTDQ                     // AVX-512 Vector Population Count Doubleword and Quadword
+	AVXSLOW                             // Indicates the CPU performs 2 128 bit operations instead of one
+	AVXVNNI                             // AVX (VEX encoded) VNNI neural network instructions
+	BMI1                                // Bit Manipulation Instruction Set 1
+	BMI2                                // Bit Manipulation Instruction Set 2
+	CETIBT                              // Intel CET Indirect Branch Tracking
+	CETSS                               // Intel CET Shadow Stack
+	CLDEMOTE                            // Cache Line Demote
+	CLMUL                               // Carry-less Multiplication
+	CLZERO                              // CLZERO instruction supported
+	CMOV                                // i686 CMOV
+	CMPSB_SCADBS_SHORT                  // Fast short CMPSB and SCASB
+	CMPXCHG8                            // CMPXCHG8 instruction
+	CPBOOST                             // Core Performance Boost
+	CX16                                // CMPXCHG16B Instruction
+	ENQCMD                              // Enqueue Command
+	ERMS                                // Enhanced REP MOVSB/STOSB
+	F16C                                // Half-precision floating-point conversion
+	FMA3                                // Intel FMA 3. Does not imply AVX.
+	FMA4                                // Bulldozer FMA4 functions
+	FXSR                                // FXSAVE, FXRESTOR instructions, CR4 bit 9
+	FXSROPT                             // FXSAVE/FXRSTOR optimizations
+	GFNI                                // Galois Field New Instructions. May require other features (AVX, AVX512VL,AVX512F) based on usage.
+	HLE                                 // Hardware Lock Elision
+	HRESET                              // If set CPU supports history reset and the IA32_HRESET_ENABLE MSR
+	HTT                                 // Hyperthreading (enabled)
+	HWA                                 // Hardware assert supported. Indicates support for MSRC001_10
+	HYPERVISOR                          // This bit has been reserved by Intel & AMD for use by hypervisors
+	IBPB                                // Indirect Branch Restricted Speculation (IBRS) and Indirect Branch Predictor Barrier (IBPB)
+	IBS                                 // Instruction Based Sampling (AMD)
+	IBSBRNTRGT                          // Instruction Based Sampling Feature (AMD)
+	IBSFETCHSAM                         // Instruction Based Sampling Feature (AMD)
+	IBSFFV                              // Instruction Based Sampling Feature (AMD)
+	IBSOPCNT                            // Instruction Based Sampling Feature (AMD)
+	IBSOPCNTEXT                         // Instruction Based Sampling Feature (AMD)
+	IBSOPSAM                            // Instruction Based Sampling Feature (AMD)
+	IBSRDWROPCNT                        // Instruction Based Sampling Feature (AMD)
+	IBSRIPINVALIDCHK                    // Instruction Based Sampling Feature (AMD)
+	IBS_PREVENTHOST                     // Disallowing IBS use by the host supported
+	INT_WBINVD                          // WBINVD/WBNOINVD are interruptible.
+	INVLPGB                             // NVLPGB and TLBSYNC instruction supported
+	LAHF                                // LAHF/SAHF in long mode
+	LAM                                 // If set, CPU supports Linear Address Masking
+	LBRVIRT                             // LBR virtualization
+	LZCNT                               // LZCNT instruction
+	MCAOVERFLOW                         // MCA overflow recovery support.
+	MCOMMIT                             // MCOMMIT instruction supported
+	MMX                                 // standard MMX
+	MMXEXT                              // SSE integer functions or AMD MMX ext
+	MOVBE                               // MOVBE instruction (big-endian)
+	MOVDIR64B                           // Move 64 Bytes as Direct Store
+	MOVDIRI                             // Move Doubleword as Direct Store
+	MOVSB_ZL                            // Fast Zero-Length MOVSB
+	MPX                                 // Intel MPX (Memory Protection Extensions)
+	MSRIRC                              // Instruction Retired Counter MSR available
+	MSR_PAGEFLUSH                       // Page Flush MSR available
+	NRIPS                               // Indicates support for NRIP save on VMEXIT
+	NX                                  // NX (No-Execute) bit
+	OSXSAVE                             // XSAVE enabled by OS
+	PCONFIG                             // PCONFIG for Intel Multi-Key Total Memory Encryption
+	POPCNT                              // POPCNT instruction
+	RDPRU                               // RDPRU instruction supported
+	RDRAND                              // RDRAND instruction is available
+	RDSEED                              // RDSEED instruction is available
+	RDTSCP                              // RDTSCP Instruction
+	RTM                                 // Restricted Transactional Memory
+	RTM_ALWAYS_ABORT                    // Indicates that the loaded microcode is forcing RTM abort.
+	SCE                                 // SYSENTER and SYSEXIT instructions
+	SERIALIZE                           // Serialize Instruction Execution
+	SEV                                 // AMD Secure Encrypted Virtualization supported
+	SEV_64BIT                           // AMD SEV guest execution only allowed from a 64-bit host
+	SEV_ALTERNATIVE                     // AMD SEV Alternate Injection supported
+	SEV_DEBUGSWAP                       // Full debug state swap supported for SEV-ES guests
+	SEV_ES                              // AMD SEV Encrypted State supported
+	SEV_RESTRICTED                      // AMD SEV Restricted Injection supported
+	SEV_SNP                             // AMD SEV Secure Nested Paging supported
+	SGX                                 // Software Guard Extensions
+	SGXLC                               // Software Guard Extensions Launch Control
+	SHA                                 // Intel SHA Extensions
+	SME                                 // AMD Secure Memory Encryption supported
+	SME_COHERENT                        // AMD Hardware cache coherency across encryption domains enforced
+	SSE                                 // SSE functions
+	SSE2                                // P4 SSE functions
+	SSE3                                // Prescott SSE3 functions
+	SSE4                                // Penryn SSE4.1 functions
+	SSE42                               // Nehalem SSE4.2 functions
+	SSE4A                               // AMD Barcelona microarchitecture SSE4a instructions
+	SSSE3                               // Conroe SSSE3 functions
+	STIBP                               // Single Thread Indirect Branch Predictors
+	STOSB_SHORT                         // Fast short STOSB
+	SUCCOR                              // Software uncorrectable error containment and recovery capability.
+	SVM                                 // AMD Secure Virtual Machine
+	SVMDA                               // Indicates support for the SVM decode assists.
+	SVMFBASID                           // SVM, Indicates that TLB flush events, including CR3 writes and CR4.PGE toggles, flush only the current ASID's TLB entries. Also indicates support for the extended VMCBTLB_Control
+	SVML                                // AMD SVM lock. Indicates support for SVM-Lock.
+	SVMNP                               // AMD SVM nested paging
+	SVMPF                               // SVM pause intercept filter. Indicates support for the pause intercept filter
+	SVMPFT                              // SVM PAUSE filter threshold. Indicates support for the PAUSE filter cycle count threshold
+	TBM                                 // AMD Trailing Bit Manipulation
+	TME                                 // Intel Total Memory Encryption. The following MSRs are supported: IA32_TME_CAPABILITY, IA32_TME_ACTIVATE, IA32_TME_EXCLUDE_MASK, and IA32_TME_EXCLUDE_BASE.
+	TSCRATEMSR                          // MSR based TSC rate control. Indicates support for MSR TSC ratio MSRC000_0104
+	TSXLDTRK                            // Intel TSX Suspend Load Address Tracking
+	VAES                                // Vector AES. AVX(512) versions requires additional checks.
+	VMCBCLEAN                           // VMCB clean bits. Indicates support for VMCB clean bits.
+	VMPL                                // AMD VM Permission Levels supported
+	VMSA_REGPROT                        // AMD VMSA Register Protection supported
+	VMX                                 // Virtual Machine Extensions
+	VPCLMULQDQ                          // Carry-Less Multiplication Quadword. Requires AVX for 3 register versions.
+	VTE                                 // AMD Virtual Transparent Encryption supported
+	WAITPKG                             // TPAUSE, UMONITOR, UMWAIT
+	WBNOINVD                            // Write Back and Do Not Invalidate Cache
+	X87                                 // FPU
+	XGETBV1                             // Supports XGETBV with ECX = 1
+	XOP                                 // Bulldozer XOP functions
+	XSAVE                               // XSAVE, XRESTOR, XSETBV, XGETBV
+	XSAVEC                              // Supports XSAVEC and the compacted form of XRSTOR.
+	XSAVEOPT                            // XSAVEOPT available
+	XSAVES                              // Supports XSAVES/XRSTORS and IA32_XSS
+>>>>>>> deathstrox/main
 
 	// ARM features:
 	AESARM   // AES instructions
@@ -304,7 +450,10 @@ type CPUInfo struct {
 	LogicalCores   int     // Number of physical cores times threads that can run on each core through the use of hyperthreading. Will be 0 if undetectable.
 	Family         int     // CPU family number
 	Model          int     // CPU model number
+<<<<<<< HEAD
 	Stepping       int     // CPU stepping info
+=======
+>>>>>>> deathstrox/main
 	CacheLine      int     // Cache line size in bytes. Will be 0 if undetectable.
 	Hz             int64   // Clock speed, if known, 0 otherwise. Will attempt to contain base clock speed.
 	BoostFreq      int64   // Max clock speed, if known, 0 otherwise
@@ -314,11 +463,17 @@ type CPUInfo struct {
 		L2  int // L2 Cache (per core or shared). Will be -1 if undetected
 		L3  int // L3 Cache (per core, per ccx or shared). Will be -1 if undetected
 	}
+<<<<<<< HEAD
 	SGX              SGXSupport
 	AMDMemEncryption AMDMemEncryptionSupport
 	AVX10Level       uint8
 	maxFunc          uint32
 	maxExFunc        uint32
+=======
+	SGX       SGXSupport
+	maxFunc   uint32
+	maxExFunc uint32
+>>>>>>> deathstrox/main
 }
 
 var cpuid func(op uint32) (eax, ebx, ecx, edx uint32)
@@ -409,6 +564,7 @@ func (c CPUInfo) Supports(ids ...FeatureID) bool {
 
 // Has allows for checking a single feature.
 // Should be inlined by the compiler.
+<<<<<<< HEAD
 func (c *CPUInfo) Has(id FeatureID) bool {
 	return c.featureSet.inSet(id)
 }
@@ -446,11 +602,23 @@ var level1Features = CombineFeatures(CMOV, CMPXCHG8, X87, FXSR, MMX, SSE, SSE2)
 var level2Features = CombineFeatures(CMOV, CMPXCHG8, X87, FXSR, MMX, SSE, SSE2, CX16, LAHF, POPCNT, SSE3, SSE4, SSE42, SSSE3)
 var level3Features = CombineFeatures(CMOV, CMPXCHG8, X87, FXSR, MMX, SSE, SSE2, CX16, LAHF, POPCNT, SSE3, SSE4, SSE42, SSSE3, AVX, AVX2, BMI1, BMI2, F16C, FMA3, LZCNT, MOVBE, OSXSAVE)
 var level4Features = CombineFeatures(CMOV, CMPXCHG8, X87, FXSR, MMX, SSE, SSE2, CX16, LAHF, POPCNT, SSE3, SSE4, SSE42, SSSE3, AVX, AVX2, BMI1, BMI2, F16C, FMA3, LZCNT, MOVBE, OSXSAVE, AVX512F, AVX512BW, AVX512CD, AVX512DQ, AVX512VL)
+=======
+func (c CPUInfo) Has(id FeatureID) bool {
+	return c.featureSet.inSet(id)
+}
+
+// https://en.wikipedia.org/wiki/X86-64#Microarchitecture_levels
+var level1Features = flagSetWith(CMOV, CMPXCHG8, X87, FXSR, MMX, SCE, SSE, SSE2)
+var level2Features = flagSetWith(CMOV, CMPXCHG8, X87, FXSR, MMX, SCE, SSE, SSE2, CX16, LAHF, POPCNT, SSE3, SSE4, SSE42, SSSE3)
+var level3Features = flagSetWith(CMOV, CMPXCHG8, X87, FXSR, MMX, SCE, SSE, SSE2, CX16, LAHF, POPCNT, SSE3, SSE4, SSE42, SSSE3, AVX, AVX2, BMI1, BMI2, F16C, FMA3, LZCNT, MOVBE, OSXSAVE)
+var level4Features = flagSetWith(CMOV, CMPXCHG8, X87, FXSR, MMX, SCE, SSE, SSE2, CX16, LAHF, POPCNT, SSE3, SSE4, SSE42, SSSE3, AVX, AVX2, BMI1, BMI2, F16C, FMA3, LZCNT, MOVBE, OSXSAVE, AVX512F, AVX512BW, AVX512CD, AVX512DQ, AVX512VL)
+>>>>>>> deathstrox/main
 
 // X64Level returns the microarchitecture level detected on the CPU.
 // If features are lacking or non x64 mode, 0 is returned.
 // See https://en.wikipedia.org/wiki/X86-64#Microarchitecture_levels
 func (c CPUInfo) X64Level() int {
+<<<<<<< HEAD
 	if !c.featureSet.hasOneOf(oneOfLevel) {
 		return 0
 	}
@@ -464,6 +632,18 @@ func (c CPUInfo) X64Level() int {
 		return 2
 	}
 	if c.featureSet.hasSetP(level1Features) {
+=======
+	if c.featureSet.hasSet(level4Features) {
+		return 4
+	}
+	if c.featureSet.hasSet(level3Features) {
+		return 3
+	}
+	if c.featureSet.hasSet(level2Features) {
+		return 2
+	}
+	if c.featureSet.hasSet(level1Features) {
+>>>>>>> deathstrox/main
 		return 1
 	}
 	return 0
@@ -627,7 +807,11 @@ const flagMask = flagBits - 1
 // flagSet contains detected cpu features and characteristics in an array of flags
 type flagSet [(lastID + flagMask) / flagBits]flags
 
+<<<<<<< HEAD
 func (s *flagSet) inSet(feat FeatureID) bool {
+=======
+func (s flagSet) inSet(feat FeatureID) bool {
+>>>>>>> deathstrox/main
 	return s[feat>>flagBitsLog2]&(1<<(feat&flagMask)) != 0
 }
 
@@ -657,7 +841,11 @@ func (s *flagSet) or(other flagSet) {
 }
 
 // hasSet returns whether all features are present.
+<<<<<<< HEAD
 func (s *flagSet) hasSet(other flagSet) bool {
+=======
+func (s flagSet) hasSet(other flagSet) bool {
+>>>>>>> deathstrox/main
 	for i, v := range other[:] {
 		if s[i]&v != v {
 			return false
@@ -666,6 +854,7 @@ func (s *flagSet) hasSet(other flagSet) bool {
 	return true
 }
 
+<<<<<<< HEAD
 // hasSet returns whether all features are present.
 func (s *flagSet) hasSetP(other *flagSet) bool {
 	for i, v := range other[:] {
@@ -688,6 +877,10 @@ func (s *flagSet) hasOneOf(other *flagSet) bool {
 
 // nEnabled will return the number of enabled flags.
 func (s *flagSet) nEnabled() (n int) {
+=======
+// nEnabled will return the number of enabled flags.
+func (s flagSet) nEnabled() (n int) {
+>>>>>>> deathstrox/main
 	for _, v := range s[:] {
 		n += bits.OnesCount64(uint64(v))
 	}
@@ -782,7 +975,11 @@ func threadsPerCore() int {
 		if vend == AMD {
 			// Workaround for AMD returning 0, assume 2 if >= Zen 2
 			// It will be more correct than not.
+<<<<<<< HEAD
 			fam, _, _ := familyModel()
+=======
+			fam, _ := familyModel()
+>>>>>>> deathstrox/main
 			_, _, _, d := cpuid(1)
 			if (d&(1<<28)) != 0 && fam >= 23 {
 				return 2
@@ -820,6 +1017,7 @@ func logicalCores() int {
 	}
 }
 
+<<<<<<< HEAD
 func familyModel() (family, model, stepping int) {
 	if maxFunctionID() < 0x1 {
 		return 0, 0, 0
@@ -841,6 +1039,16 @@ func familyModel() (family, model, stepping int) {
 	}
 	stepping = int(eax & 0xf)
 	return family, model, stepping
+=======
+func familyModel() (int, int) {
+	if maxFunctionID() < 0x1 {
+		return 0, 0
+	}
+	eax, _, _, _ := cpuid(1)
+	family := ((eax >> 8) & 0xf) + ((eax >> 20) & 0xff)
+	model := ((eax >> 4) & 0xf) + ((eax >> 12) & 0xf0)
+	return int(family), int(model)
+>>>>>>> deathstrox/main
 }
 
 func physicalCores() int {
@@ -975,7 +1183,11 @@ func (c *CPUInfo) cacheSize() {
 		c.Cache.L2 = int(((ecx >> 16) & 0xFFFF) * 1024)
 
 		// CPUID Fn8000_001D_EAX_x[N:0] Cache Properties
+<<<<<<< HEAD
 		if maxExtendedFunction() < 0x8000001D || !c.Has(TOPEXT) {
+=======
+		if maxExtendedFunction() < 0x8000001D {
+>>>>>>> deathstrox/main
 			return
 		}
 
@@ -1085,6 +1297,7 @@ func hasSGX(available, lc bool) (rval SGXSupport) {
 	return
 }
 
+<<<<<<< HEAD
 type AMDMemEncryptionSupport struct {
 	Available          bool
 	CBitPossition      uint32
@@ -1111,6 +1324,8 @@ func hasAMDMemEncryption(available bool) (rval AMDMemEncryptionSupport) {
 	return
 }
 
+=======
+>>>>>>> deathstrox/main
 func support() flagSet {
 	var fs flagSet
 	mfi := maxFunctionID()
@@ -1118,13 +1333,23 @@ func support() flagSet {
 	if mfi < 0x1 {
 		return fs
 	}
+<<<<<<< HEAD
 	family, model, _ := familyModel()
+=======
+	family, model := familyModel()
+>>>>>>> deathstrox/main
 
 	_, _, c, d := cpuid(1)
 	fs.setIf((d&(1<<0)) != 0, X87)
 	fs.setIf((d&(1<<8)) != 0, CMPXCHG8)
+<<<<<<< HEAD
 	fs.setIf((d&(1<<11)) != 0, SYSEE)
 	fs.setIf((d&(1<<15)) != 0, CMOV)
+=======
+	fs.setIf((d&(1<<11)) != 0, SCE)
+	fs.setIf((d&(1<<15)) != 0, CMOV)
+	fs.setIf((d&(1<<22)) != 0, MMXEXT)
+>>>>>>> deathstrox/main
 	fs.setIf((d&(1<<23)) != 0, MMX)
 	fs.setIf((d&(1<<24)) != 0, FXSR)
 	fs.setIf((d&(1<<25)) != 0, FXSROPT)
@@ -1132,9 +1357,15 @@ func support() flagSet {
 	fs.setIf((d&(1<<26)) != 0, SSE2)
 	fs.setIf((c&1) != 0, SSE3)
 	fs.setIf((c&(1<<5)) != 0, VMX)
+<<<<<<< HEAD
 	fs.setIf((c&(1<<9)) != 0, SSSE3)
 	fs.setIf((c&(1<<19)) != 0, SSE4)
 	fs.setIf((c&(1<<20)) != 0, SSE42)
+=======
+	fs.setIf((c&0x00000200) != 0, SSSE3)
+	fs.setIf((c&0x00080000) != 0, SSE4)
+	fs.setIf((c&0x00100000) != 0, SSE42)
+>>>>>>> deathstrox/main
 	fs.setIf((c&(1<<25)) != 0, AESNI)
 	fs.setIf((c&(1<<1)) != 0, CLMUL)
 	fs.setIf(c&(1<<22) != 0, MOVBE)
@@ -1205,24 +1436,33 @@ func support() flagSet {
 		fs.setIf(ecx&(1<<10) != 0, VPCLMULQDQ)
 		fs.setIf(ecx&(1<<13) != 0, TME)
 		fs.setIf(ecx&(1<<25) != 0, CLDEMOTE)
+<<<<<<< HEAD
 		fs.setIf(ecx&(1<<23) != 0, KEYLOCKER)
+=======
+>>>>>>> deathstrox/main
 		fs.setIf(ecx&(1<<27) != 0, MOVDIRI)
 		fs.setIf(ecx&(1<<28) != 0, MOVDIR64B)
 		fs.setIf(ecx&(1<<29) != 0, ENQCMD)
 		fs.setIf(ecx&(1<<30) != 0, SGXLC)
 
 		// CPUID.(EAX=7, ECX=0).EDX
+<<<<<<< HEAD
 		fs.setIf(edx&(1<<4) != 0, FSRM)
 		fs.setIf(edx&(1<<9) != 0, SRBDS_CTRL)
 		fs.setIf(edx&(1<<10) != 0, MD_CLEAR)
 		fs.setIf(edx&(1<<11) != 0, RTM_ALWAYS_ABORT)
 		fs.setIf(edx&(1<<14) != 0, SERIALIZE)
 		fs.setIf(edx&(1<<15) != 0, HYBRID_CPU)
+=======
+		fs.setIf(edx&(1<<11) != 0, RTM_ALWAYS_ABORT)
+		fs.setIf(edx&(1<<14) != 0, SERIALIZE)
+>>>>>>> deathstrox/main
 		fs.setIf(edx&(1<<16) != 0, TSXLDTRK)
 		fs.setIf(edx&(1<<18) != 0, PCONFIG)
 		fs.setIf(edx&(1<<20) != 0, CETIBT)
 		fs.setIf(edx&(1<<26) != 0, IBPB)
 		fs.setIf(edx&(1<<27) != 0, STIBP)
+<<<<<<< HEAD
 		fs.setIf(edx&(1<<28) != 0, FLUSH_L1D)
 		fs.setIf(edx&(1<<29) != 0, IA32_ARCH_CAP)
 		fs.setIf(edx&(1<<30) != 0, IA32_CORE_CAP)
@@ -1232,10 +1472,17 @@ func support() flagSet {
 		eax1, _, _, edx1 := cpuidex(7, 1)
 		fs.setIf(fs.inSet(AVX) && eax1&(1<<4) != 0, AVXVNNI)
 		fs.setIf(eax1&(1<<7) != 0, CMPCCXADD)
+=======
+
+		// CPUID.(EAX=7, ECX=1)
+		eax1, _, _, _ := cpuidex(7, 1)
+		fs.setIf(fs.inSet(AVX) && eax1&(1<<4) != 0, AVXVNNI)
+>>>>>>> deathstrox/main
 		fs.setIf(eax1&(1<<10) != 0, MOVSB_ZL)
 		fs.setIf(eax1&(1<<11) != 0, STOSB_SHORT)
 		fs.setIf(eax1&(1<<12) != 0, CMPSB_SCADBS_SHORT)
 		fs.setIf(eax1&(1<<22) != 0, HRESET)
+<<<<<<< HEAD
 		fs.setIf(eax1&(1<<23) != 0, AVXIFMA)
 		fs.setIf(eax1&(1<<26) != 0, LAM)
 
@@ -1246,6 +1493,10 @@ func support() flagSet {
 		fs.setIf(edx1&(1<<19) != 0, AVX10)
 		fs.setIf(edx1&(1<<21) != 0, APX_F)
 
+=======
+		fs.setIf(eax1&(1<<26) != 0, LAM)
+
+>>>>>>> deathstrox/main
 		// Only detect AVX-512 features if XGETBV is supported
 		if c&((1<<26)|(1<<27)) == (1<<26)|(1<<27) {
 			// Check for OS support
@@ -1281,6 +1532,7 @@ func support() flagSet {
 				fs.setIf(edx&(1<<25) != 0, AMXINT8)
 				// eax1 = CPUID.(EAX=7, ECX=1).EAX
 				fs.setIf(eax1&(1<<5) != 0, AVX512BF16)
+<<<<<<< HEAD
 				fs.setIf(eax1&(1<<19) != 0, WRMSRNS)
 				fs.setIf(eax1&(1<<21) != 0, AMXFP16)
 				fs.setIf(eax1&(1<<27) != 0, MSRLIST)
@@ -1310,6 +1562,11 @@ func support() flagSet {
 		}
 	}
 
+=======
+			}
+		}
+	}
+>>>>>>> deathstrox/main
 	// Processor Extended State Enumeration Sub-leaf (EAX = 0DH, ECX = 1)
 	// EAX
 	// Bit 00: XSAVEOPT is available.
@@ -1343,6 +1600,7 @@ func support() flagSet {
 		fs.setIf((c&(1<<2)) != 0, SVM)
 		fs.setIf((c&(1<<6)) != 0, SSE4A)
 		fs.setIf((c&(1<<10)) != 0, IBS)
+<<<<<<< HEAD
 		fs.setIf((c&(1<<22)) != 0, TOPEXT)
 
 		// EDX
@@ -1355,12 +1613,27 @@ func support() flagSet {
 		fs.setIf(d&(1<<27) != 0, RDTSCP)
 		fs.setIf(d&(1<<30) != 0, AMD3DNOWEXT)
 		fs.setIf(d&(1<<31) != 0, AMD3DNOW)
+=======
+
+		// EDX
+		fs.setIf((d&(1<<31)) != 0, AMD3DNOW)
+		fs.setIf((d&(1<<30)) != 0, AMD3DNOWEXT)
+		fs.setIf((d&(1<<23)) != 0, MMX)
+		fs.setIf((d&(1<<22)) != 0, MMXEXT)
+		fs.setIf(d&(1<<20) != 0, NX)
+		fs.setIf(d&(1<<27) != 0, RDTSCP)
+>>>>>>> deathstrox/main
 
 		/* XOP and FMA4 use the AVX instruction coding scheme, so they can't be
 		 * used unless the OS has AVX support. */
 		if fs.inSet(AVX) {
+<<<<<<< HEAD
 			fs.setIf((c&(1<<11)) != 0, XOP)
 			fs.setIf((c&(1<<16)) != 0, FMA4)
+=======
+			fs.setIf((c&0x00000800) != 0, XOP)
+			fs.setIf((c&0x00010000) != 0, FMA4)
+>>>>>>> deathstrox/main
 		}
 
 	}
@@ -1374,6 +1647,7 @@ func support() flagSet {
 
 	if maxExtendedFunction() >= 0x80000008 {
 		_, b, _, _ := cpuid(0x80000008)
+<<<<<<< HEAD
 		fs.setIf(b&(1<<28) != 0, PSFD)
 		fs.setIf(b&(1<<27) != 0, CPPC)
 		fs.setIf(b&(1<<24) != 0, SPEC_CTRL_SSBD)
@@ -1389,6 +1663,11 @@ func support() flagSet {
 		fs.setIf(b&(1<<12) != 0, IBPB)
 		fs.setIf((b&(1<<9)) != 0, WBNOINVD)
 		fs.setIf((b&(1<<8)) != 0, MCOMMIT)
+=======
+		fs.setIf((b&(1<<9)) != 0, WBNOINVD)
+		fs.setIf((b&(1<<8)) != 0, MCOMMIT)
+		fs.setIf((b&(1<<13)) != 0, INT_WBINVD)
+>>>>>>> deathstrox/main
 		fs.setIf((b&(1<<4)) != 0, RDPRU)
 		fs.setIf((b&(1<<3)) != 0, INVLPGB)
 		fs.setIf((b&(1<<1)) != 0, MSRIRC)
@@ -1409,6 +1688,7 @@ func support() flagSet {
 		fs.setIf((edx>>12)&1 == 1, SVMPFT)
 	}
 
+<<<<<<< HEAD
 	if maxExtendedFunction() >= 0x8000001a {
 		eax, _, _, _ := cpuid(0x8000001a)
 		fs.setIf((eax>>0)&1 == 1, FP128)
@@ -1416,6 +1696,8 @@ func support() flagSet {
 		fs.setIf((eax>>2)&1 == 1, FP256)
 	}
 
+=======
+>>>>>>> deathstrox/main
 	if maxExtendedFunction() >= 0x8000001b && fs.inSet(IBS) {
 		eax, _, _, _ := cpuid(0x8000001b)
 		fs.setIf((eax>>0)&1 == 1, IBSFFV)
@@ -1426,10 +1708,13 @@ func support() flagSet {
 		fs.setIf((eax>>5)&1 == 1, IBSBRNTRGT)
 		fs.setIf((eax>>6)&1 == 1, IBSOPCNTEXT)
 		fs.setIf((eax>>7)&1 == 1, IBSRIPINVALIDCHK)
+<<<<<<< HEAD
 		fs.setIf((eax>>8)&1 == 1, IBS_OPFUSE)
 		fs.setIf((eax>>9)&1 == 1, IBS_FETCH_CTLX)
 		fs.setIf((eax>>10)&1 == 1, IBS_OPDATA4) // Doc says "Fixed,0. IBS op data 4 MSR supported", but assuming they mean 1.
 		fs.setIf((eax>>11)&1 == 1, IBS_ZEN4)
+=======
+>>>>>>> deathstrox/main
 	}
 
 	if maxExtendedFunction() >= 0x8000001f && vend == AMD {
@@ -1450,6 +1735,7 @@ func support() flagSet {
 		fs.setIf((a>>24)&1 == 1, VMSA_REGPROT)
 	}
 
+<<<<<<< HEAD
 	if maxExtendedFunction() >= 0x80000021 && vend == AMD {
 		a, _, _, _ := cpuid(0x80000021)
 		fs.setIf((a>>31)&1 == 1, SRSO_MSR_FIX)
@@ -1491,6 +1777,11 @@ func (c *CPUInfo) supportAVX10() uint8 {
 	return 0
 }
 
+=======
+	return fs
+}
+
+>>>>>>> deathstrox/main
 func valAsString(values ...uint32) []byte {
 	r := make([]byte, 4*len(values))
 	for i, v := range values {

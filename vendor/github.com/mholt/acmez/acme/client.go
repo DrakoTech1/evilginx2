@@ -46,10 +46,17 @@ import (
 // response. This package wraps errors that may be of type Problem,
 // so you can access the details using the conventional Go pattern:
 //
+<<<<<<< HEAD
 //	var problem Problem
 //	if errors.As(err, &problem) {
 //	    log.Printf("Houston, we have a problem: %+v", problem)
 //	}
+=======
+//     var problem Problem
+//     if errors.As(err, &problem) {
+//         log.Printf("Houston, we have a problem: %+v", problem)
+//     }
+>>>>>>> deathstrox/main
 //
 // All Problem errors originate from the ACME server.
 type Client struct {
@@ -126,10 +133,13 @@ func (c *Client) provisionDirectory(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
+<<<<<<< HEAD
 	if c.dir.NewOrder == "" {
 		// catch faulty ACME servers that may not return proper HTTP status on errors
 		return fmt.Errorf("server did not return error headers, but required directory fields are missing: %+v", c.dir)
 	}
+=======
+>>>>>>> deathstrox/main
 	directories[c.Directory] = cachedDirectory{c.dir, time.Now()}
 	return nil
 }
@@ -172,6 +182,7 @@ func (c *Client) pollTimeout() time.Duration {
 // ACME operation, ACME servers provide a directory
 // object." §7.1.1
 type Directory struct {
+<<<<<<< HEAD
 	NewNonce    string         `json:"newNonce"`
 	NewAccount  string         `json:"newAccount"`
 	NewOrder    string         `json:"newOrder"`
@@ -180,6 +191,15 @@ type Directory struct {
 	KeyChange   string         `json:"keyChange"`
 	RenewalInfo string         `json:"renewalInfo,omitempty"` // draft-ietf-acme-ari
 	Meta        *DirectoryMeta `json:"meta,omitempty"`
+=======
+	NewNonce   string         `json:"newNonce"`
+	NewAccount string         `json:"newAccount"`
+	NewOrder   string         `json:"newOrder"`
+	NewAuthz   string         `json:"newAuthz,omitempty"`
+	RevokeCert string         `json:"revokeCert"`
+	KeyChange  string         `json:"keyChange"`
+	Meta       *DirectoryMeta `json:"meta,omitempty"`
+>>>>>>> deathstrox/main
 }
 
 // DirectoryMeta is optional extra data that may be

@@ -247,7 +247,10 @@ const (
 	PROC_THREAD_ATTRIBUTE_MITIGATION_POLICY = 0x00020007
 	PROC_THREAD_ATTRIBUTE_UMS_THREAD        = 0x00030006
 	PROC_THREAD_ATTRIBUTE_PROTECTION_LEVEL  = 0x0002000b
+<<<<<<< HEAD
 	PROC_THREAD_ATTRIBUTE_PSEUDOCONSOLE     = 0x00020016
+=======
+>>>>>>> deathstrox/main
 )
 
 const (
@@ -1094,6 +1097,7 @@ const (
 
 	SOMAXCONN = 0x7fffffff
 
+<<<<<<< HEAD
 	TCP_NODELAY                    = 1
 	TCP_EXPEDITED_1122             = 2
 	TCP_KEEPALIVE                  = 3
@@ -1121,6 +1125,9 @@ const (
 	UDP_CHECKSUM_COVERAGE       = 20
 
 	UDP_COALESCED_INFO = 3
+=======
+	TCP_NODELAY = 1
+>>>>>>> deathstrox/main
 
 	SHUT_RD   = 0
 	SHUT_WR   = 1
@@ -1270,6 +1277,7 @@ const (
 	DnsSectionAdditional = 0x0003
 )
 
+<<<<<<< HEAD
 const (
 	// flags of WSALookupService
 	LUP_DEEP                = 0x0001
@@ -1315,6 +1323,8 @@ const (
 	NS_PNRPCLOUD = 39
 )
 
+=======
+>>>>>>> deathstrox/main
 type DNSSRVData struct {
 	Target   *uint16
 	Priority uint16
@@ -2166,12 +2176,15 @@ const (
 	ENABLE_LVB_GRID_WORLDWIDE          = 0x10
 )
 
+<<<<<<< HEAD
 // Pseudo console related constants used for the flags parameter to
 // CreatePseudoConsole. See: https://learn.microsoft.com/en-us/windows/console/createpseudoconsole
 const (
 	PSEUDOCONSOLE_INHERIT_CURSOR = 0x1
 )
 
+=======
+>>>>>>> deathstrox/main
 type Coord struct {
 	X int16
 	Y int16
@@ -2253,23 +2266,36 @@ type JOBOBJECT_BASIC_UI_RESTRICTIONS struct {
 }
 
 const (
+<<<<<<< HEAD
 	// JobObjectInformationClass for QueryInformationJobObject and SetInformationJobObject
 	JobObjectAssociateCompletionPortInformation = 7
 	JobObjectBasicAccountingInformation         = 1
 	JobObjectBasicAndIoAccountingInformation    = 8
 	JobObjectBasicLimitInformation              = 2
 	JobObjectBasicProcessIdList                 = 3
+=======
+	// JobObjectInformationClass
+	JobObjectAssociateCompletionPortInformation = 7
+	JobObjectBasicLimitInformation              = 2
+>>>>>>> deathstrox/main
 	JobObjectBasicUIRestrictions                = 4
 	JobObjectCpuRateControlInformation          = 15
 	JobObjectEndOfJobTimeInformation            = 6
 	JobObjectExtendedLimitInformation           = 9
 	JobObjectGroupInformation                   = 11
 	JobObjectGroupInformationEx                 = 14
+<<<<<<< HEAD
 	JobObjectLimitViolationInformation          = 13
 	JobObjectLimitViolationInformation2         = 34
 	JobObjectNetRateControlInformation          = 32
 	JobObjectNotificationLimitInformation       = 12
 	JobObjectNotificationLimitInformation2      = 33
+=======
+	JobObjectLimitViolationInformation2         = 35
+	JobObjectNetRateControlInformation          = 32
+	JobObjectNotificationLimitInformation       = 12
+	JobObjectNotificationLimitInformation2      = 34
+>>>>>>> deathstrox/main
 	JobObjectSecurityLimitInformation           = 5
 )
 
@@ -3295,6 +3321,7 @@ type ModuleInfo struct {
 }
 
 const ALL_PROCESSOR_GROUPS = 0xFFFF
+<<<<<<< HEAD
 
 type Rect struct {
 	Left   int32
@@ -3380,3 +3407,5 @@ type BLOB struct {
 	Size     uint32
 	BlobData *byte
 }
+=======
+>>>>>>> deathstrox/main

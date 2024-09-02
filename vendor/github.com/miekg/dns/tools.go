@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 //go:build tools
+=======
+>>>>>>> deathstrox/main
 // +build tools
 
 // We include our tool dependencies for `go generate` here to ensure they're

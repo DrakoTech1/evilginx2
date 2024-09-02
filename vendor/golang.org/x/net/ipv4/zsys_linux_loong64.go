@@ -2,6 +2,10 @@
 // cgo -godefs defs_linux.go
 
 //go:build loong64
+<<<<<<< HEAD
+=======
+// +build loong64
+>>>>>>> deathstrox/main
 
 package ipv4
 

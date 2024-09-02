@@ -3,6 +3,10 @@
 // license that can be found in the LICENSE file.
 
 //go:build s390x && linux
+<<<<<<< HEAD
+=======
+// +build s390x,linux
+>>>>>>> deathstrox/main
 
 package unix
 
@@ -33,6 +37,14 @@ import (
 //sys	sendfile(outfd int, infd int, offset *int64, count int) (written int, err error)
 //sys	setfsgid(gid int) (prev int, err error)
 //sys	setfsuid(uid int) (prev int, err error)
+<<<<<<< HEAD
+=======
+//sysnb	Setregid(rgid int, egid int) (err error)
+//sysnb	Setresgid(rgid int, egid int, sgid int) (err error)
+//sysnb	Setresuid(ruid int, euid int, suid int) (err error)
+//sysnb	Setrlimit(resource int, rlim *Rlimit) (err error)
+//sysnb	Setreuid(ruid int, euid int) (err error)
+>>>>>>> deathstrox/main
 //sys	Splice(rfd int, roff *int64, wfd int, woff *int64, len int, flags int) (n int64, err error)
 //sys	Stat(path string, stat *Stat_t) (err error)
 //sys	Statfs(path string, buf *Statfs_t) (err error)

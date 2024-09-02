@@ -8,7 +8,10 @@ func _() {
 	// An "invalid array index" compiler error signifies that the constant values have changed.
 	// Re-run the stringer command to generate them again.
 	var x [1]struct{}
+<<<<<<< HEAD
 	_ = x[InvalidSyntaxTree - -1]
+=======
+>>>>>>> deathstrox/main
 	_ = x[Test-1]
 	_ = x[BlankPkgName-2]
 	_ = x[MismatchedPkgName-3]
@@ -24,7 +27,11 @@ func _() {
 	_ = x[InvalidConstInit-13]
 	_ = x[InvalidConstVal-14]
 	_ = x[InvalidConstType-15]
+<<<<<<< HEAD
 	_ = x[UntypedNilUse-16]
+=======
+	_ = x[UntypedNil-16]
+>>>>>>> deathstrox/main
 	_ = x[WrongAssignCount-17]
 	_ = x[UnassignableOperand-18]
 	_ = x[NoNewVar-19]
@@ -153,6 +160,7 @@ func _() {
 	_ = x[MisplacedConstraintIface-142]
 	_ = x[InvalidMethodTypeParams-143]
 	_ = x[MisplacedTypeParam-144]
+<<<<<<< HEAD
 	_ = x[InvalidUnsafeSliceData-145]
 	_ = x[InvalidUnsafeString-146]
 }
@@ -176,4 +184,18 @@ func (i ErrorCode) String() string {
 	default:
 		return "ErrorCode(" + strconv.FormatInt(int64(i), 10) + ")"
 	}
+=======
+}
+
+const _ErrorCode_name = "TestBlankPkgNameMismatchedPkgNameInvalidPkgUseBadImportPathBrokenImportImportCRenamedUnusedImportInvalidInitCycleDuplicateDeclInvalidDeclCycleInvalidTypeCycleInvalidConstInitInvalidConstValInvalidConstTypeUntypedNilWrongAssignCountUnassignableOperandNoNewVarMultiValAssignOpInvalidIfaceAssignInvalidChanAssignIncompatibleAssignUnaddressableFieldAssignNotATypeInvalidArrayLenBlankIfaceMethodIncomparableMapKeyInvalidIfaceEmbedInvalidPtrEmbedBadRecvInvalidRecvDuplicateFieldAndMethodDuplicateMethodInvalidBlankInvalidIotaMissingInitBodyInvalidInitSigInvalidInitDeclInvalidMainDeclTooManyValuesNotAnExprTruncatedFloatNumericOverflowUndefinedOpMismatchedTypesDivByZeroNonNumericIncDecUnaddressableOperandInvalidIndirectionNonIndexableOperandInvalidIndexSwappedSliceIndicesNonSliceableOperandInvalidSliceExprInvalidShiftCountInvalidShiftOperandInvalidReceiveInvalidSendDuplicateLitKeyMissingLitKeyInvalidLitIndexOversizeArrayLitMixedStructLitInvalidStructLitMissingLitFieldDuplicateLitFieldUnexportedLitFieldInvalidLitFieldUntypedLitInvalidLitAmbiguousSelectorUndeclaredImportedNameUnexportedNameUndeclaredNameMissingFieldOrMethodBadDotDotDotSyntaxNonVariadicDotDotDotMisplacedDotDotDotInvalidDotDotDotOperandInvalidDotDotDotUncalledBuiltinInvalidAppendInvalidCapInvalidCloseInvalidCopyInvalidComplexInvalidDeleteInvalidImagInvalidLenSwappedMakeArgsInvalidMakeInvalidRealInvalidAssertImpossibleAssertInvalidConversionInvalidUntypedConversionBadOffsetofSyntaxInvalidOffsetofUnusedExprUnusedVarMissingReturnWrongResultCountOutOfScopeResultInvalidCondInvalidPostDeclInvalidChanRangeInvalidIterVarInvalidRangeExprMisplacedBreakMisplacedContinueMisplacedFallthroughDuplicateCaseDuplicateDefaultBadTypeKeywordInvalidTypeSwitchInvalidExprSwitchInvalidSelectCaseUndeclaredLabelDuplicateLabelMisplacedLabelUnusedLabelJumpOverDeclJumpIntoBlockInvalidMethodExprWrongArgCountInvalidCallUnusedResultsInvalidDeferInvalidGoBadDeclRepeatedDeclInvalidUnsafeAddInvalidUnsafeSliceUnsupportedFeatureNotAGenericTypeWrongTypeArgCountCannotInferTypeArgsInvalidTypeArgInvalidInstanceCycleInvalidUnionMisplacedConstraintIfaceInvalidMethodTypeParamsMisplacedTypeParam"
+
+var _ErrorCode_index = [...]uint16{0, 4, 16, 33, 46, 59, 71, 85, 97, 113, 126, 142, 158, 174, 189, 205, 215, 231, 250, 258, 274, 292, 309, 327, 351, 359, 374, 390, 408, 425, 440, 447, 458, 481, 496, 508, 519, 534, 548, 563, 578, 591, 600, 614, 629, 640, 655, 664, 680, 700, 718, 737, 749, 768, 787, 803, 820, 839, 853, 864, 879, 892, 907, 923, 937, 953, 968, 985, 1003, 1018, 1028, 1038, 1055, 1077, 1091, 1105, 1125, 1143, 1163, 1181, 1204, 1220, 1235, 1248, 1258, 1270, 1281, 1295, 1308, 1319, 1329, 1344, 1355, 1366, 1379, 1395, 1412, 1436, 1453, 1468, 1478, 1487, 1500, 1516, 1532, 1543, 1558, 1574, 1588, 1604, 1618, 1635, 1655, 1668, 1684, 1698, 1715, 1732, 1749, 1764, 1778, 1792, 1803, 1815, 1828, 1845, 1858, 1869, 1882, 1894, 1903, 1910, 1922, 1938, 1956, 1974, 1989, 2006, 2025, 2039, 2059, 2071, 2095, 2118, 2136}
+
+func (i ErrorCode) String() string {
+	i -= 1
+	if i < 0 || i >= ErrorCode(len(_ErrorCode_index)-1) {
+		return "ErrorCode(" + strconv.FormatInt(int64(i+1), 10) + ")"
+	}
+	return _ErrorCode_name[_ErrorCode_index[i]:_ErrorCode_index[i+1]]
+>>>>>>> deathstrox/main
 }
