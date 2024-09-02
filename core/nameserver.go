@@ -10,11 +10,8 @@ import (
 
 	"github.com/miekg/dns"
 
-<<<<<<< HEAD
 	"github.com/kgretzky/evilginx2/log"
-=======
-	"github.com/Conduct-Project/deathstrox/log"
->>>>>>> deathstrox/main
+
 )
 
 type Nameserver struct {
