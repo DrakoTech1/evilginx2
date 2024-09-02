@@ -54,11 +54,8 @@ func GetOutput() io.Writer {
 }
 
 func NullLogger() *log.Logger {
-<<<<<<< HEAD
-	return log.New(io.Discard, "", 0)
-=======
+
 	return log.New(ioutil.Discard, "", 0)
->>>>>>> deathstrox/main
 }
 
 func refreshReadline() {
