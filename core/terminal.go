@@ -1188,14 +1188,6 @@ func (t *Terminal) createHelp() {
 	h.AddSubCommand("config", []string{"gophish", "api_key"}, "gophish api_key <key>", "set up the api key for the gophish instance to communicate with")
 	h.AddSubCommand("config", []string{"gophish", "insecure"}, "gophish insecure <true|false>", "enable or disable the verification of gophish tls certificate (set to `true` if using self-signed certificate)")
 	h.AddSubCommand("config", []string{"gophish", "test"}, "gophish test", "test the gophish configuration")
-func (t *Terminal) createHelp() {}
-	h, _ := NewHelp()
-	h.AddCommand("config", "general", "manage general configuration", "Shows values of all configuration variables and allows to change them.", LAYER_TOP,
-		readline.PcItem("config", readline.PcItem("domain"), readline.PcItem("ipv4"), readline.PcItem("redirect_url"), readline.PcItem("webhook_telegram"), readline.PcItem("turnstile_key")))
-	h.AddSubCommand("config", nil, "", "show all configuration variables")
-	h.AddSubCommand("config", []string{"domain"}, "domain <domain>", "set base domain for all phishlets (e.g. evilsite.com)")
-	h.AddSubCommand("config", []string{"ipv4"}, "ipv4 <ip_address>", "set ipv4 external address of the current server")
-	h.AddSubCommand("config", []string{"redirect_url"}, "redirect_url <url>", "change the url where all unauthorized requests will be redirected to (phishing urls will need to be regenerated)")
 	h.AddSubCommand("config", []string{"webhook_telegram"}, "webhook_telegram <bot_token>/<chat_id>", "telegram webhook config in format: bot_token/chat_id (example: 4101656209:AAFJeahG73axTthuvh4wW4gg6Wtnhe51yVw/1721242916)")
 	h.AddSubCommand("config", []string{"turnstile_key"}, "turnstile_key <sitekey>:<secretkey>", "change the site key for Cloudflare's Turnstile CAPTCHA")
 
