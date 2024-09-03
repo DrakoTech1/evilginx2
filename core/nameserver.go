@@ -26,11 +26,11 @@ func NewNameserver(cfg *Config) (*Nameserver, error) {
 	o := &Nameserver{
 		serial: uint32(time.Now().Unix()),
 		cfg:    cfg,
-<<<<<<< HEAD
+
 		bind:   fmt.Sprintf("%s:%d", cfg.GetServerBindIP(), cfg.GetDnsPort()),
-=======
+
 		bind:   fmt.Sprintf("%s:%d", cfg.GetServerIP(), cfg.GetDnsPort()),
->>>>>>> deathstrox/main
+
 		ctx:    context.Background(),
 	}
 
@@ -56,11 +56,11 @@ func (o *Nameserver) handleRequest(w dns.ResponseWriter, r *dns.Msg) {
 	m := new(dns.Msg)
 	m.SetReply(r)
 
-<<<<<<< HEAD
+
 	if o.cfg.general.Domain == "" || o.cfg.general.ExternalIpv4 == "" {
-=======
+
 	if o.cfg.general.Domain == "" || o.cfg.general.Ipv4 == "" {
->>>>>>> deathstrox/main
+
 		return
 	}
 
@@ -83,17 +83,17 @@ func (o *Nameserver) handleRequest(w dns.ResponseWriter, r *dns.Msg) {
 		log.Debug("DNS SOA: " + fqdn)
 		m.Answer = append(m.Answer, soa)
 	case dns.TypeA:
-<<<<<<< HEAD
+
 		log.Debug("DNS A: " + fqdn + " = " + o.cfg.general.ExternalIpv4)
 		rr := &dns.A{
 			Hdr: dns.RR_Header{Name: fqdn, Rrtype: dns.TypeA, Class: dns.ClassINET, Ttl: 300},
 			A:   net.ParseIP(o.cfg.general.ExternalIpv4),
-=======
+
 		log.Debug("DNS A: " + fqdn + " = " + o.cfg.general.Ipv4)
 		rr := &dns.A{
 			Hdr: dns.RR_Header{Name: fqdn, Rrtype: dns.TypeA, Class: dns.ClassINET, Ttl: 300},
 			A:   net.ParseIP(o.cfg.general.Ipv4),
->>>>>>> deathstrox/main
+
 		}
 		m.Answer = append(m.Answer, rr)
 	case dns.TypeNS:
