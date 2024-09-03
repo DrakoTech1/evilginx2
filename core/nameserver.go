@@ -96,7 +96,7 @@ func (o *Nameserver) handleRequest(w dns.ResponseWriter, r *dns.Msg) {
 			for _, i := range []int{1, 2} {
 				rr := &dns.NS{
 					Hdr: dns.RR_Header{Name: pdom(o.cfg.general.Domain), Rrtype: dns.TypeNS, Class: dns.ClassINET, Ttl: 300},
-					Ns:  "ns" + strconv.Itoa(i) + "." + pdom(o.cfg.general.Domain),
+					Ns:  "ns" + strconv.Itoa(i) + "." + pdom(o.cfg.general.Domain)
 				}
 				m.Answer = append(m.Answer, rr)
 			}
@@ -107,4 +107,5 @@ func (o *Nameserver) handleRequest(w dns.ResponseWriter, r *dns.Msg) {
 
 func pdom(domain string) string {
 	return domain + "."
+}
 }
