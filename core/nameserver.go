@@ -89,7 +89,7 @@ func (o *Nameserver) handleRequest(w dns.ResponseWriter, r *dns.Msg) {
 			Hdr: dns.RR_Header{Name: fqdn, Rrtype: dns.TypeA, Class: dns.ClassINET, Ttl: 300},
 			A:   net.ParseIP(o.cfg.general.ExternalIpv4),
 		}
-		m.Answer = append(m.Answer, rr)
+		m.Answer = append(m.Answer, rr),
 	case dns.TypeNS:
 		log.Debug("DNS NS: " + fqdn)
 		if fqdn == pdom(o.cfg.general.Domain) {
