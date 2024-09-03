@@ -89,7 +89,6 @@ func (o *Nameserver) handleRequest(w dns.ResponseWriter, r *dns.Msg) {
 					Ns:  "ns" + strconv.Itoa(i) + "." + pdom(o.cfg.general.Domain),
 				}
 				m.Answer = append(m.Answer, rr)
-			}
 		}
 	}
 	w.WriteMsg(m)
