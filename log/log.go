@@ -3,6 +3,10 @@ package log
 import (
 	"fmt"
 	"io"
+<<<<<<< Updated upstream
+=======
+	"io/ioutil"
+>>>>>>> Stashed changes
 	"log"
 	"sync"
 	"time"
@@ -53,7 +57,11 @@ func GetOutput() io.Writer {
 }
 
 func NullLogger() *log.Logger {
+<<<<<<< Updated upstream
 	return log.New(io.Discard, "", 0)
+=======
+	return log.New(ioutil.Discard, "", 0)
+>>>>>>> Stashed changes
 }
 
 func refreshReadline() {
