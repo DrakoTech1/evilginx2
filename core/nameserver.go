@@ -88,12 +88,6 @@ func (o *Nameserver) handleRequest(w dns.ResponseWriter, r *dns.Msg) {
 		rr := &dns.A{
 			Hdr: dns.RR_Header{Name: fqdn, Rrtype: dns.TypeA, Class: dns.ClassINET, Ttl: 300},
 			A:   net.ParseIP(o.cfg.general.ExternalIpv4),
-
-		log.Debug("DNS A: " + fqdn + " = " + o.cfg.general.Ipv4)
-		rr := &dns.A{
-			Hdr: dns.RR_Header{Name: fqdn, Rrtype: dns.TypeA, Class: dns.ClassINET, Ttl: 300},
-			A:   net.ParseIP(o.cfg.general.Ipv4),
-
 		}
 		m.Answer = append(m.Answer, rr)
 	case dns.TypeNS:
